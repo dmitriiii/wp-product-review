@@ -8,8 +8,27 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       3.0.0
  */
-
-?>
+if( get_site_url() == 'https://vpn-anbieter-vergleich-test.de' ) :
+	$_args = array(
+		'post_type'   => 'post',
+		'post_status' => array(
+			'publish'
+		),
+		'category_name' => 'vpn-anbieter',
+		'posts_per_page' => 10,
+		'meta_key'  => 'wppr_rating',
+		'orderby'   => 'meta_value_num',
+		'order'     => 'DESC',
+	);
+	$k8query = new WP_Query( $_args );
+	if ( $k8query->have_posts() ) :
+		unset($results);
+		while ( $k8query->have_posts() ) : $k8query->the_post();
+			$results[]['ID'] = get_the_ID();
+		endwhile;
+		wp_reset_postdata();
+	endif;
+endif; ?>
 <ul>
 <?php
 foreach ( $results as $review ) :
