@@ -1183,10 +1183,15 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 		$k8id = get_the_ID();
 		$k8meta = get_post_meta( $k8id );
 		$k8links = unserialize( $k8meta['wppr_links'][0] );
-		foreach ($k8links as $key => $value) {
-			$k8brand = $key;
-			$k8url = $value;
-		}
+		if( is_array( $k8links ) && count( $k8links ) > 0 ) :
+			foreach ($k8links as $key => $value) {
+				$k8brand = $key;
+				$k8url = $value;
+			}
+		else:
+			$k8brand = 'VPN';
+			$k8url = get_permalink( $k8id );
+		endif;
 		$ld           = array(
 			'@context'    => 'http://schema.org/',
 			'@type'       => $this->get_type(),
