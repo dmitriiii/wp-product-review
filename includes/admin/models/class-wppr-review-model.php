@@ -1234,6 +1234,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				'name'  => $this->get_author(),
 			),
 			'datePublished' => get_the_time( 'Y-m-d', $this->get_ID() ),
+			// 'datePublished' => '11.09.2011',
 		);
 
 		if ( $this->wppr_get_option( 'cwppos_show_userreview' ) !== 'yes' ) {
@@ -1245,6 +1246,21 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 
 		$comments = $this->get_comments_options();
 		foreach ( $comments as $comment ) {
+
+			// write_log($comment['date']);
+
+			$m5_reppl = preg_replace('/[.,]/', '', $comment['date']);
+
+			// write_log( $m5_reppl );
+
+			// $m5_date = strtotime( $m5_reppl );
+			
+			// write_log( $m5_date );
+			
+			// $m5_date = date('Y-m-d', $m5_date);
+
+			// write_log( $m5_date );
+
 			$ld['review'][] = array(
 				'@type'         => 'Review',
 				'reviewRating'  => array(
@@ -1259,7 +1275,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 					'@type' => 'Person',
 					'name'  => $comment['author'],
 				),
-				'datePublished' => get_the_time( 'Y-m-d', $comment['date'] ),
+				// 'datePublished' => get_the_time( 'Y-m-d', $comment['date'] ),
+				// 'datePublished' => '11.09.2011'
+				'datePublished' => $m5_reppl
 			);
 		}
 		$ld['aggregateRating'] = array(
