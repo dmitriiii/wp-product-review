@@ -1245,13 +1245,33 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 		$ld['review'][] = $review_default;
 
 		$comments = $this->get_comments_options();
+
+		$mnames = [
+			'Januar'=>'January',
+			'Februar' => 'February',
+			'März' => 'March',
+			'April' => 'April',
+			'Mai' => 'May',
+			'Juni' => 'June',
+			'Juli' => 'July',
+			'August' => 'August',
+			'September' => 'September',
+			'Oktober' => 'October',
+			'November' => 'November',
+			'Dezember' => 'December'
+		];
 		foreach ( $comments as $comment ) {
 
 			// write_log($comment['date']);
 
 			$m5_reppl = preg_replace('/[.,]/', '', $comment['date']);
-
-			// write_log( $m5_reppl );
+			foreach ($mnames as $k => $v) {
+				if (strpos($m5_reppl, $k) !== false) {
+					$m5_reppl =	str_replace( $k,$v,$m5_reppl );
+					break;
+				}
+			}
+			write_log( $m5_reppl );
 
 			// $m5_date = strtotime( $m5_reppl );
 			
