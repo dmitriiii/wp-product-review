@@ -1271,7 +1271,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 					break;
 				}
 			}
-			write_log( $m5_reppl );
+			// write_log( $m5_reppl );
 
 			// $m5_date = strtotime( $m5_reppl );
 			
