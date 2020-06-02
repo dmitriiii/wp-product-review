@@ -115,12 +115,12 @@ if ( ! function_exists( 'wppr_default_get_image' ) ) {
 			$image_link = $review_object->get_image();
 		}
 		?>
-		<div data-ifhere="13" class="rev-wu-image">
+		<div class="rev-wu-image">
 			<a class="wppr-default-img" href="<?php echo esc_url( $image_link ); ?>" <?php echo $lightbox; ?> rel="nofollow" target="_blank">
 				<img 
 					src="<?php echo esc_attr( $review_object->get_small_thumbnail() ); ?>"
 					alt="<?php echo esc_attr( $review_object->get_name() ); ?>"
-					class="photo photo-wrapup wppr-product-image"  width="100" height="100" style="width: 100px; height: 100px;"/>
+					class="photo photo-wrapup wppr-product-image"/>
 			</a>
 		</div><!-- end .rev-wu-image -->
 		<?php
@@ -229,7 +229,7 @@ if ( ! function_exists( 'wppr_layout_get_image' ) ) {
 		}
 		?>
 		<a title="<?php echo $review_object->get_name(); ?>" class="<?php echo $class_a; ?>" href="<?php echo esc_url( $image_link ); ?>" <?php echo $lightbox; ?> rel="nofollow" target="_blank">
-			<img
+			<img width="100" height="100" style="width: 100px; height: 100px;"
 				src="<?php echo esc_attr( $src ); ?>"
 				alt="<?php echo esc_attr( $review_object->get_image_alt() ); ?>"
 				class="<?php echo $class_img; ?>"/>
