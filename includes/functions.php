@@ -115,7 +115,7 @@ if ( ! function_exists( 'wppr_default_get_image' ) ) {
 			$image_link = $review_object->get_image();
 		}
 		?>
-		<div class="rev-wu-image">
+		<div data-ifhere="13" class="rev-wu-image">
 			<a class="wppr-default-img" href="<?php echo esc_url( $image_link ); ?>" <?php echo $lightbox; ?> rel="nofollow" target="_blank">
 				<img 
 					src="<?php echo esc_attr( $review_object->get_small_thumbnail() ); ?>"
