@@ -120,7 +120,7 @@ if ( ! function_exists( 'wppr_default_get_image' ) ) {
 				<img 
 					src="<?php echo esc_attr( $review_object->get_small_thumbnail() ); ?>"
 					alt="<?php echo esc_attr( $review_object->get_name() ); ?>"
-					class="photo photo-wrapup wppr-product-image"  width="100" height="100"/>
+					class="photo photo-wrapup wppr-product-image"  width="100" height="100" style="width: 100px; height: 100px;"/>
 			</a>
 		</div><!-- end .rev-wu-image -->
 		<?php
