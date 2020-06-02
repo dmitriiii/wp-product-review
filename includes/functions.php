@@ -117,10 +117,10 @@ if ( ! function_exists( 'wppr_default_get_image' ) ) {
 		?>
 		<div class="rev-wu-image">
 			<a class="wppr-default-img" href="<?php echo esc_url( $image_link ); ?>" <?php echo $lightbox; ?> rel="nofollow" target="_blank">
-				<img width="100" height="100"
+				<img 
 					src="<?php echo esc_attr( $review_object->get_small_thumbnail() ); ?>"
 					alt="<?php echo esc_attr( $review_object->get_name() ); ?>"
-					class="photo photo-wrapup wppr-product-image"/>
+					class="photo photo-wrapup wppr-product-image"  width="100" height="100"/>
 			</a>
 		</div><!-- end .rev-wu-image -->
 		<?php
