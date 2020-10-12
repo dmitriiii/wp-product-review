@@ -49,7 +49,7 @@ foreach ( $results as $review ) :
 	if ( $instance['show_image'] == true && ! empty( $product_image ) ) {
 		?>
 		<div class="cwp_rev_image wppr-col">
-			<img src="<?php echo $product_image; ?>"
+			<img width="50" height="50" style="width:50px; height:50px;" src="<?php echo $product_image; ?>"
 			 alt="<?php echo $review_object->get_name(); ?>">
 		</div>
 		<?php
