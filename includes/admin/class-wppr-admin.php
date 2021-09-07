@@ -249,7 +249,7 @@ class WPPR_Admin {
 		}
 
 		// delete the transients for AMP.
-		$templates = apply_filters( 'wppr_review_templates', array( 'default', 'style1', 'style2' ) );
+		$templates = apply_filters( 'wppr_review_templates', array( 'default', 'style1', 'style2', 'style3' ) );
 		foreach ( $templates as $template ) {
 			delete_transient( '_wppr_amp_css_' . str_replace( '.', '_', $this->version ) . '_' . $template );
 		}
