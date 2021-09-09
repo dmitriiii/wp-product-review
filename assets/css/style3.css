@@ -12,7 +12,10 @@
 
 .cwp-item-price {
   float: right;
-  font-size: 1.75em;
+  font-size: 24px;
+  white-space: nowrap;
+  font-weight: bold;
+  color: #666;
 }
 
 #review-statistics h1,
@@ -278,6 +281,39 @@
   border-left: 1px solid #e6e6e6;
 }
 
+#review-statistics .review-wrap-up .cwp-footer .affiliate-button {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+#review-statistics .review-wrap-up .cwp-footer .affiliate-button a {
+  margin: 0;
+}
+
+#review-statistics .review-wrap-up .cwp-footer .cwp-affilate-btn-title {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #303030;
+  margin-bottom: 10px;
+}
+
+#review-statistics .review-wrap-up .cwpr-price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 10px;
+}
+
+#review-statistics .review-wrap-up .cwpr-price-desc {
+  font-size: 16px;
+  line-height: 1.5em;
+  max-width: 260px;
+  color: #303030;
+}
+
 #review-statistics .review-wrap-up .cwpr-footer-col {
   padding: 20px;
 }
@@ -285,6 +321,9 @@
 #review-statistics .review-wrap-up .cwpr-footer-col:first-child {
   border-right: 1px solid #e6e6e6;
 }
+
+
+
 
 #review-statistics .review-wrap-up .cwpr-review-top .cwp-item {
   margin: 0;
@@ -562,23 +601,29 @@
 }
 
 @media (max-width: 480px) {
-  #review-statistics .review-wrap-up .review-wu-left .review-wu-grade {
-    width: 100px;
-  }
-
   #review-statistics .review-wrap-up .review-wu-left .review-wu-grade-content {
     width: 100px;
     height: 100px;
-  }
-
-  #review-statistics .review-wu-grade .wppr-c100 {
-    font-size: 100px;
   }
 
   #review-statistics .review-wu-grade .wppr-c100 span {
     font-size: 28px;
     line-height: 100px;
   }
+
+  #review-statistics .review-wrap-up .review-wu-left-top {
+    grid-template-columns: 1fr auto;
+  }
+
+  #review-statistics .review-wrap-up .cwp-footer {
+    grid-template-columns: 1fr;
+  }
+
+  #review-statistics .review-wrap-up .cwpr-footer-col:first-child {
+    border-bottom: 1px solid #e6e6e6;
+    border-right: 0;
+  }
+
 }
 
 @media (max-width: 768px) {
@@ -589,9 +634,27 @@
     width: 100%;
   }
 
+  #review-statistics .review-wrap-up .cwpr-review-top {
+    grid-template-columns: 1fr;
+  }
+
   #review-statistics .review-wrap-up .review-wu-right {
     border-top: 1px solid #e6e6e6;
   }
+
+  #review-statistics .review-wrap-up .review-wu-content {
+    grid-template-columns: 1fr;
+  }
+
+  #review-statistics .review-wrap-up .cwpr-price-desc {
+    text-align: center;
+  }
+
+  #review-statistics .review-wrap-up .cwpr-price-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+
 }
 
 .cwp-review-percentage.cwp_easyPieChart canvas {
