@@ -59,7 +59,8 @@ $cons = $review_object->get_cons();
 
 			</div><!-- end .review-wu-content -->
 			<div class="cwp-footer">
-				<div class="cwpr-footer-col">
+				<div class="cwpr-footer-col cwpr-price-container">
+					<div class="cwpr-price-desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</div>
 					<span class="cwp-item-price cwp-item">
 						<?php echo esc_html(empty($price_raw) ? '' : $price_raw); ?>
 						<em><?php 
@@ -70,6 +71,7 @@ $cons = $review_object->get_cons();
 					</span>
 				</div>
 				<div class="cwpr-footer-col">
+					<div class="cwp-affilate-btn-title">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
 					<?php wppr_layout_get_affiliate_buttons($review_object); ?>
 				</div>
 			</div>
