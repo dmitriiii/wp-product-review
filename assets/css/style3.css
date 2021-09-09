@@ -138,6 +138,7 @@
 
 #review-statistics .review-wrap-up {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #review-statistics .review-wu-bars h3,
@@ -260,7 +261,7 @@
 
 #review-statistics .review-wrap-up .cwpr-score-review {
   font-size: 16px;
-  line-height: 1.5em;
+  line-height: 1.25em;
   color: #303030;
 }
 
@@ -294,7 +295,7 @@
 #review-statistics .review-wrap-up .cwp-footer .cwp-affilate-btn-title {
   text-align: center;
   font-size: 16px;
-  line-height: 1.5em;
+  line-height: 1.25em;
   color: #303030;
   margin-bottom: 10px;
 }
@@ -309,7 +310,7 @@
 
 #review-statistics .review-wrap-up .cwpr-price-desc {
   font-size: 16px;
-  line-height: 1.5em;
+  line-height: 1.25em;
   max-width: 260px;
   color: #303030;
 }
