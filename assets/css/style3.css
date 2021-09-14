@@ -225,6 +225,10 @@
   border-left: 1px solid #e6e6e6;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  
+}
+
+#review-statistics#review-statistics .review-wrap-up .cwpr-review-top {
   padding: 0;
 }
 
