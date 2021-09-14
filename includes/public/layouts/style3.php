@@ -33,7 +33,7 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 	<section id="review-statistics" class="article-section">
 		<div class="review-wrap-up">
 			<div class="cwpr-review-top">
-				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) {?>style="background-color: <?= $range['color'] ?>" <? } ?>>
+				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) { ?>style="background-color: <?= $range['color'] ?>" <? } ?>>
 					<div class="cwpr-score-wrapper">
 						<h2 class="cwpr-score-title"><?php echo esc_html($review_object->get_name()); ?></h2>
 						<div class="cwpr-score-value"><?= $score ?></div>
@@ -44,11 +44,13 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 						<?= $range['range_name'] ?>
 					</div>
 				</div>
-				<div class="cwpr-score-col">
-					<div class="cwpr-score-review">
-						<?= str_replace("%vpn", esc_html($review_object->get_name()), $range['range_description']) ?>
+				<? if ($range['range_description']) { ?>
+					<div class="cwpr-score-col">
+						<div class="cwpr-score-review">
+							<?= str_replace("%vpn", esc_html($review_object->get_name()), $range['range_description']) ?>
+						</div>
 					</div>
-				</div>
+				<? } ?>
 			</div><!-- end .cwpr-review-top -->
 			<div class="review-wu-content">
 				<div class="review-wu-left">
@@ -72,7 +74,9 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 			</div><!-- end .review-wu-content -->
 			<div class="cwp-footer">
 				<div class="cwpr-footer-col cwpr-price-container">
-					<div class="cwpr-price-desc"><?= str_replace("%vpn", esc_html($review_object->get_name()), get_field('trust_level_text_before_price', 'option')) ?></div>
+					<? if (get_field('trust_level_text_before_price', 'option')) { ?>
+						<div class="cwpr-price-desc"><?= str_replace("%vpn", esc_html($review_object->get_name()), get_field('trust_level_text_before_price', 'option')) ?></div>
+					<? } ?>
 					<span class="cwp-item-price cwp-item">
 						<?php echo esc_html(empty($price_raw) ? '' : $price_raw); ?>
 						<em><?php

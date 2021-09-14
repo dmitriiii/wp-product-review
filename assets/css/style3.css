@@ -11,11 +11,16 @@
 }
 
 .cwp-item-price {
-  float: right;
   font-size: 24px;
   white-space: nowrap;
   font-weight: bold;
   color: #666;
+}
+
+.cwp-item-price:first-child:last-child {
+  display: block;
+  width: 100%;
+  text-align: right;
 }
 
 #review-statistics h1,
@@ -220,6 +225,7 @@
   border-left: 1px solid #e6e6e6;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding: 0;
 }
 
 #review-statistics .review-wrap-up .cwpr-score-col {
@@ -633,6 +639,10 @@
     display: block;
     float: left;
     width: 100%;
+  }
+
+  .cwp-item-price:first-child:last-child {
+    text-align: center;
   }
 
   #review-statistics .review-wrap-up .cwpr-review-top {
