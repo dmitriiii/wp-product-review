@@ -30,7 +30,7 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 
 ?>
 <div id="wppr-review-<?php echo $review_object->get_ID(); ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
-	<section id="review-statistics" class="article-section">
+	<section id="review-trust-lvl" class="article-section">
 		<div class="review-wrap-up">
 			<div class="cwpr-review-top">
 				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) { ?>style="background-color: <?= $range['color'] ?>" <? } ?>>
