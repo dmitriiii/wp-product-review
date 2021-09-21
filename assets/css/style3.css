@@ -499,6 +499,10 @@
   padding-left: 0 !important;
 }
 
+#review-trust-lvl .rev-option:not(:first-child) {
+  margin-top: 10px;
+}
+
 #review-trust-lvl .rev-option ul > li {
   font-family: dashicons;
 }
