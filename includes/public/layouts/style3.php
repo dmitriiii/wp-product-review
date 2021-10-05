@@ -29,14 +29,14 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 ]);
 
 ?>
-<div id="wppr-review-<?php echo $review_object->get_ID(); ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
+<div id="wppr-review-<?php echo $review_object->get_ID(); ?>" data-sub-id="<?= get_field('jotform_submission_id') ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
 	<section id="review-trust-lvl" class="article-section">
 		<div class="review-wrap-up">
 			<div class="cwpr-review-top">
 				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) { ?>style="background-color: <?= $range['color'] ?>" <? } ?>>
 					<div class="cwpr-score-wrapper">
 						<h2 class="cwpr-score-title"><?php echo esc_html($review_object->get_name()); ?></h2>
-						<div class="cwpr-score-value"><?= $score ?></div>
+						<div class="cwpr-score-value"><?= $score ?><sup><a href="javascript:;">?</a></sup></div>
 					</div>
 					<div class="cwpr-score-level">
 						<?= get_field('trust_level_title', 'option') ?>
@@ -93,6 +93,7 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 			</div>
 		</div><!-- end .review-wrap-up -->
 	</section>
-
+	<div class="subs-modal">
+	</div>						
 
 </div>

@@ -129,6 +129,14 @@ class Wppr_Public {
 		}
 
 		$this->load_template_css( $review );
+		$this->load_template_js( $review );
+	}
+
+	function load_template_js( $review = null ) {
+		if ( empty( $review ) ) {
+			$review = $this->review;
+		}
+		wp_enqueue_script( $this->plugin_name . '-' . $review->get_template() . '-stylesheet', WPPR_URL . '/assets/js/' . $review->get_template() . '.js', array(), $this->version, true );
 	}
 
 	/**
