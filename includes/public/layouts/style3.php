@@ -93,7 +93,4 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 			</div>
 		</div><!-- end .review-wrap-up -->
 	</section>
-	<div class="subs-modal">
-	</div>						
-
 </div>
