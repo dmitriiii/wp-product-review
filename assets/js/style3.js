@@ -131,6 +131,7 @@
 
   async function generateSubList(sub) {
     const answers = prepareSubAnswers(sub.answers);
+   
     return `
     <div class="subs-list">
       ${answers
@@ -225,7 +226,7 @@
             "control_button",
             "control_text",
             "control_widget",
-          ].includes(answer.type) && !["yourvpn"].includes(answer.name)
+          ].includes(answer.type) && !["yourvpn", "signature"].includes(answer.name)
       );
   }
 
