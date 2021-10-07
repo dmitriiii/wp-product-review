@@ -783,7 +783,7 @@
 }
 
 .subs-answer-box--none {
-  background-color: #ff8ed9;
+  background-color: #ffbaff;
 }
 
 .subs-answer-box--txt {
@@ -883,4 +883,19 @@
 }
 .subs-modal__close:after {
   transform: rotate(-45deg);
+}
+
+.subs-modal__title {
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  line-height: 1.2em;
+  font-size: 27px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .subs-modal__title {
+    font-size: 24px;
+  }
+  
 }

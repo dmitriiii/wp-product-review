@@ -133,6 +133,7 @@
     const answers = prepareSubAnswers(sub.answers);
    
     return `
+    <h2 class="subs-modal__title">VPN Trust-Level</h2>
     <div class="subs-list">
       ${answers
         .map(
