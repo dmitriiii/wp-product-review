@@ -790,6 +790,22 @@
   background-color: #baebff;
 }
 
+.subs-answer-box--nth:nth-child(4n+1) {
+  background-color: #baebff;
+}
+
+.subs-answer-box--nth:nth-child(4n+2) {
+  background-color: #ffbaff;
+}
+
+.subs-answer-box--nth:nth-child(4n+3) {
+  background-color: #baffba;
+}
+
+.subs-answer-box--nth:nth-child(4n+4) {
+  background-color: #c7baff;
+}
+
 .subs-modal {
   position: fixed;
   width: 100%;
