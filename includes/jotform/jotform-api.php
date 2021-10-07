@@ -15,6 +15,14 @@ function init_jotform_api()
     try {
       $jotformAPI = new JotForm(get_field('jotform_api_key', 'option'));
       $sub = $jotformAPI->getSubmission($_GET['id']);
+
+      if (isset($sub['answers']))
+        foreach ($sub['answers'] as &$answer) {
+          if (isset($answer['text'])) $answer['text'] = __($answer['text'], 'wp-product-review');
+          if (isset($answer['answer']) && is_string($answer['answer'])) $answer['text'] = __($answer['text'], 'wp-product-review');
+        }
+
+
       wp_send_json_success($sub);
     } catch (\Throwable $th) {
       wp_send_json_error($th->getMessage());
