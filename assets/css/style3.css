@@ -723,7 +723,7 @@
 .subs-list {
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 15px;
 }
 
 .subs-el {
@@ -731,13 +731,18 @@
   grid-template-columns: 0.4fr 0.6fr;
   column-gap: 15px;
   row-gap: 10px;
+  padding: 8px 10px;
 }
+
+.subs-el:nth-child(odd) {
+  background-color: #efefef87;
+}
+
 @media (max-width: 560px) {
   .subs-el {
     grid-template-columns: 1fr;
   }
 }
-
 
 .subs-el__title {
   color: #848484;
@@ -747,7 +752,7 @@
 .subs-el__answer {
   font-family: "Source Sans Pro", sans-serif;
   line-height: 1.2em;
-  padding-top: 5px;
+  padding: 3px 0;
 }
 
 @media (max-width: 560px) {
@@ -755,7 +760,6 @@
     padding-top: 0;
   }
 }
-
 
 .subs-answer-list {
   display: flex;
@@ -790,19 +794,19 @@
   background-color: #baebff;
 }
 
-.subs-answer-box--nth:nth-child(4n+1) {
+.subs-answer-box--nth:nth-child(4n + 1) {
   background-color: #baebff;
 }
 
-.subs-answer-box--nth:nth-child(4n+2) {
+.subs-answer-box--nth:nth-child(4n + 2) {
   background-color: #ffbaff;
 }
 
-.subs-answer-box--nth:nth-child(4n+3) {
+.subs-answer-box--nth:nth-child(4n + 3) {
   background-color: #baffba;
 }
 
-.subs-answer-box--nth:nth-child(4n+4) {
+.subs-answer-box--nth:nth-child(4n + 4) {
   background-color: #c7baff;
 }
 
@@ -816,9 +820,6 @@
   left: 0;
   overflow: auto;
   padding: 60px 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   opacity: 0;
   transition: opacity 600ms;
 }
@@ -834,17 +835,21 @@
   width: 100%;
   max-width: 900px;
   background-color: white;
-  padding: 50px 30px;
+  padding: 50px 20px;
   margin: auto;
 }
 
 @media (max-width: 414px) {
   .subs-modal__inner {
-    padding: 50px 20px;
+    padding: 50px 10px;
   }
 }
 
 .subs-modal__loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 120px;
   height: 120px;
 }
@@ -869,11 +874,12 @@
 .subs-modal__close:hover {
   opacity: 1;
 }
-.subs-modal__close:before, .subs-modal__close:after {
+.subs-modal__close:before,
+.subs-modal__close:after {
   position: absolute;
   left: 12px;
-  top:0;
-  content: ' ';
+  top: 0;
+  content: " ";
   height: 24px;
   width: 2px;
   background-color: #333;
@@ -897,5 +903,4 @@
   .subs-modal__title {
     font-size: 24px;
   }
-  
 }
