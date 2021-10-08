@@ -822,6 +822,11 @@
   padding: 60px 15px;
   opacity: 0;
   transition: opacity 600ms;
+  box-sizing: border-box;
+}
+
+.subs-modal * {
+  box-sizing: border-box;
 }
 
 @media (max-width: 414px) {
