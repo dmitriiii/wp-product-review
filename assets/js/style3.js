@@ -182,7 +182,7 @@
       case "control_email":
         return answerObj.answer;
       case "control_checkbox":
-        return `<div class="subs-answer-list">${answerObj.answer
+        return `<div class="subs-answer-list">${Object.values(answerObj.answer)
           .map(
             (answer) => `<div class="subs-answer-box subs-answer-box--nth">
         ${answer}
