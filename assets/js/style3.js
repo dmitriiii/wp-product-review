@@ -6,7 +6,7 @@
   }
 
   async function initSubsModal(reviewEl) {
-    const link = reviewEl.querySelector(".cwpr-score-value");
+    const link = reviewEl.querySelector(".cwpr-score-value a");
     if (!link) return;
     link.addEventListener("click", openSubModal);
   }
