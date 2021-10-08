@@ -821,6 +821,9 @@
   overflow: auto;
   padding: 60px 15px;
   opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: opacity 600ms;
   box-sizing: border-box;
 }
