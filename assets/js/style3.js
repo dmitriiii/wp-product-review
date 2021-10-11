@@ -13,10 +13,10 @@
 
   async function openSubModal(e) {
     e.preventDefault();
-    const subId = e.target.closest(".wppr-review-container").dataset.subId;
+    const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
     const modalEl = createSubsModal(
       e.target.closest(".wppr-review-container"),
-      getSubsHtml(subId)
+      getSubsHtml(vpnId)
     );
     modalEl.style.display = "";
     document.body.style.overflow = "hidden";
@@ -66,10 +66,14 @@
     innerEl.style.display = "";
   }
 
-  async function getSubsHtml(subId) {
-    const sub = await getSub(subId);
-    const inner = await generateSubList(sub);
-    return inner;
+  async function getSubsHtml(vpnId) {
+    try {
+      const sub = await getSub(vpnId);
+      const inner = await generateSubList(sub);
+      return inner;
+    } catch (error) {
+      return `<p class="subs-modal__error">${error.message}</p>`;
+    }
   }
 
   async function generateSubList(sub) {
@@ -174,14 +178,15 @@
       );
   }
 
-  async function getSub(subId) {
+  async function getSub(vpnId) {
     if (getSub.data) return getSub.data;
     try {
       const res = await fetch(
-        `/wp-admin/admin-ajax.php?action=get_jotform_sub&id=${subId}`
+        `/wp-admin/admin-ajax.php?action=get_jotform_sub&id=${vpnId}`
       );
       const { success, data } = await res.json();
       if (success) return (getSub.data = data);
+      else throw new Error(data);
     } catch (error) {
       console.error(error.message);
       throw error;

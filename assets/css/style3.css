@@ -941,3 +941,8 @@
   margin: 0 auto;
   margin-bottom: 30px;
 }
+
+.subs-modal__error {
+  text-align: center;
+  font-weight: bold;
+}
