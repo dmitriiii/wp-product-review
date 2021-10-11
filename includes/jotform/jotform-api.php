@@ -8,6 +8,7 @@ function init_jotform_api()
 
   function so_wp_ajax_function()
   {
+    $priv_field = ["19Taxid12", "4aThe71", "4cEmail"];
     if (!$_GET['id']) {
       wp_send_json_error('No id');
       return;
@@ -18,6 +19,7 @@ function init_jotform_api()
 
       if (isset($sub['answers']))
         foreach ($sub['answers'] as &$answer) {
+          if (in_array($answer['name'], $priv_field) && isset($answer['answer'])) $answer['answer'] = "**Response received, not public for data protection**";
           if (isset($answer['text'])) $answer['text'] = __($answer['text'], 'wp-product-review');
           if (isset($answer['answer']) && is_string($answer['answer'])) $answer['text'] = __($answer['text'], 'wp-product-review');
         }

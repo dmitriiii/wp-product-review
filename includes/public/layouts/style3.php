@@ -95,4 +95,21 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 			</div>
 		</div><!-- end .review-wrap-up -->
 	</section>
+	<div class="subs-modal" style="display: none">
+		<div class="subs-modal__loading">
+			<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
+		</div>
+		<div class="subs-modal__inner" style="display: none">
+			<div role="button" class="subs-modal__close" title="close">
+			</div>
+			<div class="subs-modal__content">
+				<h2 class="subs-modal__title">
+					<img class="subs-modal__logo" src="<?php echo WPPR_URL; ?>/assets/img/subs_logo.png" alt="">VPN Trust-Level
+				</h2>
+				<p class="subs-modal__subtitle">Fragen werden in der Originalsprache veröffentlicht in der diese gestellt wurden, um Manipulation durch Interpretation zu vermeiden.</p>
+				<div class="subs-modal__results">
+				</div>			
+			</div>
+		</div>
+	</div>
 </div>
