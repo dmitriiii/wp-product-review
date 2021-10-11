@@ -901,6 +901,9 @@
 }
 
 .subs-modal__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;
   line-height: 1.2em;
@@ -938,5 +941,3 @@
   margin: 0 auto;
   margin-bottom: 30px;
 }
-
-
