@@ -158,6 +158,7 @@
 
 #review-trust-lvl .review-wu-bars h3 {
   float: left;
+  color: #0a0a0a;
 }
 
 #review-trust-lvl .review-wrap-up .review-wu-right .pros h2 {
@@ -196,6 +197,11 @@
   width: 8.2%;
   height: 6px;
   margin-right: 2%;
+  background-color: #eee;
+}
+
+#review-trust-lvl .review-wu-bars ul li.colored {
+  background-color: #8dc153;
 }
 
 #review-trust-lvl .rev-option.customBarIcon ul li {
