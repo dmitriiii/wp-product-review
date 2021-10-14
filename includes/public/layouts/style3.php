@@ -22,6 +22,8 @@ $range = array_filter($ranges, function ($range) use ($score) {
 	return  $score >= $range['range_start'] && $range['range_end'] >= $score;
 });
 
+$show_trust_lvl_detail = get_field('show_trust_level_detail', 'option');
+
 $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ? $ranges[0] : [
 	'color' => '#a5a5a5',
 	'range_name' => 'N/A',
@@ -36,7 +38,7 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) { ?>style="background-color: <?= $range['color'] ?>" <? } ?>>
 					<div class="cwpr-score-wrapper">
 						<h2 class="cwpr-score-title"><?php echo esc_html($review_object->get_name()); ?></h2>
-						<div class="cwpr-score-value"><?= $score ?><sup><a href="javascript:;">?</a></sup></div>
+						<div class="cwpr-score-value"><?= $score ?><? if ($show_trust_lvl_detail) { ?><sup><a href="javascript:;">?</a></sup><? } ?></div>
 					</div>
 					<div class="cwpr-score-level">
 						<?= get_field('trust_level_title', 'option') ?>
@@ -93,21 +95,23 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 			</div>
 		</div><!-- end .review-wrap-up -->
 	</section>
-	<div class="subs-modal" style="display: none">
-		<div class="subs-modal__loading">
-			<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
-		</div>
-		<div class="subs-modal__inner" style="display: none">
-			<div role="button" class="subs-modal__close" title="close">
+	<? if ($show_trust_lvl_detail) { ?>
+		<div class="subs-modal" style="display: none">
+			<div class="subs-modal__loading">
+				<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
 			</div>
-			<div class="subs-modal__content">
-				<h2 class="subs-modal__title">
-					<img class="subs-modal__logo" src="<?php echo WPPR_URL; ?>/assets/img/subs_logo.png" alt="">VPN Trust-Level
-				</h2>
-				<p class="subs-modal__subtitle">Fragen werden in der Originalsprache veröffentlicht in der diese gestellt wurden, um Manipulation durch Interpretation zu vermeiden.</p>
-				<div class="subs-modal__results">
-				</div>			
+			<div class="subs-modal__inner" style="display: none">
+				<div role="button" class="subs-modal__close" title="close">
+				</div>
+				<div class="subs-modal__content">
+					<h2 class="subs-modal__title">
+						<img class="subs-modal__logo" src="<?php echo WPPR_URL; ?>/assets/img/subs_logo.png" alt="">VPN Trust-Level
+					</h2>
+					<p class="subs-modal__subtitle">Fragen werden in der Originalsprache veröffentlicht in der diese gestellt wurden, um Manipulation durch Interpretation zu vermeiden.</p>
+					<div class="subs-modal__results">
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
+	<? } ?>
 </div>
