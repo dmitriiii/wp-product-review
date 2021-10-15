@@ -15,8 +15,10 @@ function init_jotform_api()
     }
     try {
       $jotformAPI = new JotForm(get_field('jotform_api_key', 'option'));
+      $default_answers = $jotformAPI->getFormQuestions(210735615804049);
       $subs = $jotformAPI->getFormSubmissions(210735615804049);
-      $sub = NULL;
+      $sub = null;
+      $answers = null;
       foreach ($subs as $fsub) {
         if (count(array_filter($fsub["answers"], function ($answ) {
           return $answ['name'] == 'yourvpn' && $answ['answer'] == $_GET['id'];
@@ -26,16 +28,16 @@ function init_jotform_api()
         }
       }
 
-      if (!$sub) throw new Exception("Der VPN-Anbieter hat noch keine Daten für die Bewertung bereitgestellt.", 1);
-      
-      if ($sub && isset($sub['answers']))
-        foreach ($sub['answers'] as &$answer) {
-          if (in_array($answer['name'], $priv_field) && isset($answer['answer'])) $answer['answer'] = "**Response received, not public for data protection**";
-          if (isset($answer['text'])) $answer['text'] = __($answer['text'], 'wp-product-review');
-          if (isset($answer['answer']) && is_string($answer['answer'])) $answer['text'] = __($answer['text'], 'wp-product-review');
-        }
+      if ($sub && isset($sub['answers']))  $answers = $sub['answers'];
+      else $answers = $default_answers;
 
-      wp_send_json_success($sub);
+      foreach ($answers as &$answer) {
+        if (in_array($answer['name'], $priv_field) && isset($answer['answer'])) $answer['answer'] = "**Response received, not public for data protection**";
+        if (isset($answer['text'])) $answer['text'] = __($answer['text'], 'wp-product-review');
+        if (isset($answer['answer']) && is_string($answer['answer'])) $answer['text'] = __($answer['text'], 'wp-product-review');
+      }
+
+      wp_send_json_success([...$answers]);
     } catch (\Throwable $th) {
       wp_send_json_error($th->getMessage());
     }

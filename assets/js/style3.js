@@ -79,8 +79,8 @@
     }
   }
 
-  async function generateSubList(sub) {
-    const answers = prepareSubAnswers(sub.answers);
+  async function generateSubList(rawAnswers) {
+    const answers = prepareSubAnswers(rawAnswers);
 
     return `
     <div class="subs-list">
