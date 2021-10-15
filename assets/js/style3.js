@@ -53,7 +53,10 @@
       "transitionend",
       () => (
         (modalEl.style.display = "none"), (document.body.style.overflow = "")
-      )
+      ),
+      {
+        once: true,
+      }
     );
   }
 
