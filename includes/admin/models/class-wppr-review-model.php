@@ -1199,7 +1199,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 			'image'       => $this->get_small_thumbnail(),
 			'description' => $this->get_excerpt(),
 			'brand' => array(
-				'@type' => 'Thing',
+				'@type' => 'Brand',
 				'name'  => $k8brand,
 			),
 			'sku' => '00' . $k8id . '00',
