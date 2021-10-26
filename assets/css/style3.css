@@ -448,8 +448,22 @@
   min-width: 120px;
   padding: 15px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+
+#review-trust-lvl .review-wrap-up .review-wu-left .review-wu-reviews-count {
+	display: block;
+	width: 100%;
+	font-size: 14px;
+	color: #303030;
+  text-align: center;
+  margin-top: 5px;
+}
+
+#review-trust-lvl .review-wrap-up .review-wu-left .review-wu-reviews-count:hover {
+  color: #666;
 }
 
 #review-trust-lvl .review-wrap-up .review-wu-left .review-wu-grade-content {
@@ -816,7 +830,7 @@
   background-color: #c7baff;
 }
 
-.subs-modal {
+.wu-modal {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -834,17 +848,17 @@
   box-sizing: border-box;
 }
 
-.subs-modal * {
+.wu-modal * {
   box-sizing: border-box;
 }
 
 @media (max-width: 414px) {
-  .subs-modal {
+  .wu-modal {
     padding: 40px 15px;
   }
 }
 
-.subs-modal__inner {
+.wu-modal__inner {
   position: relative;
   width: 100%;
   max-width: 900px;
@@ -854,12 +868,12 @@
 }
 
 @media (max-width: 414px) {
-  .subs-modal__inner {
+  .wu-modal__inner {
     padding: 50px 10px;
   }
 }
 
-.subs-modal__loading {
+.wu-modal__loading {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -868,12 +882,12 @@
   height: 120px;
 }
 
-.subs-modal__loading svg {
+.wu-modal__loading svg {
   width: 100%;
   height: 100%;
 }
 
-.subs-modal__close {
+.wu-modal__close {
   position: absolute;
   right: 15px;
   top: 15px;
@@ -885,11 +899,11 @@
   margin: 0;
   cursor: pointer;
 }
-.subs-modal__close:hover {
+.wu-modal__close:hover {
   opacity: 1;
 }
-.subs-modal__close:before,
-.subs-modal__close:after {
+.wu-modal__close:before,
+.wu-modal__close:after {
   position: absolute;
   left: 12px;
   top: 0;
@@ -898,15 +912,15 @@
   width: 2px;
   background-color: #333;
 }
-.subs-modal__close:before {
+.wu-modal__close:before {
   transform: rotate(45deg);
 }
 
-.subs-modal__close:after {
+.wu-modal__close:after {
   transform: rotate(-45deg);
 }
 
-.subs-modal__title {
+.wu-modal__title {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -918,12 +932,12 @@
 }
 
 @media (max-width: 768px) {
-  .subs-modal__title {
+  .wu-modal__title {
     font-size: 24px;
   }
 }
 
-.subs-modal__logo {
+.wu-modal__logo {
   width: 80px;
   height: 80px;
   margin-right: 10px;
@@ -932,12 +946,12 @@
 }
 
 @media (max-width: 560px) {
-  .subs-modal__logo {
+  .wu-modal__logo {
     display: none;
   }
 }
 
-.subs-modal__subtitle {
+.wu-modal__subtitle {
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
@@ -948,7 +962,7 @@
   margin-bottom: 30px;
 }
 
-.subs-modal__error {
+.wu-modal__error {
   text-align: center;
   font-weight: bold;
 }

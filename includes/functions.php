@@ -133,7 +133,7 @@ if (!function_exists('wppr_default_get_rating')) {
 	/**
 	 * Display the rating of the given type.
 	 */
-	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false)
+	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false, $show_extend_rating = false)
 	{
 		$review_rating = $review_object->get_rating();
 		$rating     = round($review_rating);
@@ -193,6 +193,28 @@ if (!function_exists('wppr_default_get_rating')) {
 							<div class="wppr-slice-center"></div>
 						</div>
 					</div>
+					<? if ($show_extend_rating) { ?>
+						<div class="review-wu-reviews-count">
+							<a class="review-wu-reviews-link" href="#reviews-detail">1495</a>
+							<div id="reviews-detail" class="wu-modal" style="display: none">
+								<div class="wu-modal__loading">
+									<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
+								</div>
+								<div class="wu-modal__inner" style="display: none">
+									<div role="button" class="wu-modal__close" title="close">
+									</div>
+									<div class="wu-modal__content">
+										<h2 class="wu-modal__title">
+											Reviews
+										</h2>
+										<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>
+										<div class="wu-modal__results">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<? } ?>
 				</div>
 			<?php
 				break;

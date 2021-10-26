@@ -3,19 +3,28 @@
     document.querySelectorAll(".review-wrap-up").forEach((reviewEl) => {
       initSubsModal(reviewEl);
     });
+    document.querySelectorAll(".review-wu-reviews-count").forEach((reviewEl) => {
+      initReviewModal(reviewEl);
+    });
   }
 
-  async function initSubsModal(reviewEl) {
+  function initSubsModal(reviewEl) {
     const link = reviewEl.querySelector(".cwpr-score-value a");
     if (!link) return;
     link.addEventListener("click", openSubModal);
   }
 
+  function initReviewModal(reviewEl) {
+    const link = reviewEl.querySelector(".review-wu-reviews-link");
+    if (!link) return;
+    link.addEventListener("click", openReviewModal);
+  }
+
   async function openSubModal(e) {
     e.preventDefault();
     const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
-    const modalEl = createSubsModal(
-      e.target.closest(".wppr-review-container"),
+    const modalEl = createWuModal(
+      document.querySelector(e.target.getAttribute('href')),
       getSubsHtml(vpnId)
     );
     modalEl.style.display = "";
@@ -25,28 +34,40 @@
     });
   }
 
-  function createSubsModal(container, asyncContent) {
-    const modalEl = container.querySelector(".subs-modal");
+  async function openReviewModal(e) {
+    e.preventDefault();
+    const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
+    const modalEl = createWuModal(
+      document.querySelector(e.target.getAttribute('href')),
+      getReviewsHtml(vpnId)
+    );
+    modalEl.style.display = "";
+    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      modalEl.style.opacity = 1;
+    });
+  }
 
-    initSubsControl(modalEl);
-    fillSubsModal(modalEl, asyncContent);
+  function createWuModal(modalEl, asyncContent) {
+    initWuControl(modalEl);
+    fillWuModal(modalEl, asyncContent);
     return modalEl;
   }
 
-  function initSubsControl(modalEl) {
+  function initWuControl(modalEl) {
     modalEl
-      .querySelector(".subs-modal__close")
-      .addEventListener("click", closeSubsModal);
-    modalEl.addEventListener("click", closeSubsModal);
+      .querySelector(".wu-modal__close")
+      .addEventListener("click", closeWuModal);
+    modalEl.addEventListener("click", closeWuModal);
   }
 
-  function closeSubsModal(e) {
+  function closeWuModal(e) {
     if (
-      !e.target.classList.contains("subs-modal__close") &&
-      !e.target.classList.contains("subs-modal")
+      !e.target.classList.contains("wu-modal__close") &&
+      !e.target.classList.contains("wu-modal")
     )
       return;
-    const modalEl = e.target.closest(".subs-modal");
+    const modalEl = e.target.closest(".wu-modal");
 
     modalEl.style.opacity = "";
     modalEl.addEventListener(
@@ -60,10 +81,10 @@
     );
   }
 
-  async function fillSubsModal(modalEl, asyncContent) {
-    const resultsEl = modalEl.querySelector(".subs-modal__results");
-    const innerEl = modalEl.querySelector(".subs-modal__inner");
-    const loadingEl = modalEl.querySelector(".subs-modal__loading");
+  async function fillWuModal(modalEl, asyncContent) {
+    const resultsEl = modalEl.querySelector(".wu-modal__results");
+    const innerEl = modalEl.querySelector(".wu-modal__inner");
+    const loadingEl = modalEl.querySelector(".wu-modal__loading");
     resultsEl.innerHTML = await asyncContent;
     loadingEl.style.display = "none";
     innerEl.style.display = "";
@@ -75,7 +96,7 @@
       const inner = await generateSubList(sub);
       return inner;
     } catch (error) {
-      return `<p class="subs-modal__error">${error.message}</p>`;
+      return `<p class="wu-modal__error">${error.message}</p>`;
     }
   }
 
@@ -193,6 +214,16 @@
     } catch (error) {
       console.error(error.message);
       throw error;
+    }
+  }
+
+  async function getReviewsHtml(vpnId) {
+    try {
+      const sub = await getSub(vpnId);
+      const inner = await generateSubList(sub);
+      return inner;
+    } catch (error) {
+      return `<p class="wu-modal__error">${error.message}</p>`;
     }
   }
 
