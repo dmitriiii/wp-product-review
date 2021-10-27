@@ -219,12 +219,55 @@
 
   async function getReviewsHtml(vpnId) {
     try {
-      const sub = await getSub(vpnId);
-      const inner = await generateSubList(sub);
+      const sub = await getReviews(vpnId);
+      const inner = await generateReviewList(sub);
       return inner;
     } catch (error) {
       return `<p class="wu-modal__error">${error.message}</p>`;
     }
+  }
+
+  async function getReviews(vpnId) {
+    if (getReviews.data) return getReviews.data;
+    try {
+      const res = await fetch(
+        `/wp-admin/admin-ajax.php?action=get_ext_reviews&id=${vpnId}`
+      );
+      const { success, data } = await res.json();
+      if (success) return (getReviews.data = data);
+      else throw new Error(data);
+    } catch (error) {
+      console.error(error.message);
+      throw error;
+    }
+  }
+
+  async function generateReviewList(data) {
+    return `<div class="wu-review-list">${data.map((el) => `
+    <a href="${el.url}" class="wu-review-item" target="_blank">
+      <div class="wu-review-item__rating">
+        <div class="wppr-c100 wppr-p51 wppr-good">
+          <span>5.1</span>
+          <div class="wppr-slice">
+            <div class="wppr-bar " style="
+            -webkit-transform: rotate(183.6deg);
+            -ms-transform: rotate(183.6deg);
+            transform: rotate(183.6deg);
+            ">
+            </div>
+            <div class="wppr-fill " style=""></div>
+          </div>
+          <div class="wppr-slice-center"></div>
+        </div>
+      </div>
+      <div class="wu-review-item__count">
+        (${el.votes})
+      </div>
+      <div class="wu-review-item__title">
+        ${el.source}
+      </div>
+    </a>
+    `).join('')}</div>` 
   }
 
   function toUrl(string) {

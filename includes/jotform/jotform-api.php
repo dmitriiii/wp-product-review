@@ -3,10 +3,10 @@ include_once 'JotForm.php';
 
 function init_jotform_api()
 {
-  add_action("wp_ajax_get_jotform_sub", "so_wp_ajax_function");
-  add_action("wp_ajax_nopriv_get_jotform_sub", "so_wp_ajax_function");
+  add_action("wp_ajax_get_jotform_sub", "get_jotform_sub");
+  add_action("wp_ajax_nopriv_get_jotform_sub", "get_jotform_sub");
 
-  function so_wp_ajax_function()
+  function get_jotform_sub()
   {
     $priv_field = ["19Taxid12", "4aThe71", "4cEmail"];
     if (!$_GET['id']) {

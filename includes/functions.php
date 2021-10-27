@@ -195,18 +195,18 @@ if (!function_exists('wppr_default_get_rating')) {
 					</div>
 					<? if ($show_extend_rating) { ?>
 						<div class="review-wu-reviews-count">
-							<a class="review-wu-reviews-link" href="#reviews-detail">1495</a>
-							<div id="reviews-detail" class="wu-modal" style="display: none">
+							<a class="review-wu-reviews-link" href="#reviews-detail">reviews (1495)</a>
+							<div id="reviews-detail" class="wu-modal" style="display: none;">
 								<div class="wu-modal__loading">
 									<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
 								</div>
-								<div class="wu-modal__inner" style="display: none">
+								<div class="wu-modal__inner" style="display: none; max-width: 620px">
 									<div role="button" class="wu-modal__close" title="close">
 									</div>
 									<div class="wu-modal__content">
-										<h2 class="wu-modal__title">
+										<div class="wu-modal__title">
 											Reviews
-										</h2>
+										</div>
 										<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>
 										<div class="wu-modal__results">
 										</div>
@@ -529,3 +529,5 @@ if (function_exists('register_block_type')) {
 if (!function_exists('init_jotform_api')) {
 	include_once WPPR_PATH . '/includes/jotform/jotform-api.php';
 }
+
+include_once WPPR_PATH . '/includes/reviews-api/index.php';

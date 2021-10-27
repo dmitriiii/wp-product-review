@@ -454,15 +454,18 @@
 }
 
 #review-trust-lvl .review-wrap-up .review-wu-left .review-wu-reviews-count {
-	display: block;
-	width: 100%;
-	font-size: 14px;
-	color: #303030;
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  color: #303030;
   text-align: center;
   margin-top: 5px;
 }
 
-#review-trust-lvl .review-wrap-up .review-wu-left .review-wu-reviews-count:hover {
+#review-trust-lvl
+  .review-wrap-up
+  .review-wu-left
+  .review-wu-reviews-count:hover {
   color: #666;
 }
 
@@ -642,11 +645,6 @@
     border-right: none;
   }
 
-  #review-trust-lvl .review-wrap-up .review-wu-left .rev-wu-image,
-  #review-trust-lvl .review-wrap-up .review-wu-left .review-wu-grade {
-    height: 130px;
-  }
-
   #review-trust-lvl
     .review-wrap-up
     .review-wu-left
@@ -675,10 +673,6 @@
   #review-trust-lvl .review-wu-grade .wppr-c100 span {
     font-size: 28px;
     line-height: 100px;
-  }
-
-  #review-trust-lvl .review-wrap-up .review-wu-left-top {
-    grid-template-columns: 1fr auto;
   }
 
   #review-trust-lvl .review-wrap-up .cwp-footer {
@@ -965,4 +959,72 @@
 .wu-modal__error {
   text-align: center;
   font-weight: bold;
+}
+
+/*
+* wu-review
+*/
+.wu-review-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 15px;
+  row-gap: 15px;
+}
+
+.wu-review-item {
+  display: block;
+  padding: 20px;
+  background-color: #efefef87;
+  box-shadow: 1px 1px 3px 1px #d3d3d3;
+  transition: box-shadow 300ms ease-in;
+  text-decoration: none;
+}
+
+.wu-review-item:hover {
+  box-shadow: 1px 1px 6px 1px #c1c1c1;
+}
+
+.wu-review-item__rating {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  margin: 0 auto 8px;
+}
+
+.wu-review-item__count {
+  text-align: center;
+  margin-bottom: 6px;
+  font-size: 16px;
+  line-height: 1em;
+}
+
+.wu-review-item__title {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6em;
+}
+
+@media (max-width: 480px) {
+  .wu-review-list {
+    grid-template-columns: 1fr;
+  }
+
+  .wu-review-item {
+    padding: 15px;
+  }
+
+  .wu-review-item__count {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .wu-review-item__rating {
+    width: 100px;
+    height: 100px;
+  }
+
+  .wu-review-item__title {
+    font-size: 16px;
+  }
+  
 }
