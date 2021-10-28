@@ -451,6 +451,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  align-content: center;
 }
 
 #review-trust-lvl .review-wrap-up .review-wu-left .review-wu-reviews-count {
@@ -994,14 +995,25 @@
 .wu-review-item__count {
   text-align: center;
   margin-bottom: 6px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1em;
+  color: #0a0a0a;
+}
+
+.wu-review-item__count:hover {
+  color: #0a0a0a;
 }
 
 .wu-review-item__title {
   text-align: center;
   font-size: 18px;
   line-height: 1.6em;
+  color: #0a0a0a;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.wu-review-item__title:hover {
+  color: #0a0a0a;
 }
 
 @media (max-width: 480px) {
@@ -1014,7 +1026,7 @@
   }
 
   .wu-review-item__count {
-    font-size: 14px;
+    font-size: 12px;
     margin-bottom: 4px;
   }
 
