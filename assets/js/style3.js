@@ -3,9 +3,11 @@
     document.querySelectorAll(".review-wrap-up").forEach((reviewEl) => {
       initSubsModal(reviewEl);
     });
-    document.querySelectorAll(".review-wu-reviews-count").forEach((reviewEl) => {
-      initReviewModal(reviewEl);
-    });
+    document
+      .querySelectorAll(".review-wu-reviews-count")
+      .forEach((reviewEl) => {
+        initReviewModal(reviewEl);
+      });
   }
 
   function initSubsModal(reviewEl) {
@@ -24,7 +26,7 @@
     e.preventDefault();
     const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
     const modalEl = createWuModal(
-      document.querySelector(e.target.getAttribute('href')),
+      document.querySelector(e.target.getAttribute("href")),
       getSubsHtml(vpnId)
     );
     modalEl.style.display = "";
@@ -38,7 +40,7 @@
     e.preventDefault();
     const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
     const modalEl = createWuModal(
-      document.querySelector(e.target.getAttribute('href')),
+      document.querySelector(e.target.getAttribute("href")),
       getReviewsHtml(vpnId)
     );
     modalEl.style.display = "";
@@ -243,32 +245,49 @@
   }
 
   async function generateReviewList(data) {
-    return `<div class="wu-review-list">${data.map((el) => `
-    <a href="${el.url}" class="wu-review-item" target="_blank">
-      <div class="wu-review-item__rating">
-        <div class="wppr-c100 wppr-p51 wppr-good">
-          <span>5.1</span>
-          <div class="wppr-slice">
-            <div class="wppr-bar " style="
-            -webkit-transform: rotate(183.6deg);
-            -ms-transform: rotate(183.6deg);
-            transform: rotate(183.6deg);
-            ">
-            </div>
-            <div class="wppr-fill " style=""></div>
-          </div>
-          <div class="wppr-slice-center"></div>
-        </div>
-      </div>
-      <div class="wu-review-item__count">
-        (${el.votes})
-      </div>
-      <div class="wu-review-item__title">
-        ${el.source}
-      </div>
-    </a>
-    `).join('')}</div>` 
+    const intl = new Intl.NumberFormat('en-US', {style: 'decimal', maximumFractionDigits: 1})
+    return `<div class="wu-review-list">${data
+      .map((el) => {
+        const rawRating = el.rating;
+        const rating = Math.round(rawRating);
+        const rating5 = rating / 20;
+        return `<a href="${el.url}" class="wu-review-item" target="_blank">
+                  <div class="wu-review-item__rating">
+                    <div class="wppr-c100 wppr-p${rating} ${getRatingClass(rawRating)}">
+                      <span>${intl.format(rating5)}</span>
+                      <div class="wppr-slice">
+                        <div class="wppr-bar" style="transform: rotate(${
+                          rating * 3.6
+                        }deg);">
+                        </div>
+                        <div class="wppr-fill"></div>
+                      </div>
+                      <div class="wppr-slice-center"></div>
+                    </div>
+                  </div>
+                  <div class="wu-review-item__count">
+                    (${el.votes})
+                  </div>
+                  <div class="wu-review-item__title">
+                    ${el.source}
+                  </div>
+                </a>
+    `;
+      })
+      .join("")}</div>`;
   }
+
+  function getRatingClass( rating ) {
+		if ( rating >= 75 ) {
+			return 'wppr-very-good';
+		} else if ( rating < 75 && rating >= 50 ) {
+			return 'wppr-good';
+		} else if ( rating < 50 && rating >= 25 ) {
+			return 'wppr-not-bad';
+		} else {
+			return 'wppr-weak';
+		}
+	}
 
   function toUrl(string) {
     let url;

@@ -18,7 +18,7 @@ function init_reviews_rest_api()
                     "locale" => "de",
                     "group" => null,
                     "url" => "https://play.google.com/store/apps/details?id=ch.protonvpn.android&hl=de&gl=US",
-                    "rating" => 82,
+                    "rating" => 100,
                     "votes" => 29065,
                     "lastUpdate" => "2021-10-27T03:35:41.209Z"
                 ],
@@ -38,7 +38,7 @@ function init_reviews_rest_api()
                     "locale" => "de",
                     "group" => null,
                     "url" => "https://www.facebook.com/ProtonVPN/",
-                    "rating" => 80,
+                    "rating" => 10,
                     "votes" => 143,
                     "lastUpdate" => "2021-10-05T18:35:37.758Z"
                 ],
@@ -68,7 +68,7 @@ function init_reviews_rest_api()
                     "locale" => "de",
                     "group" => null,
                     "url" => "https://addons.mozilla.org/de/firefox/addon/protonvpn/",
-                    "rating" => 66,
+                    "rating" => 25,
                     "votes" => 3,
                     "lastUpdate" => "2021-09-29T03:45:40.177Z"
                 ]

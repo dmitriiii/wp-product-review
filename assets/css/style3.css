@@ -992,6 +992,15 @@
   margin: 0 auto 8px;
 }
 
+
+.wu-review-item__rating .wppr-c100 .wppr-slice-center:after {
+  background-color: #f7f7f7;
+}
+
+.wu-review-item__rating .wppr-c100.wppr-c100 {
+  background-color: #e5e5e5;
+}
+
 .wu-review-item__count {
   text-align: center;
   margin-bottom: 6px;
