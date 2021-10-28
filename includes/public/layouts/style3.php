@@ -107,7 +107,7 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 					<div class="wu-modal__title">
 						<img class="wu-modal__logo" src="<?php echo WPPR_URL; ?>/assets/img/wu_logo.png" alt="">VPN Trust-Level
 					</div>
-					<p class="wu-modal__subtitle">Fragen werden in der Originalsprache veröffentlicht in der diese gestellt wurden, um Manipulation durch Interpretation zu vermeiden.</p>
+					<p class="wu-modal__subtitle"><strong>Fragen werden in der Originalsprache veröffentlicht in der diese gestellt wurden, um Manipulation durch Interpretation zu vermeiden.</strong></p>
 					<div class="wu-modal__results">
 					</div>
 				</div>
