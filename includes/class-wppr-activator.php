@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fired during plugin activation
  *
@@ -19,7 +20,8 @@
  * @subpackage WPPR/includes
  * @author     ThemeIsle <friends@themeisle.com>
  */
-class WPPR_Activator {
+class WPPR_Activator
+{
 
 	/**
 	 * Short Description. (use period)
@@ -28,8 +30,17 @@ class WPPR_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-
+	public static function activate()
+	{
+		$actvator = new WPPR_Activator();
+		$actvator->create_extend_review_db();
 	}
 
+	private function create_extend_review_db()
+	{
+		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+		$scores_db = new WPPR_Review_Scores();
+		$scores_db->create_table();
+
+	}
 }
