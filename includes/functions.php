@@ -136,6 +136,14 @@ if (!function_exists('wppr_default_get_rating')) {
 	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false, $show_extend_rating = false)
 	{
 		$review_rating = $review_object->get_rating();
+		if ($show_extend_rating) {
+			include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+			$scores_db = new WPPR_Review_Scores();
+			$pid = get_field('k8_acf_vpnid');
+			$total_votes = $scores_db->get_total_votes_count($pid);
+			$review_rating =  $scores_db->get_avg_rating($pid);
+		}
+
 		$rating     = round($review_rating);
 
 		$scale      = $review_object->wppr_get_option('wppr_use_5_rating_scale');
@@ -195,7 +203,9 @@ if (!function_exists('wppr_default_get_rating')) {
 					</div>
 					<? if ($show_extend_rating) { ?>
 						<div class="review-wu-reviews-count">
-							<a class="review-wu-reviews-link" href="#reviews-detail">reviews (1495)</a>
+							<? if ($total_votes != -1) {?>
+								<a class="review-wu-reviews-link" href="#reviews-detail"><?= __('reviews', 'wp-product-review') ?> (<?= $total_votes ?>)</a>
+							<? } ?>
 							<div id="reviews-detail" class="wu-modal" style="display: none;">
 								<div class="wu-modal__loading">
 									<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
