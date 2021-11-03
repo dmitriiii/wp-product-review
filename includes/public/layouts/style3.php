@@ -11,6 +11,8 @@
  * @since       3.0.0
  */
 
+$review_object->enable_third_party();
+
 $price_raw = $review_object->get_price_raw();
 
 $pros = $review_object->get_pros();
@@ -61,7 +63,10 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 							<?php wppr_layout_get_image($review_object, 'wppr-default-img', 'photo photo-wrapup wppr-product-image'); ?>
 						</div>
 
-						<?php wppr_layout_get_rating($review_object, 'donut', 'default', array('review-wu-grade'), false, true); ?>
+						<?php wppr_layout_get_rating($review_object, 'donut', 'default', array('review-wu-grade'), false, [
+							'show_popup' => true,
+							'replace_rating' => true,
+						]); ?>
 					</div><!-- end .review-wu-left-top -->
 
 					<?php wppr_layout_get_options_ratings($review_object, 'dashes'); ?>

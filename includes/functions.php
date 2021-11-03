@@ -133,16 +133,12 @@ if (!function_exists('wppr_default_get_rating')) {
 	/**
 	 * Display the rating of the given type.
 	 */
-	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false, $show_extend_rating = false)
+	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false, $extend_rating_opts = [
+		'show_popup' => false,
+		'replace_rating' => false,
+	])
 	{
 		$review_rating = $review_object->get_rating();
-		if ($show_extend_rating) {
-			include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
-			$scores_db = new WPPR_Review_Scores();
-			$pid = get_field('k8_acf_vpnid');
-			$total_votes = $scores_db->get_total_votes_count($pid);
-			$review_rating =  $scores_db->get_avg_rating($pid);
-		}
 
 		$rating     = round($review_rating);
 
@@ -201,28 +197,31 @@ if (!function_exists('wppr_default_get_rating')) {
 							<div class="wppr-slice-center"></div>
 						</div>
 					</div>
-					<? if ($show_extend_rating) { ?>
+					<? if ($extend_rating_opts['show_popup']) {
+						$total_votes = $review_object->get_third_party_votes();
+					?>
 						<div class="review-wu-reviews-count">
-							<? if ($total_votes != -1) {?>
+							<? if ($total_votes != -1) { ?>
 								<a class="review-wu-reviews-link" href="#reviews-detail"><?= __('reviews', 'wp-product-review') ?> (<?= $total_votes ?>)</a>
+								<div id="reviews-detail" class="wu-modal" style="display: none;">
+									<div class="wu-modal__loading">
+										<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
+									</div>
+									<div class="wu-modal__inner" style="display: none; max-width: 620px">
+										<div role="button" class="wu-modal__close" title="close">
+										</div>
+										<div class="wu-modal__content">
+											<div class="wu-modal__title">
+												Reviews
+											</div>
+											<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>
+											<div class="wu-modal__results">
+											</div>
+										</div>
+									</div>
+								</div>
 							<? } ?>
-							<div id="reviews-detail" class="wu-modal" style="display: none;">
-								<div class="wu-modal__loading">
-									<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
-								</div>
-								<div class="wu-modal__inner" style="display: none; max-width: 620px">
-									<div role="button" class="wu-modal__close" title="close">
-									</div>
-									<div class="wu-modal__content">
-										<div class="wu-modal__title">
-											Reviews
-										</div>
-										<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>
-										<div class="wu-modal__results">
-										</div>
-									</div>
-								</div>
-							</div>
+
 						</div>
 					<? } ?>
 				</div>
