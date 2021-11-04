@@ -31,7 +31,6 @@ $range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ?
 	'range_name' => 'N/A',
 	'range_description' => ''
 ]);
-
 ?>
 <div id="wppr-review-<?php echo $review_object->get_ID(); ?>" data-vpn-id="<?= get_field('k8_acf_vpnid') ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
 	<section id="review-trust-lvl" class="article-section">

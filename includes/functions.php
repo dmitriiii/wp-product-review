@@ -540,3 +540,4 @@ if (!function_exists('init_jotform_api')) {
 }
 
 include_once WPPR_PATH . '/includes/reviews-api/index.php';
+include_once WPPR_PATH . '/includes/cron/index.php';

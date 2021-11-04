@@ -39,8 +39,12 @@ class WPPR_Activator
 	private function create_extend_review_db()
 	{
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-tpr-manager.php';
+
 		$scores_db = new WPPR_Review_Scores();
 		$scores_db->create_table();
 
+		$tpr_cron_manager = new WPPR_TPR_Cron_Manager();
+		$tpr_cron_manager->schedule();
 	}
 }
