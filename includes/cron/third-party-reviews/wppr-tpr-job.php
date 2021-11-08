@@ -1,43 +1,63 @@
 <?
-function wppr_tpr_parse()
+function wppr_tpr_parse_plan()
 {
-    $inst = new WPPR_TPR_parser("https://www.capterra.com.de/software/166743/nordvpn");
-    $inst->parse();
+    include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+    $scores_db = new WPPR_Review_Scores();
+
+    $map = get_field('third_party_review_portals', 'option');
+
+    foreach ($map as $data) {
+        $parser = new WPPR_TPR_Parser();
+        $pid = 6;
+        $source = $data['portal_name'];
+        $url = 'https://www.capterra.com.de/software/166743/nordvpn';
+        $votes_selector = $data['xpath_selector_for_votes'];
+        $score_selector = $data['xpath_selector_for_scores'];
+        
+        $score_base = $data['scores_base'] ? $data['scores_base'] : 5;
+
+        [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
+
+        $score = $score * 100 / $score_base;
+
+        $scores_db->replace([
+            'pid' => $pid,
+            'rating' => $score,
+            'source' => $source,
+            'url' => $url,
+            'votes' => $votes,
+        ]);
+
+    }
+
 }
 
+add_action( 'wppr_third_party_reviews_cron', 'wppr_tpr_parse_plan' );
 
-class WPPR_TPR_parser
+class WPPR_TPR_Parser
 {
-    private $url = '';
-
-    function __construct($url)
-    {
-    }
-
-    function parse()
+    function parse($url, $score_selector, $votes_selector)
     {
         $doc = new DOMDocument();
-        $doc->loadHTMLFile("https://www.capterra.com.de/software/166743/nordvpn");
+        $doc->loadHTMLFile($url);
         $xpath = new DomXPath($doc);
-        $nodeList = $xpath->query('.//*[contains(concat(" ",normalize-space(@class)," ")," review-stars__text ")]');
-        if (!count($nodeList)) return;
-        $score = $this->get_score($xpath);
-        $votes = $this->get_votes($xpath);
-        //var_dump($score);
-        //var_dump($votes);
+        $score = $this->get_score($xpath, $score_selector);
+        $votes = $this->get_votes($xpath, $votes_selector);
+
+        return [$score, $votes];
     }
 
-    private function get_score($xpath)
+    private function get_score($xpath, $score_selector)
     {
-        $nodeList = $xpath->query('.//*[contains(concat(" ",normalize-space(@class)," ")," review-stars__text ")]');
+        $nodeList = $xpath->query($score_selector);
         if (!count($nodeList)) return -1;
         $score = $this->get_float($nodeList[0]->firstChild->textContent);
         return $score;
     }
 
-    private function get_votes($xpath)
+    private function get_votes($xpath, $votes_selector)
     {
-        $nodeList = $xpath->query('.//*[@id="productHeaderInfo"]//*[contains(concat(" ",normalize-space(@class)," ")," review-stars ")]/following-sibling::span');
+        $nodeList = $xpath->query($votes_selector);
         if (!count($nodeList)) return -1;
         $score = $this->get_int($nodeList[0]->firstChild->textContent);
         return $score;
@@ -60,9 +80,5 @@ class WPPR_TPR_parser
     private function get_int($str)
     {
         return abs((int) filter_var($str, FILTER_SANITIZE_NUMBER_INT));
-    }
-
-    private function write()
-    {
     }
 }

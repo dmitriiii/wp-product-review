@@ -36,10 +36,9 @@ class WPPR_Review_Scores
     {
         global $wpdb;
         if (!isset($opts['pid'], $opts['rating'], $opts['votes'])) return false;
-        $wpdb->replace($this->table_name, [
+        $wpdb->replace($this->table_name, array_merge([
             'lastUpdate' => date_create()->format('Y-m-d H:i:s'),
-            ...$opts
-        ]);
+        ], $opts));
         return true;
     }
 

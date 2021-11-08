@@ -135,7 +135,6 @@ if (!function_exists('wppr_default_get_rating')) {
 	 */
 	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false, $extend_rating_opts = [
 		'show_popup' => false,
-		'replace_rating' => false,
 	])
 	{
 		$review_rating = $review_object->get_rating();
