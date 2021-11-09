@@ -1,38 +1,65 @@
 <?
 function wppr_tpr_parse_plan()
 {
-    include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
-    $scores_db = new WPPR_Review_Scores();
+    $product_post_map = wppr_get_product_post_map('vpn');
+    $portal_options = get_field('third_party_review_portals', 'option');
+    $count = 0;
 
-    $map = get_field('third_party_review_portals', 'option');
+    foreach ($product_post_map as $map) {
+        $pid = (int) $map['vpnid'];
+        $link_map = get_field('third_party_review_portal_links', $map['pid']);
+        if (!count($link_map)) continue;
+        foreach ($portal_options as $portal_option) {
 
-    foreach ($map as $data) {
-        $parser = new WPPR_TPR_Parser();
-        $pid = 6;
-        $source = $data['portal_name'];
-        $url = 'https://www.capterra.com.de/software/166743/nordvpn';
-        $votes_selector = $data['xpath_selector_for_votes'];
-        $score_selector = $data['xpath_selector_for_scores'];
-        
-        $score_base = $data['scores_base'] ? $data['scores_base'] : 5;
+            if (!$link_map[$portal_option['portal_name'] . '_link']) continue;
+            $count++;
 
-        [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
+            $source = $portal_option['portal_name'];
+            $url = $link_map[$portal_option['portal_name'] . '_link'];
 
-        $score = $score * 100 / $score_base;
-
-        $scores_db->replace([
-            'pid' => $pid,
-            'rating' => $score,
-            'source' => $source,
-            'url' => $url,
-            'votes' => $votes,
-        ]);
-
+            wp_schedule_single_event(time() + 300 * $count, 'wppr_third_party_review_job', [
+                $pid,
+                $source,
+                $url
+            ]);
+        }
     }
-
 }
+add_action('wppr_third_party_reviews_cron', 'wppr_tpr_parse_plan');
 
-add_action( 'wppr_third_party_reviews_cron', 'wppr_tpr_parse_plan' );
+function wppr_tpr_parse_job(
+    $pid,
+    $source,
+    $url
+) {
+    include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+    $parser = new WPPR_TPR_Parser();
+    $scores_db = new WPPR_Review_Scores();
+    $portal_options = get_field('third_party_review_portals', 'option');
+    [$selected_option] = array_filter($portal_options, function ($opts) use ($source) {
+        return $opts['portal_name'] === $source;
+    });
+
+    if (!$selected_option) return;
+
+    $votes_selector = $selected_option['xpath_selector_for_votes'];
+    $score_selector = $selected_option['xpath_selector_for_scores'];
+    $score_base = $selected_option['scores_base'] ? $selected_option['scores_base'] : 5;
+
+    [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
+
+    $score = $score * 100 / $score_base;
+    
+    $scores_db->replace([
+        'pid' => $pid,
+        'rating' => $score,
+        'source' => $source,
+        'url' => $url,
+        'votes' => $votes,
+    ]);
+}
+add_action('wppr_third_party_review_job', 'wppr_tpr_parse_job', 10, 3);
+
 
 class WPPR_TPR_Parser
 {

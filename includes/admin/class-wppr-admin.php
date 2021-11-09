@@ -901,7 +901,7 @@ function add_acf_option_page()
 				array(
 					'key' => 'field_6189570160812',
 					'label' => 'Enable third-party reviews',
-					'name' => 'enable_third-party_reviews',
+					'name' => 'enable_third_party_reviews',
 					'type' => 'true_false',
 					'instructions' => '',
 					'required' => 0,
@@ -945,9 +945,28 @@ function add_acf_option_page()
 					'button_label' => '',
 					'sub_fields' => array(
 						array(
-							'key' => 'field_61894b8e1c025',
+							'key' => 'field_61894b8e1r2d2',
 							'label' => 'Portal name',
 							'name' => 'portal_name',
+							'type' => 'text',
+							'instructions' => 'Do not change this field after creating the row',
+							'required' => 1,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_61894b8e1c025',
+							'label' => 'Portal label',
+							'name' => 'portal_label',
 							'type' => 'text',
 							'instructions' => '',
 							'required' => 0,
@@ -1045,3 +1064,95 @@ function add_acf_option_page()
 		));
 }
 add_action('acf/init', 'add_acf_option_page');
+
+
+function init_wppr_third_party_review_links()
+{
+	if (function_exists('acf_add_local_field_group')) {
+		$product_post_map = wppr_get_product_post_map('vpn');
+		$portal_list = get_field('third_party_review_portals', 'option');
+		$enable = get_field('enable_third_party_reviews', 'option');
+		[$field_obj] = array_filter(
+			get_field_object('third_party_review_portals', 'option')['sub_fields'],
+			function ($obj) {
+				return $obj['name'] === 'portal_name';
+			}
+		);
+
+		if (!$enable || !count($product_post_map)) return;
+
+		acf_add_local_field_group(array(
+			'key' => 'group_615b3a68ca47c',
+			'title' => 'Third-party review',
+			'fields' => array(
+				array(
+					'key' => 'field_618aa63e46c84',
+					'label' => 'Third-party review portals',
+					'name' => 'third_party_review_portal_links',
+					'type' => 'group',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'layout' => 'block',
+					'sub_fields' =>
+					array_map(
+						function ($group) use($field_obj) {
+							return array(
+								'key' => 'field_wppr_portal_' . $group['portal_name'] . '_link',
+								'label' => $group['portal_label'] . ' link',
+								'name' => $group['portal_name'] . '_link',
+								'type' => 'url',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'placeholder' => '',
+							);
+						},
+						$portal_list
+					)
+				),
+			),
+			'location' => array(
+				array_map(function ($data) {
+					return array(
+						'param' => 'post',
+						'operator' => '==',
+						'value' => $data['pid'] . '',
+					);
+				}, $product_post_map)
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => true,
+			'description' => '',
+		));
+	};
+}
+add_action('acf/init', 'init_wppr_third_party_review_links');
+
+
+function wppr_allow_only_letters($valid, $value)
+{
+	if (!$valid) {
+		return $valid;
+	}
+	if (!ctype_lower($value)) {
+		return 'Enter only lowercase letters';
+	}
+	return $valid;
+}
+add_filter('acf/validate_value/name=portal_name', 'wppr_allow_only_letters', 20, 2);

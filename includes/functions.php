@@ -512,6 +512,7 @@ if (!function_exists('wppr_schema_remove_fields_from_movie')) {
 	}
 }
 
+
 if (!function_exists('wppr_schema_data_types_allowed_brand')) {
 	add_filter('wppr_schema_data_types_allowed_for_Product', 'wppr_schema_data_types_allowed_brand', 10, 1);
 	add_filter('wppr_schema_data_types_allowed_for_IndividualProduct', 'wppr_schema_data_types_allowed_brand', 10, 1);
@@ -529,6 +530,10 @@ if (!function_exists('wppr_schema_data_types_allowed_brand')) {
 	}
 }
 
+function wppr_get_product_post_map($type = 'vpn')
+{
+	if ($type === 'vpn') return json_decode(file_get_contents(K8_PATH_LOC . '/' . 'vpnidPid.json'), true);
+}
 
 if (function_exists('register_block_type')) {
 	WPPR_Gutenberg::get_instance();
