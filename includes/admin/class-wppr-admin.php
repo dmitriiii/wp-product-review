@@ -1079,6 +1079,7 @@ function init_wppr_third_party_review_links()
 			}
 		);
 
+
 		if (!$enable || !count($product_post_map)) return;
 
 		acf_add_local_field_group(array(
@@ -1101,7 +1102,7 @@ function init_wppr_third_party_review_links()
 					'layout' => 'block',
 					'sub_fields' =>
 					array_map(
-						function ($group) use($field_obj) {
+						function ($group) use ($field_obj) {
 							return array(
 								'key' => 'field_wppr_portal_' . $group['portal_name'] . '_link',
 								'label' => $group['portal_label'] . ' link',
@@ -1123,11 +1124,13 @@ function init_wppr_third_party_review_links()
 				),
 			),
 			'location' => array(
-				array_map(function ($data) {
+				...array_map(function ($data) {
 					return array(
-						'param' => 'post',
-						'operator' => '==',
-						'value' => $data['pid'] . '',
+						array(
+							'param' => 'post',
+							'operator' => '==',
+							'value' => $data['pid'] . '',
+						)
 					);
 				}, $product_post_map)
 			),

@@ -36,9 +36,9 @@ function wppr_tpr_parse_job(
     $parser = new WPPR_TPR_Parser();
     $scores_db = new WPPR_Review_Scores();
     $portal_options = get_field('third_party_review_portals', 'option');
-    [$selected_option] = array_filter($portal_options, function ($opts) use ($source) {
+    [$selected_option] = array_values(array_filter($portal_options, function ($opts) use ($source) {
         return $opts['portal_name'] === $source;
-    });
+    }));
 
     if (!$selected_option) return;
 
@@ -48,12 +48,17 @@ function wppr_tpr_parse_job(
 
     [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
 
+    //var_dump($score);
+    //var_dump($votes);
+
+    if ($score == -1 || $votes == -1) throw new Exception("CSS selectors are wrong", 1);
+
     $score = $score * 100 / $score_base;
-    
+
     $scores_db->replace([
         'pid' => $pid,
         'rating' => $score,
-        'source' => $source,
+        'source' => $selected_option['portal_label'],
         'url' => $url,
         'votes' => $votes,
     ]);
@@ -65,8 +70,9 @@ class WPPR_TPR_Parser
 {
     function parse($url, $score_selector, $votes_selector)
     {
+        $html = $this->getHtml($url);
         $doc = new DOMDocument();
-        $doc->loadHTMLFile($url);
+        $doc->loadHTML($html);
         $xpath = new DomXPath($doc);
         $score = $this->get_score($xpath, $score_selector);
         $votes = $this->get_votes($xpath, $votes_selector);
@@ -74,9 +80,34 @@ class WPPR_TPR_Parser
         return [$score, $votes];
     }
 
+    private function getHtml($url)
+    {
+        $curl = curl_init();
+
+        if (!$curl) {
+            die("Is not working");
+        }
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0');
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_FAILONERROR, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 50);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $html = curl_exec($curl);
+        //var_dump(file_get_contents($url));
+        //var_dump($html);
+        return $html;
+    }
+
     private function get_score($xpath, $score_selector)
     {
         $nodeList = $xpath->query($score_selector);
+        //var_dump($nodeList);
+        //var_dump($score_selector);
         if (!count($nodeList)) return -1;
         $score = $this->get_float($nodeList[0]->firstChild->textContent);
         return $score;
@@ -85,6 +116,8 @@ class WPPR_TPR_Parser
     private function get_votes($xpath, $votes_selector)
     {
         $nodeList = $xpath->query($votes_selector);
+        //var_dump($nodeList);
+        //var_dump($votes_selector);
         if (!count($nodeList)) return -1;
         $score = $this->get_int($nodeList[0]->firstChild->textContent);
         return $score;
