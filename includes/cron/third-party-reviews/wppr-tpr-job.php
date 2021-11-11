@@ -1,9 +1,13 @@
 <?
 function wppr_tpr_parse_plan()
 {
+    if (!get_field('enable_third_party_reviews', 'option')) return;
+    
     $product_post_map = wppr_get_product_post_map('vpn');
     $portal_options = get_field('third_party_review_portals', 'option');
     $count = 0;
+    $day_count = 0;
+    $day_group_size = 5;
 
     foreach ($product_post_map as $map) {
         $pid = (int) $map['vpnid'];
@@ -13,11 +17,15 @@ function wppr_tpr_parse_plan()
 
             if (!$link_map[$portal_option['portal_name'] . '_link']) continue;
             $count++;
+            if ($count % ($day_group_size + 1) == 0) {
+                $count = 1;
+                $day_count++;
+            }
 
             $source = $portal_option['portal_name'];
             $url = $link_map[$portal_option['portal_name'] . '_link'];
 
-            wp_schedule_single_event(time() + 300 * $count, 'wppr_third_party_review_job', [
+            wp_schedule_single_event(time() + 120 * $count + $day_count * 86400, 'wppr_third_party_review_job', [
                 $pid,
                 $source,
                 $url
@@ -126,14 +134,14 @@ class WPPR_TPR_Parser
     private function get_float($str)
     {
         if (strstr($str, ",")) {
-            $str = str_replace(".", "", $str); // replace dots (thousand seps) with blancs
-            $str = str_replace(",", ".", $str); // replace ',' with '.'
+            $str = str_replace(".", "", $str);
+            $str = str_replace(",", ".", $str);
         }
 
-        if (preg_match("#([0-9\.]+)#", $str, $match)) { // search for number that may contain '.'
+        if (preg_match("#([0-9\.]+)#", $str, $match)) {
             return floatval($match[0]);
         } else {
-            return floatval($str); // take some last chances with floatval
+            return floatval($str);
         }
     }
 

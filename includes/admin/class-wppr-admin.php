@@ -1088,7 +1088,7 @@ function init_wppr_third_party_review_links()
 			'fields' => array(
 				array(
 					'key' => 'field_618aa63e46c84',
-					'label' => 'Third-party review portals',
+					'label' => 'Portal links',
 					'name' => 'third_party_review_portal_links',
 					'type' => 'group',
 					'instructions' => '',
@@ -1134,7 +1134,7 @@ function init_wppr_third_party_review_links()
 					);
 				}, $product_post_map)
 			),
-			'menu_order' => 0,
+			'menu_order' => -1,
 			'position' => 'normal',
 			'style' => 'default',
 			'label_placement' => 'top',

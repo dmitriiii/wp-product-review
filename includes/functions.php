@@ -543,5 +543,15 @@ if (!function_exists('init_jotform_api')) {
 	include_once WPPR_PATH . '/includes/jotform/jotform-api.php';
 }
 
+add_filter( 'cron_schedules', 'cron_add_wppr_tpr_update' );
+
+function cron_add_wppr_tpr_update( $schedules ) {
+	$schedules['wppr_tpr_update'] = array(
+		'interval' => WEEK_IN_SECONDS,
+		'display' => __( 'Once Weekly' )
+	);
+	return $schedules;
+}
+
 include_once WPPR_PATH . '/includes/reviews-api/index.php';
 include_once WPPR_PATH . '/includes/cron/index.php';
