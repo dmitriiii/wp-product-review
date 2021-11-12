@@ -7,7 +7,7 @@ function wppr_tpr_parse_plan()
     $portal_options = get_field('third_party_review_portals', 'option');
     $count = 0;
     $day_count = 0;
-    $day_group_size = 5;
+    $day_group_size = ceil(count($product_post_map) * count($portal_options) / 20);
 
     foreach ($product_post_map as $map) {
         $pid = (int) $map['vpnid'];
