@@ -1134,8 +1134,8 @@ function init_wppr_third_party_review_links()
 					);
 				}, $product_post_map)
 			),
-			'menu_order' => -1,
-			'position' => 'normal',
+			'menu_order' => 0,
+			'position' => 'acf_after_title',
 			'style' => 'default',
 			'label_placement' => 'top',
 			'instruction_placement' => 'label',
