@@ -201,7 +201,7 @@ if (!function_exists('wppr_default_get_rating')) {
 					?>
 						<div class="review-wu-reviews-count">
 							<? if ($total_votes != -1) { ?>
-								<a class="review-wu-reviews-link" href="#reviews-detail"><?= __('reviews', 'wp-product-review') ?> (<?= $total_votes ?>)</a>
+								<a class="review-wu-reviews-link" href="#reviews-detail"><?= __('reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)</a>
 								<div id="reviews-detail" class="wu-modal" style="display: none;">
 									<div class="wu-modal__loading">
 										<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
@@ -213,7 +213,7 @@ if (!function_exists('wppr_default_get_rating')) {
 											<div class="wu-modal__title">
 												Reviews
 											</div>
-											<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>
+											<!--<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>-->
 											<div class="wu-modal__results">
 											</div>
 										</div>
@@ -547,7 +547,7 @@ add_filter( 'cron_schedules', 'cron_add_wppr_tpr_update' );
 
 function cron_add_wppr_tpr_update( $schedules ) {
 	$schedules['wppr_tpr_update'] = array(
-		'interval' => WEEK_IN_SECONDS,
+		'interval' => 20 * DAY_IN_SECONDS,
 		'display' => __( 'Once Weekly' )
 	);
 	return $schedules;
