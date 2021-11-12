@@ -548,7 +548,7 @@ add_filter( 'cron_schedules', 'cron_add_wppr_tpr_update' );
 function cron_add_wppr_tpr_update( $schedules ) {
 	$schedules['wppr_tpr_update'] = array(
 		'interval' => 20 * DAY_IN_SECONDS,
-		'display' => __( 'Once Weekly' )
+		'display' => __( 'Once 20 days' )
 	);
 	return $schedules;
 }
