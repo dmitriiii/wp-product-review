@@ -245,7 +245,8 @@
   }
 
   async function generateReviewList(data) {
-    const intl = new Intl.NumberFormat('en-US', {style: 'decimal', maximumFractionDigits: 1})
+    const intl = new Intl.NumberFormat('en-US', {style: 'decimal', maximumFractionDigits: 1});
+    const intlVotes = new Intl.NumberFormat('en-US');
     return `<div class="wu-review-list">${data
       .map((el) => {
         const rawRating = el.rating;
@@ -266,7 +267,7 @@
                     </div>
                   </div>
                   <div class="wu-review-item__count">
-                    (${el.votes})
+                    (${intlVotes.format(el.votes)})
                   </div>
                   <div class="wu-review-item__title">
                     ${el.source}
