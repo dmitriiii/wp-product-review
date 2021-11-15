@@ -1112,7 +1112,7 @@ function init_wppr_third_party_review_links()
 								'required' => 0,
 								'conditional_logic' => 0,
 								'wrapper' => array(
-									'width' => '',
+									'width' => '33.333%',
 									'class' => '',
 									'id' => '',
 								),
