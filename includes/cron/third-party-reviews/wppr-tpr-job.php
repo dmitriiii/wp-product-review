@@ -2,41 +2,62 @@
 function wppr_tpr_parse_plan()
 {
     if (!get_field('enable_third_party_reviews', 'option')) return;
-    
+
     $product_post_map = wppr_get_product_post_map('vpn');
-    $portal_options = get_field('third_party_review_portals', 'option');
     $count = 0;
     $day_count = 0;
-    $day_group_size = ceil(count($product_post_map) * count($portal_options) / 20);
+    $day_group_size = ceil(count($product_post_map) / 20);
 
     foreach ($product_post_map as $map) {
-        $pid = (int) $map['vpnid'];
+        $vpn_id = $map['vpnid'];
         $link_map = get_field('third_party_review_portal_links', $map['pid']);
-        if (!count($link_map)) continue;
-        foreach ($portal_options as $portal_option) {
 
-            if (!$link_map[$portal_option['portal_name'] . '_link']) continue;
-            $count++;
-            if ($count % ($day_group_size + 1) == 0) {
-                $count = 1;
-                $day_count++;
-            }
+        if (!count($link_map) || !count(array_filter(array_values($link_map), function ($val) {
+            return !!$val;
+        }))) continue;
 
-            $source = $portal_option['portal_name'];
-            $url = $link_map[$portal_option['portal_name'] . '_link'];
-
-            wp_schedule_single_event(time() + 120 * $count + $day_count * 86400, 'wppr_third_party_review_job', [
-                $pid,
-                $source,
-                $url
-            ]);
+        $count++;
+        if ($count % ($day_group_size + 1) == 0) {
+            $count = 1;
+            $day_count++;
         }
+
+        wp_schedule_single_event(time() + 300 * $count + $day_count * 86400, 'wppr_third_party_review_job', [
+            $vpn_id
+        ]);
     }
 }
 add_action('wppr_third_party_reviews_cron', 'wppr_tpr_parse_plan');
 
+
 function wppr_tpr_parse_job(
-    $pid,
+    $vpn_id
+) {
+    [$product_post_map] = array_values(array_filter(wppr_get_product_post_map('vpn'), function ($map) use ($vpn_id) {
+        return $map['vpnid'] == $vpn_id;
+    }));
+    $portal_options = get_field('third_party_review_portals', 'option');
+    $link_map = get_field('third_party_review_portal_links', $product_post_map['pid']);
+
+    foreach ($portal_options as $portal_option) {
+
+        if (!$link_map[$portal_option['portal_name'] . '_link']) continue;
+
+        try {
+            wppr_tpr_parse(
+                $vpn_id,
+                $portal_option['portal_name'],
+                $link_map[$portal_option['portal_name'] . '_link']
+            );
+        } catch (\Throwable $th) {
+        }
+    }
+}
+add_action('wppr_third_party_review_job', 'wppr_tpr_parse_job', 10, 3);
+
+
+function wppr_tpr_parse(
+    $vpn_id,
     $source,
     $url
 ) {
@@ -56,22 +77,18 @@ function wppr_tpr_parse_job(
 
     [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
 
-    //var_dump($score);
-    //var_dump($votes);
-
     if ($score == -1 || $votes == -1) throw new Exception("CSS selectors are wrong", 1);
 
     $score = $score * 100 / $score_base;
 
     $scores_db->replace([
-        'pid' => $pid,
+        'pid' => $vpn_id,
         'rating' => $score,
         'source' => $selected_option['portal_label'],
         'url' => $url,
         'votes' => $votes,
     ]);
 }
-add_action('wppr_third_party_review_job', 'wppr_tpr_parse_job', 10, 3);
 
 
 class WPPR_TPR_Parser
@@ -106,16 +123,12 @@ class WPPR_TPR_Parser
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $html = curl_exec($curl);
-        //var_dump(file_get_contents($url));
-        //var_dump($html);
         return $html;
     }
 
     private function get_score($xpath, $score_selector)
     {
         $nodeList = $xpath->query($score_selector);
-        //var_dump($nodeList);
-        //var_dump($score_selector);
         if (!count($nodeList)) return -1;
         $score = $this->get_float($nodeList[0]->firstChild->textContent);
         return $score;
@@ -124,8 +137,6 @@ class WPPR_TPR_Parser
     private function get_votes($xpath, $votes_selector)
     {
         $nodeList = $xpath->query($votes_selector);
-        //var_dump($nodeList);
-        //var_dump($votes_selector);
         if (!count($nodeList)) return -1;
         $score = $this->get_int($nodeList[0]->firstChild->textContent);
         return $score;
