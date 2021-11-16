@@ -470,6 +470,10 @@
   color: #666;
 }
 
+#review-trust-lvl .review-wrap-up .review-wu-left .review-wu-reviews-link {
+  text-decoration: underline;
+}
+
 #review-trust-lvl .review-wrap-up .review-wu-left .review-wu-grade-content {
   display: block;
   position: relative;
