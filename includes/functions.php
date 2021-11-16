@@ -211,7 +211,7 @@ if (!function_exists('wppr_default_get_rating')) {
 										</div>
 										<div class="wu-modal__content">
 											<div class="wu-modal__title">
-												Reviews
+												<?= ucfirst(__('reviews', 'wp-product-review')) ?>
 											</div>
 											<!--<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>-->
 											<div class="wu-modal__results">
