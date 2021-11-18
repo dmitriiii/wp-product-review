@@ -26,7 +26,8 @@ $range = array_filter($ranges, function ($range) use ($score) {
 
 $show_trust_lvl_detail = get_field('show_trust_level_detail', 'option');
 
-$range = !empty($range) ? array_shift(array_values($range)) : (!empty($ranges) ? $ranges[0] : [
+$prep_range = !empty($range) ? array_values($range) : [];
+$range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[0] : [
 	'color' => '#a5a5a5',
 	'range_name' => 'N/A',
 	'range_description' => ''

@@ -75,7 +75,12 @@ function wppr_tpr_parse(
     $score_selector = $selected_option['xpath_selector_for_scores'];
     $score_base = $selected_option['scores_base'] ? $selected_option['scores_base'] : 5;
 
-    [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
+    try {
+        [$score, $votes] = $parser->parse($url, $score_selector, $votes_selector);
+    } catch (\Throwable $th) {
+        return;
+    }
+    
 
     if ($score == -1 || $votes == -1) throw new Exception("CSS selectors are wrong", 1);
 
@@ -124,6 +129,19 @@ class WPPR_TPR_Parser
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $html = curl_exec($curl);
         return $html;
+    }
+
+    function getHtmlExt($url) {
+        $url = urlencode($url);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.proxycrawl.com/?token=5iuX-qEmhDS-X12ENoIrEA&url=' . $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
     }
 
     private function get_score($xpath, $score_selector)
