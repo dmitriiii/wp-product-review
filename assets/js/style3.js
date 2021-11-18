@@ -245,16 +245,30 @@
   }
 
   async function generateReviewList(data) {
-    const intl = new Intl.NumberFormat('en-US', {style: 'decimal', maximumFractionDigits: 1});
-    const intlVotes = new Intl.NumberFormat('en-US');
+    const intl = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+      maximumFractionDigits: 1,
+    });
+    const intlVotes = new Intl.NumberFormat("en-US");
     return `<div class="wu-review-list">${data
-      .map((el) => {
-        const rawRating = el.rating;
-        const rating = Math.round(rawRating);
-        const rating5 = rating / 20;
-        return `<a href="${el.url}" class="wu-review-item" target="_blank">
+      .map(getReviewEl)
+      .join("")}</div>`;
+  }
+
+  function getReviewEl(el) {
+    const intl = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+      maximumFractionDigits: 1,
+    });
+    const intlVotes = new Intl.NumberFormat("en-US");
+    const rawRating = el.rating;
+    const rating = Math.round(rawRating);
+    const rating5 = rating / 20;
+    return `<a href="${el.url}" class="wu-review-item" target="_blank">
                   <div class="wu-review-item__rating">
-                    <div class="wppr-c100 wppr-p${rating} ${getRatingClass(rawRating)}">
+                    <div class="wppr-c100 wppr-p${rating} ${getRatingClass(
+      rawRating
+    )}">
                       <span>${intl.format(rating5)}</span>
                       <div class="wppr-slice">
                         <div class="wppr-bar" style="transform: rotate(${
@@ -274,21 +288,19 @@
                   </div>
                 </a>
     `;
-      })
-      .join("")}</div>`;
   }
 
-  function getRatingClass( rating ) {
-		if ( rating >= 75 ) {
-			return 'wppr-very-good';
-		} else if ( rating < 75 && rating >= 50 ) {
-			return 'wppr-good';
-		} else if ( rating < 50 && rating >= 25 ) {
-			return 'wppr-not-bad';
-		} else {
-			return 'wppr-weak';
-		}
-	}
+  function getRatingClass(rating) {
+    if (rating >= 75) {
+      return "wppr-very-good";
+    } else if (rating < 75 && rating >= 50) {
+      return "wppr-good";
+    } else if (rating < 50 && rating >= 25) {
+      return "wppr-not-bad";
+    } else {
+      return "wppr-weak";
+    }
+  }
 
   function toUrl(string) {
     let url;
