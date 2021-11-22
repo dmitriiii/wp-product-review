@@ -14,12 +14,11 @@
 //$review_object->enable_third_party();
 
 $price_raw = $review_object->get_price_raw();
-
 $pros = $review_object->get_pros();
 $cons = $review_object->get_cons();
 $ranges = get_field('trust_level_ranges', 'option') ? get_field('trust_level_ranges', 'option') : [];
 
-$score = get_field('k8_acf_trust_level') ? (int) get_field('k8_acf_trust_level') : 0;
+$score = get_field('k8_acf_trust_level', $review_object->get_ID()) ? (int) get_field('k8_acf_trust_level', $review_object->get_ID()) : 0;
 $range = array_filter($ranges, function ($range) use ($score) {
 	return  $score >= $range['range_start'] && $range['range_end'] >= $score;
 });
@@ -34,7 +33,7 @@ $range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[
 ]);
 
 ?>
-<div id="wppr-review-<?php echo $review_object->get_ID(); ?>" data-vpn-id="<?= get_field('k8_acf_vpnid') ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
+<div id="wppr-review-<?php echo $review_object->get_ID(); ?>" data-vpn-id="<?= get_field('k8_acf_vpnid', $review_object->get_ID()) ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
 	<section id="review-trust-lvl" class="article-section">
 		<div class="review-wrap-up">
 			<div class="cwpr-review-top">
