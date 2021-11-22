@@ -1243,7 +1243,6 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @return array The JSON-LD array.
 	 */
 	public function get_json_ld() {
-		var_dump($this->ID);
 		$k8id = $this->ID;
 		$k8meta = get_post_meta( $k8id );
 		$k8links = unserialize( $k8meta['wppr_links'][0] );
