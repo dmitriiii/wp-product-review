@@ -264,7 +264,7 @@
     const rawRating = el.rating;
     const rating = Math.round(rawRating);
     const rating5 = rating / 20;
-    return `<a href="${el.url}" class="wu-review-item" target="_blank">
+    return `<a href="${el.url}" class="wu-review-item" target="_blank" rel="nofollow">
                   <div class="wu-review-item__rating">
                     <div class="wppr-c100 wppr-p${rating} ${getRatingClass(
       rawRating
