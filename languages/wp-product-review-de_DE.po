@@ -1,0 +1,546 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Wp Product Review\n"
+"POT-Creation-Date: 2014-07-28 20:58+0100\n"
+"PO-Revision-Date: 2021-11-16 18:49+0300\n"
+"Last-Translator: \n"
+"Language-Team: ThemeIsle <friends@themeisle.com>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: inc\n"
+
+#: admin/inc/render.php:224
+msgid "Normal"
+msgstr ""
+
+#: admin/inc/render.php:225
+msgid "Italic"
+msgstr ""
+
+#: admin/inc/render.php:226
+msgid "Bold"
+msgstr ""
+
+#: admin/inc/render.php:227
+msgid "Bold Italic"
+msgstr ""
+
+#: admin/inc/render.php:279
+msgid "No Repeat"
+msgstr ""
+
+#: admin/inc/render.php:280
+msgid "Repeat Horizontally"
+msgstr ""
+
+#: admin/inc/render.php:281
+msgid "Repeat Vertically"
+msgstr ""
+
+#: admin/inc/render.php:282
+msgid "Repeat All"
+msgstr ""
+
+#: admin/inc/render.php:287
+msgid "Top Left"
+msgstr ""
+
+#: admin/inc/render.php:288
+msgid "Top Center"
+msgstr ""
+
+#: admin/inc/render.php:289
+msgid "Top Right"
+msgstr ""
+
+#: admin/inc/render.php:290
+msgid "Middle Left"
+msgstr ""
+
+#: admin/inc/render.php:291
+msgid "Middle Center"
+msgstr ""
+
+#: admin/inc/render.php:292
+msgid "Middle Right"
+msgstr ""
+
+#: admin/inc/render.php:293
+msgid "Bottom Left"
+msgstr ""
+
+#: admin/inc/render.php:294
+msgid "Bottom Center"
+msgstr ""
+
+#: admin/inc/render.php:295
+msgid "Bottom Right"
+msgstr ""
+
+#: admin/inc/render.php:300
+msgid "Scroll Normally"
+msgstr ""
+
+#: admin/inc/render.php:301
+msgid "Fixed in Place"
+msgstr ""
+
+#: admin/layout/main_page.php:12
+msgid "Buy the PRO version"
+msgstr ""
+
+#: admin/layout/main_page.php:14
+msgid "Recommended Review Themes"
+msgstr ""
+
+#: admin/layout/main_page.php:16
+msgid "Contact us"
+msgstr ""
+
+#: admin/layout/main_page.php:30 admin/layout/main_page.php:70
+msgid "Save All Changes"
+msgstr ""
+
+#: admin/layout/main_page.php:33 admin/layout/main_page.php:73
+msgid "Options Reset"
+msgstr ""
+
+#: inc/class-remote-notification-client.php:260
+msgid "Dismiss notification"
+msgstr ""
+
+#: inc/class-remote-notification-client.php:262
+msgid "Dismiss"
+msgstr ""
+
+#: inc/cwp_frontpage.php:1
+msgid "No image added."
+msgstr ""
+
+#: inc/cwp_frontpage.php:1
+msgid "Default Feature "
+msgstr ""
+
+#: inc/cwp_metabox.php:59
+msgid "Product Details"
+msgstr ""
+
+#: inc/cwp_metabox.php:61
+msgid "Specify the general details for the reviewed product."
+msgstr ""
+
+#: inc/cwp_metabox.php:75
+msgid "Product Name"
+msgstr ""
+
+#: inc/cwp_metabox.php:85
+msgid "Product Image"
+msgstr ""
+
+#: inc/cwp_metabox.php:87
+msgid "Choose or Upload an Image"
+msgstr ""
+
+#: inc/cwp_metabox.php:98
+msgid "Affiliate Button Text"
+msgstr ""
+
+#: inc/cwp_metabox.php:108
+msgid "Affiliate Link"
+msgstr ""
+
+#: inc/cwp_metabox.php:125
+msgid "Product Options Setting"
+msgstr ""
+
+#: inc/cwp_metabox.php:126
+msgid ""
+"Insert your options and their grades. Grading must be done <b><i>from 0 to 100</i></b>. In order to be able to automatically preload your settings from another posts, you need to <a "
+"href='https://themeisle.com/plugins/wp-product-review-pro-add-on/' target='_blank'>Upgrade to PRO</a>."
+msgstr ""
+
+#: inc/cwp_metabox.php:128 inc/cwp_metabox.php:133
+msgid "Preload Info"
+msgstr ""
+
+#: inc/cwp_metabox.php:205
+msgid "Pro Features"
+msgstr ""
+
+#: inc/cwp_metabox.php:207
+msgid "Insert product's pro features below."
+msgstr ""
+
+#: inc/cwp_metabox.php:279
+msgid "Cons Features"
+msgstr ""
+
+#: inc/cwp_metabox.php:281
+msgid "Insert product's cons features below."
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:21
+msgid "WP Product Review Top Products Widget"
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:27
+msgid "This widget displays the top products based on their rating."
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:176
+msgid "Top Products"
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:178
+msgid "10"
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:202
+msgid "Title:"
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:212
+msgid "Number of posts to show:"
+msgstr ""
+
+#: inc/cwp_top_products_widget.php:224
+msgid "Category:"
+msgstr ""
+
+#: inc/review-preloader.php:42
+msgid "Options"
+msgstr ""
+
+#: inc/review-preloader.php:56
+msgid "Pros"
+msgstr ""
+
+#: inc/review-preloader.php:70
+msgid "Cons"
+msgstr ""
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.1. Publicly known name of the product (Brandname)"
+msgstr "1.1. Öffentlich bekannter Name des Produkts (Markenname)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.2. The legally responsible company operating the service"
+msgstr "1.2. Das rechtlich verantwortliche Unternehmen, das den Dienst betreibt"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.3. Legal managing director of the operating company"
+msgstr "1.3. Juristischer Geschäftsführer der Betreibergesellschaft"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.4. Address of the operational company"
+msgstr "1.4. Anschrift der Betriebsgesellschaft"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.5. Year of foundation"
+msgstr "1.5. Jahr der Gründung"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.6. Has the full legal information also been published on a website in the imprint?"
+msgstr "1.6. Sind die vollständigen rechtlichen Informationen auch auf einer Website im Impressum veröffentlicht worden?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "Official website"
+msgstr "Offizielle Website"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.7. Link to the imprint"
+msgstr "1.7. Link zum Impressum"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.8. Legal name of the clearing company"
+msgstr "1.8. Rechtlicher Name des Clearingunternehmens"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.9. TaxID"
+msgstr "1.9. SteuerID"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.10. Legal managing director of the clearing company"
+msgstr "1.10. Juristischer Geschäftsführer der Clearinggesellschaft"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.11. The legal address of the clearing company"
+msgstr "1.11. Rechtliche Anschrift des Clearingunternehmens"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.12. Has the full legal information about the clearing company also been published on a website in the imprint?"
+msgstr "1.12. Wurden die vollständigen rechtlichen Informationen über die Clearingstelle auch auf einer Website im Impressum veröffentlicht?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.13. Does the service use external payment providers?"
+msgstr "1.13. Nimmt der Dienst externe Zahlungsanbieter in Anspruch?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.14. The service is provided within the EU data protection directives (GDPR)"
+msgstr "1.14. Der Dienst wird im Rahmen der EU-Datenschutzrichtlinien (GDPR) bereitgestellt"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.15. The service is provided within the US data protection directives or similar legal acts."
+msgstr "1.15. Der Dienst wird im Rahmen der US-Datenschutzrichtlinien oder ähnlicher Rechtsakte erbracht."
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.16. Type of organization which is operating the service"
+msgstr "1.16. Art der Organisation, die den Dienst betreibt"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.17. Beneficial shareholders or owners of the company (Full name or legal identity name)"
+msgstr "1.17. Wirtschaftliche Anteilseigner oder Eigentümer des Unternehmens (vollständiger Name oder rechtlicher Identitätsname)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.18. Are any shareholders or owners of your company involved in other VPN services (different branded VPN services)?"
+msgstr "1.18. Sind Anteilseigner oder Eigentümer Ihres Unternehmens an anderen VPN-Diensten beteiligt (andere Marken-VPN-Dienste)?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.19. Are any shareholders or owners of your company involved in offering other online services?"
+msgstr "1.19. Sind Anteilseigner oder Eigentümer Ihres Unternehmens an der Bereitstellung anderer Online-Dienste beteiligt?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.20. Are any shareholders from your company involved in publishing other websites, magazines or for example product-review websites?"
+msgstr "1.20. Sind Anteilseigner Ihres Unternehmens an der Veröffentlichung anderer Websites, Zeitschriften oder z. B. Produktbewertungs-Websites beteiligt?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.21. Is the operational company reachable from customers by post mail?"
+msgstr "1.21. Ist der Betrieb für Kunden per Post erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.22. Is the post address available at the imprint of the official website?"
+msgstr "1.22. Ist die Postanschrift im Impressum der offiziellen Website zu finden?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "1.23. Is the company available by phone?"
+msgstr "1.23. Ist das Unternehmen telefonisch erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.1. Number of VPN servers operated globally"
+msgstr "2.1. Anzahl der weltweit betriebenen VPN-Server"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.2. Are virtual servers used as VPN servers?"
+msgstr "2.2. Werden virtuelle Server als VPN-Server verwendet?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.3. Percentage of servers which are virtually operated from total"
+msgstr "2.3. Prozentualer Anteil der virtuell betriebenen Server an der Gesamtzahl"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.4. Are dedicated servers used as VPN servers?"
+msgstr "2.4. Werden dedizierte Server als VPN-Server verwendet?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.5. Percentage of servers which are dedicated from total"
+msgstr "2.5. Prozentualer Anteil der dedizierten Server an der Gesamtzahl"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.6. Ownership of servers (hardware)"
+msgstr "2.6. Eigentum an Servern (Hardware)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.7. Percentage of servers which are actively operated and denfinitly belong to the operating company itself from total (Hardware ownership)"
+msgstr "2.7. Anteil der Server, die aktiv betrieben werden und eindeutig der Betreibergesellschaft gehören, an der Gesamtzahl (Hardwarebesitz)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.8. Do the VPN servers use hard drives (HDD) or similar media for permanent storage?"
+msgstr "2.8. Verwenden die VPN-Server Festplatten (HDD) oder ähnliche Medien zur dauerhaften Speicherung?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.9. Percentage of servers that DO NOT use any hard drives or similar media for permanent storage from total? (RAM Disk)"
+msgstr "2.9. Prozentualer Anteil der Server, die KEINE Festplatten oder ähnliche Medien zur permanenten Speicherung verwenden, an der Gesamtzahl? (RAM-Disk)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.10. Which operating system (OS) is used for VPN servers? (the most common variant)"
+msgstr "2.10. Welches Betriebssystem (OS) wird für VPN-Server verwendet? (die häufigste Variante)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.11. Are the IP addresses/own AS- network registered mainly on the operational company?"
+msgstr "2.11. Sind die IP-Adressen/eigenen AS-Netze hauptsächlich auf die Betriebsgesellschaft registriert?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.12. Will DMCA complaints be addressed directly to the company"
+msgstr "2.12. Werden die DMCA-Beschwerden direkt an das Unternehmen gerichtet?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.13. Own DMCA complaints address"
+msgstr "2.13. Eigene DMCA-Beschwerdeadresse"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.14. Are Ports blocked to prevent spam or abuse?"
+msgstr "2.14. Werden Ports gesperrt, um Spam oder Missbrauch zu verhindern?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.15 Is DPI used to prevent abusive use or spam"
+msgstr "2.15 Wird DPI verwendet, um missbräuchliche Nutzung oder Spam zu verhindern?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.16. Are Port forwarding features available for customers"
+msgstr "2.16. Sind Portweiterleitungsfunktionen für Kunden verfügbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.17. Are individual port forwarding features available for customers"
+msgstr "2.17. Sind individuelle Portweiterleitungsfunktionen für Kunden verfügbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.18. Are Static or Dedicated IP addresses available for customers?"
+msgstr "2.18. Stehen den Kunden statische oder dedizierte IP-Adressen zur Verfügung?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.19. Does static IP addresses for customers include all port forwardings?"
+msgstr "2.19. Beinhaltet die statische IP-Adresse für Kunden alle Portweiterleitungen?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.20. Are technical audits confirmed technical or security aspects of the service?"
+msgstr "2.20. Werden durch technische Audits technische oder Sicherheitsaspekte des Dienstes bestätigt?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.21. Which external audit has taken place? (Please provide a link to the audit report document; What it includes or excludes; What was the aim for the audit in general?)"
+msgstr "2.21. Welche externe Prüfung hat stattgefunden? (Bitte geben Sie einen Link zu dem Auditbericht an; was beinhaltet oder schließt er aus; was war das Ziel des Audits im Allgemeinen?)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.23. Are torrents or other filesharing methods prevented?"
+msgstr "2.23. Werden Torrents oder andere Filesharing-Methoden verhindert?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.24. Are there or have there been court proceedings that involve or have involved users data?"
+msgstr "2.24. Gibt oder gab es Gerichtsverfahren, die Nutzerdaten betreffen oder betroffen haben?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.25. Were data for identification of users given by legal court rulings"
+msgstr "2.25. Wurden Daten zur Identifizierung von Nutzern durch Gerichtsurteile gegeben"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.26. Do you have liability insurance that would support the company's legal defense of user privacy?"
+msgstr "2.26. Verfügen Sie über eine Haftpflichtversicherung, die die rechtliche Verteidigung der Privatsphäre der Nutzer durch das Unternehmen unterstützt?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.27. Are there any publicly available court rulings that can be traced and prove that the company has also used all legal means to defend itself against the disclosure"
+msgstr ""
+"2.27. Gibt es öffentlich zugängliche Gerichtsurteile, die nachverfolgt werden können und belegen, dass das Unternehmen auch alle rechtlichen Mittel ausgeschöpft hat, um sich gegen die "
+"Offenlegung zu wehren?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.28. Are there records stored of the users' usage patterns? (Logfiles or any protocolled data that can lead to a user being tracked based on certain activities)"
+msgstr ""
+"2.28. Werden Aufzeichnungen über das Nutzungsverhalten der Nutzer gespeichert? (Logfiles oder andere protokollierte Daten, die dazu führen können, dass ein Nutzer aufgrund bestimmter Aktivitäten "
+"verfolgt werden kann)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.29. Is usage from users logged? (How long a user is connected, and time&date stamp)"
+msgstr "2.29. Wird die Nutzung durch die Benutzer protokolliert? (Wie lange ein Benutzer verbunden ist, sowie Zeit- und Datumsstempel)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.30. Is data stored about the usage of external IP addresses? (IP address timestamp)"
+msgstr "2.30. Werden Daten über die Nutzung von externen IP-Adressen gespeichert? (Zeitstempel der IP-Adresse)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.31. How is it technically ensured that a user does not connect more than the agreed number of simultaneous connections? Which data is checked, queried or centrally stored in this process?"
+msgstr ""
+"2.31. Wie wird technisch sichergestellt, dass ein Nutzer nicht mehr als die vereinbarte Anzahl von gleichzeitigen Verbindungen herstellt? Welche Daten werden dabei geprüft, abgefragt oder "
+"zentral gespeichert?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.33. Is there a manually generated regular warranty statement that indicates to users that the company has not received any gag orders?"
+msgstr "2.33. Gibt es einen manuell erstellten regelmäßigen Garantienachweis, der den Benutzern anzeigt, dass das Unternehmen keine Nachrichtensperre erhalten hat?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.1. Is the Support team available by email?"
+msgstr "3.1. Ist das Support-Team per E-Mail erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.2. Is the Customer Service available by phone?"
+msgstr "3.2. Ist der Kundendienst per Telefon erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.3. Is Customer Service available by Chat or Messengers?"
+msgstr "3.3. Ist der Kundendienst per Chat oder Messenger erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.4. How many hours per day ist the Customer Support available?"
+msgstr "3.4. Wie viele Stunden pro Tag ist der Kundensupport erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.5. Which days per week the customer support is available?"
+msgstr "3.5. An welchen Tagen in der Woche ist der Kundensupport erreichbar?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.6. Which languages does the customer service replay to the users?"
+msgstr "3.6. Welche Sprachen gibt der Kundendienst den Benutzern wieder?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.7. Besides the service and the own applications, will support for other devices like VPN-routers, manual integration and others be offered?"
+msgstr "3.7. Wird es neben dem Dienst und den eigenen Anwendungen auch Unterstützung für andere Geräte wie VPN-Router, manuelle Integration und andere geben?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.8. Is there a free trial opportunity for the service?"
+msgstr "3.8. Gibt es eine kostenlose Testmöglichkeit für den Dienst?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.9. Is there a FREE unlimited or FREE metered usage for the services available?"
+msgstr "3.9. Gibt es für die verfügbaren Dienste eine KOSTENLOSE unbegrenzte oder KOSTENLOSE dosierte Nutzung?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.10. Do you offer a money-back guarantee?"
+msgstr "3.10. Bieten Sie eine Geld-zurück-Garantie an?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.11. Do you use third-party trackers on your website?"
+msgstr "3.11. Verwenden Sie Tracker von Drittanbietern auf Ihrer Website?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.12. Do you use third-party trackers in any of your applications or apps?"
+msgstr "3.12. Verwenden Sie Tracker von Drittanbietern in einer Ihrer Anwendungen oder Apps?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "3.13. Which companies/services are used for tracking readers or customers behaviors or other services in the apps or on the website?"
+msgstr "3.13. Welche Unternehmen/Dienste werden für die Verfolgung des Leser- oder Kundenverhaltens oder andere Dienste in den Apps oder auf der Website genutzt?"
+
+#: includes/jotform/jotform-api.php:21
+msgid "4.A. The Person who has made the statements (Full Name)"
+msgstr "4.A. Die Person, die die Aussagen gemacht hat (vollständiger Name)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "4.B. Position in the company"
+msgstr "4.B. Stellung im Unternehmen"
+
+#: includes/jotform/jotform-api.php:21
+msgid "4.C. Email"
+msgstr "4.C. E-Mail"
+
+#: includes/jotform/jotform-api.php:21
+msgid "Date"
+msgstr "Datum"
+
+#: includes/jotform/jotform-api.php:21
+msgid "Signature"
+msgstr "Unterschrift"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.22.optional: Link to audit reports"
+msgstr "2.22.optional: Link zu Prüfberichten"
+
+#: includes/jotform/jotform-api.php:21
+msgid "2.34. Is a regular transparency report available? (Including details about legal data requests; technical server outages; technical updates; security related issues...)"
+msgstr ""
+"2.34. Ist ein regelmäßiger Transparenzbericht verfügbar? (Einschließlich Einzelheiten über rechtliche Datenanfragen, technische Serverausfälle, technische Aktualisierungen, sicherheitsrelevante "
+"Probleme...)"
+
+#: includes/jotform/jotform-api.php:21
+msgid "Opt: Transparency report Link"
+msgstr "Opt: Transparenzbericht Link"
+
+#: includes/jotform/jotform-api.php:21
+msgid "Opt: Link to \"Warrant Canary\""
+msgstr "Opt: Link zu \"Warrant Canary\""
+
+#: includes/functions.php:21
+msgid "reviews"
+msgstr "bewertungen"

@@ -29,7 +29,10 @@ class WPPR_Deactivator {
 	 * @since    3.0.0
 	 */
 	public static function deactivate() {
+		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-tpr-manager.php';
 
+		$tpr_cron_manager = new WPPR_TPR_Cron_Manager();
+		$tpr_cron_manager->unschedule();
 	}
 
 }

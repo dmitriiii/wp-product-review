@@ -302,6 +302,11 @@ class WP_Product_Review extends Component {
 											src: wpprguten.path + '/assets/img/templates/style2.png',
 											value: 'style2',
 										},
+										{
+											label: __( 'Style 3' ),
+											src: wpprguten.path + '/assets/img/templates/style3.png',
+											value: 'style3',
+										},
 									] }
 									onChange={ this.onChangeTemplate }
 								/>

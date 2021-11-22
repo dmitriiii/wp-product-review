@@ -81,7 +81,7 @@ $check = $review->is_active() ? 'yes' : 'no';
 				</div>
 
 				<?php
-				$templates = apply_filters( 'wppr_review_templates', array( 'default', 'style1', 'style2' ) );
+				$templates = apply_filters( 'wppr_review_templates', array( 'default', 'style1', 'style2', 'style3' ) );
 				if ( $templates ) {
 					?>
 					<li>

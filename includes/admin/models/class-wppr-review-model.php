@@ -40,6 +40,20 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	private $score = 0;
 
 	/**
+	 * The overall third-party score of the review.
+	 */
+	private $third_party_score = 0;
+
+	/**
+	 * Total number of votes from third-party services.
+	 *
+	 * @since   3.0.0
+	 * @access  private
+	 * @var float $score The overall score of the review.
+	 */
+	private $votes_count = 0;
+
+	/**
 	 * If the review is active or not.
 	 *
 	 * @since   3.0.0
@@ -193,6 +207,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				$this->setup_pros_cons();
 				$this->setup_options();
 				$this->count_rating();
+				$this->count_third_party_rating();
 				$this->setup_review_schema();
 				if ( ! is_admin() ) {
 					$this->alter_options();
@@ -448,7 +463,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	}
 
 	/**
-	 * Calculate the review rating.
+	 * Calculate the local review rating.
 	 *
 	 * @since   3.0.0
 	 * @access  public
@@ -458,6 +473,18 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 		$this->score = ( count( $this->options ) > 0 ) ? floatval( array_sum( $values ) / count( $this->options ) ) : 0;
 
 		update_post_meta( $this->ID, 'wppr_rating', number_format( $this->score, 2 ) );
+	}
+
+	/**
+	 * Calculate the average rating on third-party services
+	 */
+	public function count_third_party_rating() {
+		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+		$scores_db = new WPPR_Review_Scores();
+		$pid = get_field('k8_acf_vpnid');
+		if ($pid) $this->third_party_score = $scores_db->get_avg_rating($pid);
+
+		update_post_meta( $this->ID, 'wppr_third_party_rating', number_format( $this->third_party_score, 2 ) );
 	}
 
 	/**
@@ -975,7 +1002,21 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return float
 	 */
-	public function get_rating() {
+	public function get_rating($type = 'local') {
+		$local_rating = $this->get_local_rating();
+		$third_party_rating = $this->get_third_party_rating();
+		if ($type === 'third-party') return $third_party_rating;
+		else return $local_rating;
+	}
+
+	/**
+	 * Return the local rating of the review.
+	 *
+	 * @since   3.0.0
+	 * @access  public
+	 * @return float
+	 */
+	public function get_local_rating() {
 		$comment_influence = intval( $this->wppr_get_option( 'cwppos_infl_userreview' ) );
 
 		$rating = $this->score;
@@ -989,6 +1030,27 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 		do_action( 'themeisle_log_event', WPPR_SLUG, sprintf( 'rating %d becomes %d with user influence of %d', $this->score, $rating, $comment_influence ), 'debug', __FILE__, __LINE__ );
 
 		return apply_filters( 'wppr_rating', $rating, $this->ID, $this );
+	}
+
+	/**
+	 * Get the average rating on third-party services
+	 */
+	public function get_third_party_rating() {
+		return $this->third_party_score;
+	}
+
+	/**
+	 * Get calculate the total reviews count on third-party services
+	 */
+	public function get_third_party_votes() {
+		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
+		$scores_db = new WPPR_Review_Scores();
+		$pid = get_field('k8_acf_vpnid');
+
+		if ($pid && !$this->votes_count) {
+			$this->votes_count =  $scores_db->get_total_votes_count($pid);
+		}
+		return $this->votes_count;
 	}
 
 	/**
@@ -1119,6 +1181,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				 */
 				$this->options[] = $options;
 				$this->count_rating();
+				$this->count_third_party_rating();
 
 				return update_post_meta( $this->ID, 'wppr_options', $this->options );
 			} else {
@@ -1127,6 +1190,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				 */
 				$this->options = $options;
 				$this->count_rating();
+				$this->count_third_party_rating();
 
 				return update_post_meta( $this->ID, 'wppr_options', $this->options );
 
@@ -1199,7 +1263,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 			'image'       => $this->get_small_thumbnail(),
 			'description' => $this->get_excerpt(),
 			'brand' => array(
-				'@type' => 'Thing',
+				'@type' => 'Brand',
 				'name'  => $k8brand,
 			),
 			'sku' => '00' . $k8id . '00',
