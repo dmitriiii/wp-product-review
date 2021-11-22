@@ -481,7 +481,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	public function count_third_party_rating() {
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
 		$scores_db = new WPPR_Review_Scores();
-		$pid = get_field('k8_acf_vpnid');
+		$pid = get_field('k8_acf_vpnid', $this->ID);
 		if ($pid) $this->third_party_score = $scores_db->get_avg_rating($pid);
 
 		update_post_meta( $this->ID, 'wppr_third_party_rating', number_format( $this->third_party_score, 2 ) );
@@ -1045,7 +1045,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	public function get_third_party_votes() {
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
 		$scores_db = new WPPR_Review_Scores();
-		$pid = get_field('k8_acf_vpnid');
+		$pid = get_field('k8_acf_vpnid', $this->ID);
 
 		if ($pid && !$this->votes_count) {
 			$this->votes_count =  $scores_db->get_total_votes_count($pid);
