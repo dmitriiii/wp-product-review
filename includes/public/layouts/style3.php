@@ -32,6 +32,9 @@ $range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[
 	'range_description' => ''
 ]);
 
+$total_votes = $review_object->get_third_party_votes();
+$desc = get_field('third_party_review_short_desc', $review_object->get_ID());
+
 ?>
 <div id="wppr-review-<?php echo $review_object->get_ID(); ?>" data-vpn-id="<?= get_field('k8_acf_vpnid', $review_object->get_ID()) ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
 	<section id="review-trust-lvl" class="article-section">
@@ -63,11 +66,18 @@ $range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[
 							<?php wppr_layout_get_image($review_object, 'wppr-default-img', 'photo photo-wrapup wppr-product-image'); ?>
 						</div>
 
-						<?php wppr_layout_get_rating($review_object, 'donut', 'default', array('review-wu-grade'), false, [
-							'show_popup' => true,
-						]); ?>
+						<?php wppr_layout_get_rating($review_object, 'donut', 'default', array('review-wu-grade'), false); ?>
 					</div><!-- end .review-wu-left-top -->
-
+					<? if ($total_votes != -1) { ?>
+						<div class="review-wu-left-mid">
+							<a class="review-wu-reviews-link" href="#reviews-detail">
+								<? wppr_display_rating_stars(null, $review_object, false, true) ?>
+								<span class="review-wu-reviews-count">
+									<?= __('reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)
+								</span>
+							</a>
+						</div>
+					<? } ?>
 					<?php wppr_layout_get_options_ratings($review_object, 'dashes'); ?>
 
 				</div><!-- end .review-wu-left -->
@@ -99,6 +109,27 @@ $range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[
 			</div>
 		</div><!-- end .review-wrap-up -->
 	</section>
+	<? if ($total_votes != -1) { ?>
+		<div id="reviews-detail" class="wu-modal" style="display: none;">
+			<div class="wu-modal__loading">
+				<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
+			</div>
+			<div class="wu-modal__inner" style="display: none; max-width: 620px">
+				<div role="button" class="wu-modal__close" title="close">
+				</div>
+				<div class="wu-modal__content">
+					<div class="wu-modal__title">
+						<?= ucfirst(__('reviews', 'wp-product-review')) ?>
+					</div>
+					<? if ($desc) { ?>
+						<p class="wu-modal__subtitle"><?= $desc ?></p>
+					<? } ?>
+					<div class="wu-modal__results">
+					</div>
+				</div>
+			</div>
+		</div>
+	<? } ?>
 	<? if ($show_trust_lvl_detail) { ?>
 		<div id="subs-modal" class="wu-modal" style="display: none">
 			<div class="wu-modal__loading">

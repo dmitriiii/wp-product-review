@@ -31,9 +31,9 @@ if (!function_exists('wppr_display_rating_stars')) {
 	/**
 	 * Display the star rating.
 	 */
-	function wppr_display_rating_stars($template, $review_object, $include_author = true)
+	function wppr_display_rating_stars($template, $review_object, $include_author = true, $third_party = false)
 	{
-		$review_rating = $review_object->get_rating();
+		$review_rating = $review_object->get_rating($third_party);
 		$rating_5       = round($review_rating / 20, PHP_ROUND_HALF_UP);
 ?>
 		<div class="wppr-review-stars <?php echo is_rtl() ? 'rtl' : ''; ?>" style="direction: <?php echo is_rtl() ? 'rtl' : ''; ?>">
@@ -133,9 +133,7 @@ if (!function_exists('wppr_default_get_rating')) {
 	/**
 	 * Display the rating of the given type.
 	 */
-	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false, $extend_rating_opts = [
-		'show_popup' => false,
-	])
+	function wppr_layout_get_rating($review_object, $type, $template, $div_classes = '', $include_author = false)
 	{
 		$review_rating = $review_object->get_rating();
 
@@ -196,36 +194,6 @@ if (!function_exists('wppr_default_get_rating')) {
 							<div class="wppr-slice-center"></div>
 						</div>
 					</div>
-					<? if ($extend_rating_opts['show_popup']) {
-						$total_votes = $review_object->get_third_party_votes();
-						$desc = get_field('third_party_review_short_desc', $review_object->get_ID());
-					?>
-						<div class="review-wu-reviews-count">
-							<? if ($total_votes != -1) { ?>
-								<a class="review-wu-reviews-link" href="#reviews-detail"><?= __('reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)</a>
-								<div id="reviews-detail" class="wu-modal" style="display: none;">
-									<div class="wu-modal__loading">
-										<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
-									</div>
-									<div class="wu-modal__inner" style="display: none; max-width: 620px">
-										<div role="button" class="wu-modal__close" title="close">
-										</div>
-										<div class="wu-modal__content">
-											<div class="wu-modal__title">
-												<?= ucfirst(__('reviews', 'wp-product-review')) ?>
-											</div>
-											<? if ($desc) { ?>
-												<p class="wu-modal__subtitle"><?= $desc ?></p>
-											<? } ?>
-											<div class="wu-modal__results">
-											</div>
-										</div>
-									</div>
-								</div>
-							<? } ?>
-
-						</div>
-					<? } ?>
 				</div>
 			<?php
 				break;

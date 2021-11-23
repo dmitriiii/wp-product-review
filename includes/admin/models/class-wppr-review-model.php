@@ -1002,10 +1002,10 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return float
 	 */
-	public function get_rating($type = 'local') {
+	public function get_rating($third_party = false) {
 		$local_rating = $this->get_local_rating();
 		$third_party_rating = $this->get_third_party_rating();
-		if ($type === 'third-party') return $third_party_rating;
+		if ($third_party) return $third_party_rating;
 		else return $local_rating;
 	}
 
