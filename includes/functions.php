@@ -198,6 +198,7 @@ if (!function_exists('wppr_default_get_rating')) {
 					</div>
 					<? if ($extend_rating_opts['show_popup']) {
 						$total_votes = $review_object->get_third_party_votes();
+						$desc = get_field('third_party_review_short_desc', $review_object->get_ID());
 					?>
 						<div class="review-wu-reviews-count">
 							<? if ($total_votes != -1) { ?>
@@ -213,7 +214,9 @@ if (!function_exists('wppr_default_get_rating')) {
 											<div class="wu-modal__title">
 												<?= ucfirst(__('reviews', 'wp-product-review')) ?>
 											</div>
-											<!--<p class="wu-modal__subtitle">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos praesentium magni adipisci quibusdam, doloribus assumenda odit non nihil temporibus nulla earum reiciendis sequi facere quae ipsam. Corporis enim quam reiciendis.</p>-->
+											<? if ($desc) { ?>
+												<p class="wu-modal__subtitle"><?= $desc ?></p>
+											<? } ?>
 											<div class="wu-modal__results">
 											</div>
 										</div>

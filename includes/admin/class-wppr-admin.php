@@ -1087,6 +1087,25 @@ function init_wppr_third_party_review_links()
 			'title' => 'Third-party review',
 			'fields' => array(
 				array(
+					'key' => 'field_619d0c8457786',
+					'label' => 'Short description',
+					'name' => 'third_party_review_short_desc',
+					'type' => 'textarea',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => 3,
+					'new_lines' => 'br',
+				),
+				array(
 					'key' => 'field_618aa63e46c84',
 					'label' => 'Portal links',
 					'name' => 'third_party_review_portal_links',
