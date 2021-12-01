@@ -1043,6 +1043,35 @@ function add_acf_option_page()
 						),
 					),
 				),
+				array(
+					'key' => 'field_61a79c86384df',
+					'label' => 'Default short description',
+					'name' => 'third_party_review_default_short_desc',
+					'type' => 'textarea',
+					'instructions' => 'Subtitle of the popup review.
+Substitution variables:
+%vpn - vpn name',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_6189570160812',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => 3,
+					'new_lines' => 'br',
+				),
 			),
 			'location' => array(
 				array(

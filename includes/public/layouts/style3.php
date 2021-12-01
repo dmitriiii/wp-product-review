@@ -33,7 +33,15 @@ $range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[
 ]);
 
 $total_votes = $review_object->get_third_party_votes();
-$desc = get_field('third_party_review_short_desc', $review_object->get_ID());
+$desc =  str_replace(
+	'%vpn',
+	$review_object->get_name(),
+	get_field('third_party_review_short_desc', $review_object->get_ID()) ?
+		get_field('third_party_review_short_desc', $review_object->get_ID()) : (get_field('third_party_review_default_short_desc', 'option') ?
+			get_field('third_party_review_default_short_desc', 'option') :
+			'')
+);
+
 
 ?>
 <div id="wppr-review-<?php echo $review_object->get_ID(); ?>" data-vpn-id="<?= get_field('k8_acf_vpnid', $review_object->get_ID()) ?>" class="wppr-template wppr-template-default <?php echo is_rtl() ? 'rtl' : ''; ?> wppr-review-container <?php echo (empty($pros) ? 'wppr-review-no-pros' : ''); ?> <?php echo (empty($cons) ? 'wppr-review-no-cons' : ''); ?>">
