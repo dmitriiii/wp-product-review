@@ -81,7 +81,7 @@ $desc =  str_replace(
 							<a class="review-wu-reviews-link" href="#reviews-detail">
 								<? wppr_display_rating_stars(null, $review_object, false, true) ?>
 								<span class="review-wu-reviews-count">
-									<?= __('reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)
+									<?= __('Reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)
 								</span>
 							</a>
 						</div>

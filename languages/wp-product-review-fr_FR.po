@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wp Product Review\n"
 "POT-Creation-Date: 2014-07-28 20:58+0100\n"
-"PO-Revision-Date: 2014-08-28 18:00+0100\n"
+"PO-Revision-Date: 2021-12-01 20:50+0300\n"
 "Last-Translator: Jacques Soulé <jsoule2010@gmail.com>\n"
 "Language-Team: ThemeIsle <friends@themeisle.com>\n"
-"Language: English\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__\n"
-"X-Poedit-Basepath: ../\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: inc\n"
 
@@ -161,12 +161,10 @@ msgstr "Réglage des Options du produit"
 
 #: inc/cwp_metabox.php:126
 msgid ""
-"Insert your options and their grades. Grading must be done <b><i>from 0 to "
-"100</i></b>. In order to be able to automatically preload your settings from "
+"Insert your options and their grades. Grading must be done <b><i>from 0 to 100</i></b>. In order to be able to automatically preload your settings from "
 "another posts, you need to <a href='https://themeisle.com/plugins/wp-product-review-pro-add-on/' target='_blank'>Upgrade to PRO</a>."
 msgstr ""
-"Insérer vos options et leurs notes. Le classement doit être fait <b><i>entre "
-"0 et 100</i></b>. Pour pouvoir pré-charger automatiquement vos paramètres "
+"Insérer vos options et leurs notes. Le classement doit être fait <b><i>entre 0 et 100</i></b>. Pour pouvoir pré-charger automatiquement vos paramètres "
 "depuis un autre article, vous devez <a href='https://themeisle.com/plugins/wp-product-review-pro-add-on/' target='_blank'> mettre à niveau vers PRO</a>."
 
 #: inc/cwp_metabox.php:128 inc/cwp_metabox.php:133
@@ -195,8 +193,7 @@ msgstr "Widget des Top Produits de WP Product Review "
 
 #: inc/cwp_top_products_widget.php:27
 msgid "This widget displays the top products based on their rating."
-msgstr ""
-"Ce widget affiche les meilleurs produits en fonction de leur classement."
+msgstr "Ce widget affiche les meilleurs produits en fonction de leur classement."
 
 #: inc/cwp_top_products_widget.php:176
 msgid "Top Products"
@@ -231,5 +228,5 @@ msgid "Cons"
 msgstr "Contre"
 
 #: includes/functions.php:21
-msgid "reviews"
+msgid "Reviews"
 msgstr ""
