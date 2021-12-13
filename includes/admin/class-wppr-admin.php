@@ -1043,6 +1043,35 @@ function add_acf_option_page()
 						),
 					),
 				),
+				array(
+					'key' => 'field_61a79c86384df',
+					'label' => 'Default short description',
+					'name' => 'third_party_review_default_short_desc',
+					'type' => 'textarea',
+					'instructions' => 'Subtitle of the popup review.
+Substitution variables:
+%vpn - vpn name',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_6189570160812',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => 3,
+					'new_lines' => 'br',
+				),
 			),
 			'location' => array(
 				array(
@@ -1086,6 +1115,25 @@ function init_wppr_third_party_review_links()
 			'key' => 'group_615b3a68ca47c',
 			'title' => 'Third-party review',
 			'fields' => array(
+				array(
+					'key' => 'field_619d0c8457786',
+					'label' => 'Short description',
+					'name' => 'third_party_review_short_desc',
+					'type' => 'textarea',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => 3,
+					'new_lines' => 'br',
+				),
 				array(
 					'key' => 'field_618aa63e46c84',
 					'label' => 'Portal links',

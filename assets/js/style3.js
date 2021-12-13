@@ -4,7 +4,7 @@
       initSubsModal(reviewEl);
     });
     document
-      .querySelectorAll(".review-wu-reviews-count")
+      .querySelectorAll(".review-wu-left-mid")
       .forEach((reviewEl) => {
         initReviewModal(reviewEl);
       });
@@ -40,7 +40,7 @@
     e.preventDefault();
     const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
     const modalEl = createWuModal(
-      document.querySelector(e.target.getAttribute("href")),
+      document.querySelector(e.currentTarget.getAttribute("href")),
       getReviewsHtml(vpnId)
     );
     modalEl.style.display = "";
@@ -250,44 +250,72 @@
       maximumFractionDigits: 1,
     });
     const intlVotes = new Intl.NumberFormat("en-US");
-    return `<div class="wu-review-list">${data
+    return `<div class="wu-review-list wu-review-item--list">${data
       .map(getReviewEl)
       .join("")}</div>`;
   }
 
   function getReviewEl(el) {
-    const intl = new Intl.NumberFormat("en-US", {
-      style: "decimal",
-      maximumFractionDigits: 1,
-    });
     const intlVotes = new Intl.NumberFormat("en-US");
     const rawRating = el.rating;
     const rating = Math.round(rawRating);
     const rating5 = rating / 20;
-    return `<a href="${el.url}" class="wu-review-item" target="_blank" rel="nofollow">
+
+    return `
+    <a href="${el.url}" class="wu-review-item wu-review-item--starts" target="_blank" rel="nofollow">
                   <div class="wu-review-item__rating">
-                    <div class="wppr-c100 wppr-p${rating} ${getRatingClass(
-      rawRating
-    )}">
-                      <span>${intl.format(rating5)}</span>
-                      <div class="wppr-slice">
-                        <div class="wppr-bar" style="transform: rotate(${
-                          rating * 3.6
-                        }deg);">
-                        </div>
-                        <div class="wppr-fill"></div>
-                      </div>
-                      <div class="wppr-slice-center"></div>
-                    </div>
+                    ${getStarRatingHtml(rawRating)}
                   </div>
                   <div class="wu-review-item__count">
-                    (${intlVotes.format(el.votes)})
+                    ${rating5} / 5 (${intlVotes.format(el.votes)})
                   </div>
                   <div class="wu-review-item__title">
                     ${el.source}
                   </div>
                 </a>
     `;
+  }
+
+  function getCircleRatingHtml(rawRating) {
+    const intl = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+      maximumFractionDigits: 1,
+    });
+    const rating = Math.round(rawRating);
+    const rating5 = rating / 20;
+
+    return `<div class="wppr-c100 wppr-p${rating} ${getRatingClass(rawRating)}">
+              <span>${intl.format(rating5)}</span>
+              <div class="wppr-slice">
+                <div class="wppr-bar" style="transform: rotate(${
+                  rating * 3.6
+                }deg);">
+                </div>
+                <div class="wppr-fill"></div>
+              </div>
+              <div class="wppr-slice-center"></div>
+            </div>`;
+  }
+
+  function getStarRatingHtml(rawRating) {
+    return `
+    <div class="wu-review-item__starts">
+      <div class="wppr-review-stars wppr-review-stars--filled" style="width: ${rawRating}%">
+        <i class="dashicons dashicons-star-filled wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-filled wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-filled wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-filled wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-filled wppr-dashicons"></i>
+      </div>
+      <div class="wppr-review-stars wppr-review-stars--empty">
+        <i class="dashicons dashicons-star-empty wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-empty wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-empty wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-empty wppr-dashicons"></i>
+        <i class="dashicons dashicons-star-empty wppr-dashicons"></i>
+      </div>
+    </div>
+    `
   }
 
   function getRatingClass(rating) {
