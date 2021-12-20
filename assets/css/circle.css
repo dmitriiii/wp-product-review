@@ -71,9 +71,9 @@
 	line-height: 120px;
 	text-align: center;
 	white-space: nowrap;
-	transition-timing-function: ease-out;
+	/*transition-timing-function: ease-out;
 	transition-duration: 0.2s;
-	transition-property: all;
+	transition-property: all;*/
 }
 
 .wppr-c100 .wppr-slice-center {
