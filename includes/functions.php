@@ -452,7 +452,7 @@ if (!function_exists('wppr_layout_get_affiliate_buttons')) {
 					<span><?php echo esc_html($title); ?></span>
 				</a>
 			</div><!-- end .affiliate-button -->
-<?php
+		<?php
 		}
 	}
 }
@@ -501,6 +501,27 @@ if (!function_exists('wppr_schema_data_types_allowed_brand')) {
 	}
 }
 
+if (!function_exists('wppr_layout_get_privacy_info')) {
+	function wppr_layout_get_privacy_info($review_object)
+	{
+		?>
+		<div class="review-wu-privacy-bar">
+			<div class="review-wu-privacy-app">
+				<span class="review-wu-privacy-app__version"></span>
+			</div>
+			<div class="review-wu-privacy-trackers">
+				<span class="review-wu-privacy-trackers__count"></span>
+				<span class="review-wu-privacy-trackers__title"></span>
+			</div>
+			<div class="review-wu-privacy-permissions">
+				<span class="review-wu-privacy-permissions__count"></span>
+				<span class="review-wu-privacy-permissions__title"></span>
+			</div>
+		</div>
+<?
+	}
+}
+
 function wppr_get_product_post_map($type = 'vpn')
 {
 	if ($type === 'vpn') return json_decode(file_get_contents(K8_PATH_LOC . '/' . 'vpnidPid.json'), true);
@@ -514,12 +535,13 @@ if (!function_exists('init_jotform_api')) {
 	include_once WPPR_PATH . '/includes/jotform/jotform-api.php';
 }
 
-add_filter( 'cron_schedules', 'cron_add_wppr_tpr_update' );
+add_filter('cron_schedules', 'cron_add_wppr_tpr_update');
 
-function cron_add_wppr_tpr_update( $schedules ) {
+function cron_add_wppr_tpr_update($schedules)
+{
 	$schedules['wppr_tpr_update'] = array(
 		'interval' => 20 * DAY_IN_SECONDS,
-		'display' => __( 'Once 20 days' )
+		'display' => __('Once 20 days')
 	);
 	return $schedules;
 }
