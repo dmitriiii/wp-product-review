@@ -507,15 +507,16 @@ if (!function_exists('wppr_layout_get_privacy_info')) {
 		?>
 		<div class="review-wu-privacy-bar">
 			<div class="review-wu-privacy-app">
-				<span class="review-wu-privacy-app__version"></span>
+				<span class="review-wu-privacy-app__title"><?= __('version', 'wp-product-review') ?>:</span>
+				<a href="#" class="review-wu-privacy-app__version">1.2.7</a>
 			</div>
 			<div class="review-wu-privacy-trackers">
-				<span class="review-wu-privacy-trackers__count"></span>
-				<span class="review-wu-privacy-trackers__title"></span>
+				<span class="review-wu-privacy-trackers__count review-wu-privacy-badge review-wu-privacy-badge--success">7</span>
+				<a href="javascript:;" class="review-wu-privacy-trackers__more"><?= __('trackers', 'wp-product-review') ?></a>
 			</div>
 			<div class="review-wu-privacy-permissions">
-				<span class="review-wu-privacy-permissions__count"></span>
-				<span class="review-wu-privacy-permissions__title"></span>
+				<span class="review-wu-privacy-permissions__count review-wu-privacy-badge review-wu-privacy-badge--success">10</span>
+				<a href="javascript:;" class="review-wu-privacy-permissions__nore"><?= __('permissions', 'wp-product-review') ?></a>
 			</div>
 		</div>
 <?
