@@ -230,3 +230,15 @@ msgstr "Contre"
 #: includes/functions.php:21
 msgid "Reviews"
 msgstr ""
+
+#: includes/functions.php:21
+msgid "version"
+msgstr ""
+
+#: includes/functions.php:21
+msgid "trackers"
+msgstr ""
+
+#: includes/functions.php:21
+msgid "permissions"
+msgstr ""
