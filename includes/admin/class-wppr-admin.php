@@ -1072,6 +1072,41 @@ Substitution variables:
 					'rows' => 3,
 					'new_lines' => 'br',
 				),
+				array(
+					'key' => 'field_61dc9e588b414',
+					'label' => 'App Private Privacy',
+					'name' => '',
+					'type' => 'tab',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'placement' => 'top',
+					'endpoint' => 0,
+				),
+				array(
+					'key' => 'field_61dc8c7ad540e',
+					'label' => 'Exodus API Key',
+					'name' => 'exodus_api_key',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
 			),
 			'location' => array(
 				array(
@@ -1194,7 +1229,6 @@ function init_wppr_third_party_review_links()
 	};
 }
 add_action('acf/init', 'init_wppr_third_party_review_links');
-
 
 function wppr_allow_only_letters($valid, $value)
 {
