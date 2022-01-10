@@ -40,9 +40,17 @@ class WPPR_Activator
 	{
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
 		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-tpr-manager.php';
+		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-privacy-report.php';
+		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-review-score.php';
 
 		$scores_db = new WPPR_Review_Scores();
 		$scores_db->create_table();
+
+		$reports_db = new WPPR_Privacy_Report();
+		$reports_db->create_table();
+
+		$trackers_db = new WPPR_Privacy_Tracker();
+		$trackers_db->create_table();
 
 		$tpr_cron_manager = new WPPR_TPR_Cron_Manager();
 		$tpr_cron_manager->schedule();
