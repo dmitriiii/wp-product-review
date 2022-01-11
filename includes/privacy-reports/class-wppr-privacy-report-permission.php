@@ -1,12 +1,12 @@
 <?
-class WPPR_Privacy_Tracker
+class WPPR_Privacy_Report_Permission
 {
     private $table_name = '';
 
     function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'wppr_privacy_trackers';
+        $this->table_name = $wpdb->prefix . 'wppr_privacy_report_permission';
         $this->checkTableExist();
     }
 
@@ -19,15 +19,11 @@ class WPPR_Privacy_Tracker
 
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
 			`id` int NOT NULL,
-            `categories` json NOT NULL,
-            `code_signature` varchar(128) NOT NULL,
-            `creation_date` date NOT NULL,
-            `description` text NOT NULL,
-            `tracker_id` int NOT NULL,
-            `name` varchar(128) NOT NULL,
-            `network_signature` varchar(128) NOT NULL,
-            `website` varchar(128) NOT NULL,
-            PRIMARY KEY (`id`)
+            `report_id` int NOT NULL,
+            `permission_id` int NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `report_id` (`report_id`),
+            KEY `permission_id` (`permission_id`)
 		)
         $charset_collate;";
 

@@ -1136,12 +1136,12 @@ function init_wppr_third_party_review_links()
 		$product_post_map = wppr_get_product_post_map('vpn');
 		$portal_list = get_field('third_party_review_portals', 'option');
 		$enable = get_field('enable_third_party_reviews', 'option');
-		[$field_obj] = array_filter(
+		/*[$field_obj] = array_filter(
 			get_field_object('third_party_review_portals', 'option')['sub_fields'],
 			function ($obj) {
 				return $obj['name'] === 'portal_name';
 			}
-		);
+		);*/
 
 
 		if (!$enable || !count($product_post_map)) return;
@@ -1183,9 +1183,9 @@ function init_wppr_third_party_review_links()
 						'id' => '',
 					),
 					'layout' => 'block',
-					'sub_fields' =>
+					'sub_fields' => $portal_list ?
 					array_map(
-						function ($group) use ($field_obj) {
+						function ($group) /*use ($field_obj)*/ {
 							return array(
 								'key' => 'field_wppr_portal_' . $group['portal_name'] . '_link',
 								'label' => $group['portal_label'] . ' link',
@@ -1203,7 +1203,7 @@ function init_wppr_third_party_review_links()
 							);
 						},
 						$portal_list
-					)
+					) : []
 				),
 			),
 			'location' => array(
