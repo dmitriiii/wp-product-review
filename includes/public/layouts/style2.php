@@ -27,8 +27,8 @@
 				<?php wppr_layout_get_user_rating( $review_object ); ?>
 			</div>
 
-			<?php wppr_layout_get_pros( $review_object, 'wppr-review-pros', 'h3', 'wppr-review-pros-name' ); ?>
-			<?php wppr_layout_get_cons( $review_object, 'wppr-review-pros', 'h3', 'wppr-review-cons-name' ); ?>
+			<?php wppr_layout_get_pros( $review_object, 'h3', 'wppr-review-pros', 'wppr-review-pros-name' ); ?>
+			<?php wppr_layout_get_cons( $review_object, 'h3', 'wppr-review-pros', 'wppr-review-cons-name' ); ?>
 
 		</div><!-- end .wppr-review-head -->
 

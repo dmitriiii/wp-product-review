@@ -36,8 +36,8 @@
 		</div><!-- end .wppr-review-grade -->
 
 		<div class="wppr-review-pros-cons<?php echo ( $review_pros && $review_cons ) ? '' : ' wppr-review-one-column'; ?>">
-			<?php wppr_layout_get_pros( $review_object, '', 'h3', 'wppr-review-pros-name' ); ?>
-			<?php wppr_layout_get_cons( $review_object, '', 'h3', 'wppr-review-cons-name' ); ?>
+			<?php wppr_layout_get_pros( $review_object, 'h3', '', 'wppr-review-pros-name' ); ?>
+			<?php wppr_layout_get_cons( $review_object, 'h3', '', 'wppr-review-cons-name' ); ?>
 		</div><!-- end .wppr-review-pros-cons -->
 
 	</div><!-- end .wppr-review-container -->
