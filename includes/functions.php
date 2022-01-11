@@ -247,7 +247,7 @@ if (!function_exists('wppr_layout_get_pros')) {
 	/**
 	 * Display the pros for the review.
 	 */
-	function wppr_layout_get_pros($review_object, $class_div = '', $heading_type, $class_heading = '')
+	function wppr_layout_get_pros($review_object, $heading_type, $class_div = '', $class_heading = '')
 	{
 		$pros = $review_object->get_pros();
 		wppr_layout_get_proscons($review_object, $pros, 'pro', $class_div, $heading_type, $class_heading);
@@ -258,7 +258,7 @@ if (!function_exists('wppr_layout_get_cons')) {
 	/**
 	 * Display the cons for the review.
 	 */
-	function wppr_layout_get_cons($review_object, $class_div = '', $heading_type, $class_heading = '')
+	function wppr_layout_get_cons($review_object, $heading_type, $class_div = '', $class_heading = '')
 	{
 		$cons = $review_object->get_cons();
 		wppr_layout_get_proscons($review_object, $cons, 'con', $class_div, $heading_type, $class_heading);

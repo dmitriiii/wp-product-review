@@ -92,8 +92,8 @@ $desc =  str_replace(
 				</div><!-- end .review-wu-left -->
 
 				<div class="review-wu-right">
-					<?php wppr_layout_get_pros($review_object, '', 'h2', ''); ?>
-					<?php wppr_layout_get_cons($review_object, '', 'h2', ''); ?>
+					<?php wppr_layout_get_pros($review_object, 'h2', '', ''); ?>
+					<?php wppr_layout_get_cons($review_object, 'h2', '', ''); ?>
 				</div><!-- end .review-wu-right -->
 
 			</div><!-- end .review-wu-content -->

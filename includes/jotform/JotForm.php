@@ -53,7 +53,7 @@ class JotForm {
         }
     }
 
-    private function _executeHttpRequest($path, $params = array(), $method) {
+    private function _executeHttpRequest($path, $method, $params = array()) {
         if ($this->outputType != 'json') {
             $path = "{$path}.xml";
         }
@@ -149,19 +149,19 @@ class JotForm {
     }
 
     private function _executeGetRequest($url, $params = array()) {
-        return $this->_executeHttpRequest($url, $params, 'GET');
+        return $this->_executeHttpRequest($url,'GET', $params);
     }
 
     private function _executePostRequest($url, $params) {
-        return $this->_executeHttpRequest($url, $params, 'POST');
+        return $this->_executeHttpRequest($url, 'POST', $params);
     }
 
     private function _executePutRequest($url, $params) {
-        return $this->_executeHttpRequest($url, $params, 'PUT');
+        return $this->_executeHttpRequest($url, 'PUT', $params);
     }
 
     private function _executeDeleteRequest($url, $params = array()) {
-        return $this->_executeHttpRequest($url, $params, 'DELETE');
+        return $this->_executeHttpRequest($url, 'DELETE', $params);
     }
 
     private function createConditions($offset, $limit, $filter, $orderby) {
