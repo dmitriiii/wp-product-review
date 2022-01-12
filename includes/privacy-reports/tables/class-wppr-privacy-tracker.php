@@ -1,15 +1,16 @@
 <?
-class WPPR_Privacy_Tracker
-{
-    private $table_name = '';
+include_once WPPR_PATH . '/includes/abstracts/abstract-class-wppr-table.php';
 
+class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
+{
     function __construct()
     {
-        global $wpdb;
-        $this->table_name = $wpdb->prefix . 'wppr_privacy_tracker';
-        $this->checkTableExist();
+        parent::__construct('wppr_privacy_tracker');
     }
 
+    public function get_name() {
+        return $this->table_name;
+    }
 
     public function create_table()
     {
@@ -22,7 +23,6 @@ class WPPR_Privacy_Tracker
             `code_signature` varchar(128) NOT NULL,
             `creation_date` date NOT NULL,
             `description` text NOT NULL,
-            `tracker_id` int NOT NULL,
             `name` varchar(128) NOT NULL,
             `network_signature` varchar(128) NOT NULL,
             `website` varchar(128) NOT NULL,
@@ -39,17 +39,5 @@ class WPPR_Privacy_Tracker
 
     public function get($pid)
     {
-    }
-
-    private function checkTableExist()
-    {
-        global $wpdb;
-
-        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($this->table_name));
-
-        if ($wpdb->get_var($query) === $this->table_name) {
-            return true;
-        }
-        $this->create_table();
     }
 }

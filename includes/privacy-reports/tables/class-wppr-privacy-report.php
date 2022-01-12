@@ -1,21 +1,18 @@
 <?
-class WPPR_Privacy_Report
-{
-    private $table_name = '';
+include_once WPPR_PATH . '/includes/abstracts/abstract-class-wppr-table.php';
 
+class WPPR_Privacy_Report extends WPPR_Abstract_Table
+{
     function __construct()
     {
-        global $wpdb;
-        $this->table_name = $wpdb->prefix . 'wppr_privacy_report';
-        $this->checkTableExist();
+        parent::__construct('wppr_privacy_report');
     }
 
-
-    public function create_table()
+    function create_table()
     {
         global $charset_collate;
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
 			`id` int NOT NULL,
@@ -41,23 +38,15 @@ class WPPR_Privacy_Report
         dbDelta($sql);
     }
 
+    public function add($data) {
+        
+    }
+
     public function replace($opts)
     {
     }
 
     public function get($pid)
     {
-    }
-
-    private function checkTableExist()
-    {
-        global $wpdb;
-
-        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($this->table_name));
-
-        if ($wpdb->get_var($query) === $this->table_name) {
-            return true;
-        }
-        $this->create_table();
     }
 }

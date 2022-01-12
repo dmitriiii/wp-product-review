@@ -182,6 +182,7 @@ if (!function_exists('wppr_default_get_rating')) {
 						2
 					);
 				}
+
 		?>
 				<div class="<?php echo $div_class1; ?>">
 					<div class="review-wu-grade-content <?php echo $div_class2; ?>">

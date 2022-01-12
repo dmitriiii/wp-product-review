@@ -1,13 +1,11 @@
 <?
-class WPPR_Privacy_Permission
-{
-    private $table_name = '';
+include_once WPPR_PATH . '/includes/abstracts/abstract-class-wppr-table.php';
 
+class WPPR_Privacy_Category extends WPPR_Abstract_Table
+{
     function __construct()
     {
-        global $wpdb;
-        $this->table_name = $wpdb->prefix . 'wppr_privacy_permission';
-        $this->checkTableExist();
+        parent::__construct('wppr_privacy_category');
     }
 
 
@@ -33,17 +31,5 @@ class WPPR_Privacy_Permission
 
     public function get($pid)
     {
-    }
-
-    private function checkTableExist()
-    {
-        global $wpdb;
-
-        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($this->table_name));
-
-        if ($wpdb->get_var($query) === $this->table_name) {
-            return true;
-        }
-        $this->create_table();
     }
 }
