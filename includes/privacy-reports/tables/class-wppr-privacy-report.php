@@ -16,11 +16,14 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
                 [
                     'apk_hash', 'app_name', 'created',
                     'creator', 'downloads', 'handle',
-                    'icon_hash', 'report', 'source',
+                    'icon_hash', 'source',
                     'uaid', 'updated', 'version_code', 'version_name'
                 ]
             )
         );
+
+        $prepared_report['id'] = $report['report'];
+
         return $prepared_report;
     }
 
@@ -29,7 +32,7 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
         switch ($key) {
             case 'downloads':
                 return '%d';
-            case 'report':
+            case 'id':
                 return '%d';
             default:
                 return '%s';
@@ -43,7 +46,7 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-			`id` int NOT NULL,
+			`id` int(11) NOT NULL AUTO_INCREMENT,
             `apk_hash` varchar(128) NOT NULL,
             `app_name` varchar(128) NOT NULL,
             `created` datetime NOT NULL,
@@ -51,7 +54,6 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
             `downloads` int NOT NULL,
             `handle` varchar(64) NOT NULL,
             `icon_hash` varchar(128) NOT NULL,
-            `report` int NOT NULL,
             `source` varchar(64) NOT NULL,
             `uaid` varchar(128) NOT NULL,
             `updated` datetime NOT NULL,
@@ -71,14 +73,11 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
 
         $prepared_report = $this->get_prepared_report($report);
 
-        $up_res = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM $this->table_name WHERE report = %d",
-                $prepared_report['report']
-            )
-        );
+        $exist_report = $this->get_by_report_id($prepared_report['report']);
 
-        if ($up_res && count($up_res))
+        var_dump($exist_report);
+
+        if ($exist_report)
             return $this->update($report);
         else
             return $this->insert($report);
@@ -115,7 +114,18 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
         return true;
     }
 
-    public function get($pid)
+    public function get_by_report_id($report_id)
     {
+        global $wpdb;
+        $wpdb->show_errors();
+        
+        $report = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $this->table_name WHERE report = %d",
+                $report_id
+            )
+        );
+
+        return $report;
     }
 }

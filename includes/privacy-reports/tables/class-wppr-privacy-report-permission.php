@@ -21,9 +21,9 @@ class WPPR_Privacy_Report_Permission extends WPPR_Abstract_Table
         $perms_db = new WPPR_Privacy_Permission();
 
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-			`id` int NOT NULL,
-            `report_id` int NOT NULL,
-            `permission_id` int NOT NULL,
+			`id` int(11) NOT NULL AUTO_INCREMENT,
+            `report_id` int(11) NOT NULL,
+            `permission_id` int(11) NOT NULL,
             PRIMARY KEY (`id`),
             KEY `report_id` (`report_id`),
             KEY `permission_id` (`permission_id`)

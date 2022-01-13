@@ -21,9 +21,9 @@ class WPPR_Privacy_Report_Tracker extends WPPR_Abstract_Table
         $tracker_db = new WPPR_Privacy_Tracker();
 
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-            `id` int NOT NULL,
-            `report_id` int NOT NULL,
-            `tracker_id` int NOT NULL,
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `report_id` int(11) NOT NULL,
+            `tracker_id` int(11) NOT NULL,
             PRIMARY KEY (`id`),
             KEY `report_id` (`report_id`),
             KEY `tracker_id` (`tracker_id`)
