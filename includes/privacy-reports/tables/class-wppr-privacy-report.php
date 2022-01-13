@@ -39,6 +39,11 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
         }
     }
 
+    private function is_need_update($new_report, $old_report) {
+        if ($new_report['updated'] == $old_report['updated']) return false;
+        return true;
+    }
+
     function create_table()
     {
         global $charset_collate;
@@ -68,62 +73,61 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
 
     public function add($report)
     {
-        global $wpdb;
-        $wpdb->show_errors();
-
-        $prepared_report = $this->get_prepared_report($report);
-
-        $exist_report = $this->get_by_report_id($prepared_report['report']);
-
-        var_dump($exist_report);
-
-        if ($exist_report)
-            return $this->update($report);
-        else
-            return $this->insert($report);
+        return $this->update($report) || $this->insert($report);
     }
 
     public function update($report)
     {
         global $wpdb;
-        $wpdb->show_errors();
+
+        $exist_report = $this->get_by_id($report['report']);
+
+        if (!$exist_report) return false;
 
         $prepared_report = $this->get_prepared_report($report);
 
-        $wpdb->update(
+        if (!$this->is_need_update($prepared_report, $exist_report)) return false;
+
+        if ($wpdb->update(
             $this->table_name,
             $prepared_report,
             [
-                'report' => $prepared_report['report']
+                'id' => $prepared_report['id']
             ],
             array_map([$this, 'get_format'], array_keys($prepared_report))
-        );
-
-        return true;
+        )) return true;
+        
+        return false;
     }
 
     public function insert($report)
     {
         global $wpdb;
-        $wpdb->show_errors();
+
+        if ($this->get_by_id($report['report'])) return false;
 
         $prepared_report = $this->get_prepared_report($report);
 
-        $wpdb->insert($this->table_name, $prepared_report, array_map([$this, 'get_format'], array_keys($prepared_report)));
-
-        return true;
+        if ($wpdb->insert(
+            $this->table_name,
+            $prepared_report,
+            array_map(
+                [$this, 'get_format'],
+                array_keys($prepared_report)
+            )
+        )) return true;
+        return false;
     }
 
-    public function get_by_report_id($report_id)
+    public function get_by_id($report_id)
     {
         global $wpdb;
-        $wpdb->show_errors();
-        
+
         $report = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $this->table_name WHERE report = %d",
+                "SELECT * FROM $this->table_name WHERE id = %d",
                 $report_id
-            )
+            ), ARRAY_A
         );
 
         return $report;
