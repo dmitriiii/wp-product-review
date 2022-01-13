@@ -8,8 +8,44 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
         parent::__construct('wppr_privacy_tracker');
     }
 
-    public function get_name() {
-        return $this->table_name;
+    private function get_prepared_tracker($tracker)
+    {
+        $tracker_tracker = array_intersect_key(
+            $tracker,
+            array_flip(
+                [
+                    'id', 'code_signature', 'creation_date',
+                    'description', 'name', 'network_signature',
+                    'website', 'source'
+                ]
+            )
+        );
+
+        $prepared_tracker['id'] = $tracker['id'];
+
+        return $tracker_tracker;
+    }
+
+    private function get_format($key)
+    {
+        switch ($key) {
+            case 'id':
+                return '%d';
+            default:
+                return '%s';
+        }
+    }
+
+    private function is_need_update($new_tracker, $old_tracker)
+    {
+        if (
+            $new_tracker['code_signature'] == $old_tracker['code_signature'] &&
+            $new_tracker['name'] == $old_tracker['name'] &&
+            $new_tracker['network_signature'] == $old_tracker['network_signature'] &&
+            $new_tracker['website'] == $old_tracker['website'] &&
+            $new_tracker['description'] == $old_tracker['description']
+        ) return false;
+        return true;
     }
 
     public function create_table()
@@ -33,11 +69,65 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
         dbDelta($sql);
     }
 
-    public function replace($opts)
+    public function add($tracker)
     {
+        return $this->update($tracker) || $this->insert($tracker);
     }
 
-    public function get($pid)
+    public function update($tracker)
     {
+        global $wpdb;
+
+        $exist_tracker = $this->get_by_id($tracker['id']);
+
+        if (!$exist_tracker) return false;
+
+        $prepared_tracker = $this->get_prepared_tracker($tracker);
+
+        if (!$this->is_need_update($prepared_tracker, $exist_tracker)) return false;
+
+        if ($wpdb->update(
+            $this->table_name,
+            $prepared_tracker,
+            [
+                'id' => $prepared_tracker['id']
+            ],
+            array_map([$this, 'get_format'], array_keys($prepared_tracker))
+        )) return true;
+        
+        return false;
+    }
+
+    public function insert($tracker)
+    {
+        global $wpdb;
+
+        if ($this->get_by_id($tracker['id'])) return false;
+
+        $prepared_tracker = $this->get_prepared_tracker($tracker);
+
+        if ($wpdb->insert(
+            $this->table_name,
+            $prepared_tracker,
+            array_map(
+                [$this, 'get_format'],
+                array_keys($prepared_tracker)
+            )
+        )) return true;
+        return false;
+    }
+
+    public function get_by_id($tracker_id)
+    {
+        global $wpdb;
+
+        $tracker = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $this->table_name WHERE id = %d",
+                $tracker_id
+            ), ARRAY_A
+        );
+
+        return $tracker;
     }
 }
