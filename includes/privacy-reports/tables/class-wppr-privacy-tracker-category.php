@@ -1,47 +1,61 @@
 <?
-include_once WPPR_PATH . '/includes/abstracts/abstract-class-wppr-table.php';
+include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-bind-table.php';
+include_once 'class-wppr-privacy-category.php';
+include_once 'class-wppr-privacy-tracker.php';
 
-class WPPR_Privacy_Tracker_Category extends WPPR_Abstract_Table
+class WPPR_Privacy_Tracker_Category extends WPPR_Abstract_Bind_Table
 {
     function __construct()
     {
-        parent::__construct('wppr_privacy_tracker_category');
+        parent::__construct('wppr_privacy_tracker_category', 'tracker_id', 'category_id');
     }
 
     public function create_table()
     {
-        global $charset_collate;
-
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        include_once WPPR_PATH . '/includes/privacy-reports/class-wppr-privacy-category.php';
-        include_once WPPR_PATH . '/includes/privacy-reports/class-wppr-privacy-tracker.php';
 
-        $category_db = new WPPR_Privacy_Category();
         $tracker_db = new WPPR_Privacy_Tracker();
+        $category_db = new WPPR_Privacy_Category();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-			`id` int(11) NOT NULL AUTO_INCREMENT,
-            `tracker_id` int(11) NOT NULL,
-            `category_id` int(11) NOT NULL,
-            PRIMARY KEY (`id`),
-            KEY `category_id` (`category_id`),
-            KEY `tracker_id` (`tracker_id`)
-		)
-        $charset_collate;
-        
-        ALTER TABLE {$this->table_name}
-            ADD CONSTRAINT `category_b1` FOREIGN KEY (`category_id`) REFERENCES {$category_db->get_name()} (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-            ADD CONSTRAINT `tracker_b1` FOREIGN KEY (`tracker_id`) REFERENCES {$tracker_db->get_name()} (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-        COMMIT;";
-
-        dbDelta($sql);
+        $this->__create_table($tracker_db, $category_db);
     }
 
-    public function replace($opts)
+    /**
+     * @param int $report_id
+     * @param int $tracker_id
+     */
+    public function insert($tracker_id, $category_id)
     {
+        return $this->__insert($tracker_id, $category_id);
     }
 
-    public function get($pid)
+    /**
+     * @param int $report_id
+     * @param int $tracker_id
+     */
+    public function delete($tracker_id, $category_id)
     {
+        return $this->__delete($tracker_id, $category_id);
     }
+
+    /**
+     * @param int $report_id
+     * @param int $tracker_id
+     */
+    public function is_exist($tracker_id, $category_id)
+    {
+        return $this->__is_exist($tracker_id, $category_id);
+    }
+
+    public function get_all_tracker_binds($tracker_id)
+    {
+        return $this->__get_all_binds($this->first_bind, $tracker_id);
+    }
+
+    public function get_all_category_binds($category_id)
+    {
+        return $this->__get_all_binds($this->second_bind, $category_id);
+    }
+
+    
 }

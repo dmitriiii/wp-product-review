@@ -1,47 +1,57 @@
 <?
-include_once WPPR_PATH . '/includes/abstracts/abstract-class-wppr-table.php';
+include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-bind-table.php';
+include_once 'class-wppr-privacy-report.php';
+include_once 'class-wppr-privacy-tracker.php';
 
-class WPPR_Privacy_Report_Tracker extends WPPR_Abstract_Table
+class WPPR_Privacy_Report_Tracker extends WPPR_Abstract_Bind_Table
 {
     function __construct()
     {
-        parent::__construct('wppr_privacy_report_tracker');
+        parent::__construct('wppr_privacy_report_tracker', 'report_id', 'tracker_id');
     }
-
 
     public function create_table()
     {
-        global $charset_collate;
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-        include_once WPPR_PATH . '/includes/privacy-reports/class-wppr-privacy-report.php';
-        include_once WPPR_PATH . '/includes/privacy-reports/class-wppr-privacy-tracker.php';
-
         $report_db = new WPPR_Privacy_Report();
         $tracker_db = new WPPR_Privacy_Tracker();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `report_id` int(11) NOT NULL,
-            `tracker_id` int(11) NOT NULL,
-            PRIMARY KEY (`id`),
-            KEY `report_id` (`report_id`),
-            KEY `tracker_id` (`tracker_id`)
-		) $charset_collate;
-
-        ALTER TABLE {$this->table_name}
-            ADD CONSTRAINT `report_b2` FOREIGN KEY (`report_id`) REFERENCES {$report_db->get_name()} (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-            ADD CONSTRAINT `tracker_b2` FOREIGN KEY (`tracker_id`) REFERENCES {$tracker_db->get_name()} (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-        COMMIT;";
-
-        dbDelta($sql);
+        $this->__create_table($report_db, $tracker_db);
     }
 
-    public function replace($opts)
+    /**
+     * @param int $report_id
+     * @param int $tracker_id
+     */
+    public function insert($report_id, $tracker_id)
     {
+        return $this->__insert($report_id, $tracker_id);
     }
 
-    public function get($pid)
+    /**
+     * @param int $report_id
+     * @param int $tracker_id
+     */
+    public function delete($report_id, $tracker_id)
     {
+        return $this->__delete($report_id, $tracker_id);
+    }
+
+    /**
+     * @param int $report_id
+     * @param int $tracker_id
+     */
+    public function is_exist($report_id, $tracker_id)
+    {
+        return $this->__is_exist($report_id, $tracker_id);
+    }
+
+    public function get_all_report_binds($report_id)
+    {
+        return $this->__get_all_binds($this->first_bind, $report_id);
+    }
+
+    public function get_all_tracker_binds($tracker_id)
+    {
+        return $this->__get_all_binds($this->second_bind, $tracker_id);
     }
 }
