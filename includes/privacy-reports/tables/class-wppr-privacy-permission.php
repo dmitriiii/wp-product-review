@@ -1,5 +1,5 @@
 <?
-include_once WPPR_PATH . '/includes/abstracts/abstract-class-wppr-table.php';
+include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-table.php';
 
 class WPPR_Privacy_Permission extends WPPR_Abstract_Table
 {
