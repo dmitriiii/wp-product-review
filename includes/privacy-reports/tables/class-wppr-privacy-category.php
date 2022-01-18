@@ -107,4 +107,25 @@ class WPPR_Privacy_Category extends WPPR_Abstract_Table
 
         return $category;
     }
+
+    /**
+     * @param string[] $cats
+     */
+    public function get_all_by_names($cats) {
+        return $this->get_all_by('name', $cats);
+    }
+
+    public function get_all()
+    {
+        global $wpdb;
+
+        $category = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $this->table_name"
+            ),
+            ARRAY_A
+        );
+
+        return $category;
+    }
 }
