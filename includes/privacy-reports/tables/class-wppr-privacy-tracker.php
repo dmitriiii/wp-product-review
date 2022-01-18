@@ -16,7 +16,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
                 [
                     'id', 'code_signature', 'creation_date',
                     'description', 'name', 'network_signature',
-                    'website', 'source'
+                    'website'
                 ]
             )
         );
@@ -56,11 +56,11 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
 
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
-            `code_signature` varchar(128) NOT NULL,
+            `code_signature` varchar(512) NOT NULL,
             `creation_date` date NOT NULL,
             `description` text NOT NULL,
             `name` varchar(128) NOT NULL,
-            `network_signature` varchar(128) NOT NULL,
+            `network_signature` varchar(512) NOT NULL,
             `website` varchar(128) NOT NULL,
             PRIMARY KEY (`id`)
 		)
@@ -105,7 +105,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
         if ($this->get_by_id($tracker['id'])) return false;
 
         $prepared_tracker = $this->get_prepared_tracker($tracker);
-
+        
         if ($wpdb->insert(
             $this->table_name,
             $prepared_tracker,
