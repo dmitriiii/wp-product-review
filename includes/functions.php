@@ -548,5 +548,67 @@ function cron_add_wppr_tpr_update($schedules)
 	return $schedules;
 }
 
+add_filter('cron_schedules', 'cron_add_wppr_report_update');
+
+function cron_add_wppr_report_update($schedules)
+{
+	$schedules['wppr_report_update'] = array(
+		'interval' => 14 * DAY_IN_SECONDS,
+		'display' => __('Once 14 days')
+	);
+	return $schedules;
+}
+
+add_filter('cron_schedules', 'cron_add_wppr_tracker_update');
+
+function cron_add_wppr_tracker_update($schedules)
+{
+	$schedules['wppr_tracker_update'] = array(
+		'interval' => 30 * DAY_IN_SECONDS,
+		'display' => __('Once 30 days')
+	);
+	return $schedules;
+}
+
+
 include_once WPPR_PATH . '/includes/reviews-api/index.php';
 include_once WPPR_PATH . '/includes/cron/index.php';
+
+////
+include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report.php';
+include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-permission.php';
+include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-category.php';
+include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker.php';
+include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-permission.php';
+include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker-category.php';
+
+include_once WPPR_PATH . '/includes/privacy-reports/api/class-wppr-privacy-report-fetch.php';
+
+//$reports = WPPR_Privacy_Report_Fetch::get_reports('fr.meteo');
+//['trackers' => $trackers] = WPPR_Privacy_Report_Fetch::get_trackers();
+
+/*$report_db = new WPPR_Privacy_Report();
+$permission_db = new WPPR_Privacy_Permission();
+$category_db = new WPPR_Privacy_Category();
+$tracker_db = new WPPR_Privacy_Tracker();
+$report_permission_db = new WPPR_Privacy_Report_Permission();
+$report_tracker_db = new WPPR_Privacy_Report_Tracker();
+$tracker_category_db = new WPPR_Privacy_Tracker_Category();
+
+var_dump($category_db->get_all_by_names(['tgy', 'ty', 5]));*/
+
+wppr_tracker_cron();
+
+//var_dump($tracker_category_db->insert(1, 2));
+//var_dump($tracker_category_db->get_all_tracker_binds(1));
+//var_dump($tracker_category_db->delete(1, 2));
+
+//var_dump($report_tracker_db->insert(199294, 1));
+//var_dump($report_tracker_db->get_all_report_binds(199294));
+//var_dump($report_tracker_db->delete(199294, 1));
+
+//var_dump($report_permission_db->insert(199294, 2));
+//var_dump($report_permission_db->get_all_report_binds(199294));
+//var_dump($report_permission_db->delete(199294, 2));
+
+
