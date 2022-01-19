@@ -62,7 +62,9 @@ abstract  class WPPR_Abstract_Table
     {
         global $wpdb;
         
-        if (empty($cats)) return [];
+        if (!is_array($values)) $values = [$values];
+
+        if (empty($values)) return [];
         
         $params = implode(' OR ', array_map(function ($val) use ($field_name) {
             $type = is_numeric($val) ? '%d' : '%s';
