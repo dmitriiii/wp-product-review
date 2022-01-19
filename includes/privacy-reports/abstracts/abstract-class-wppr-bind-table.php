@@ -1,7 +1,8 @@
 <?
 include_once 'abstract-class-wppr-table.php';
 
-abstract  class WPPR_Abstract_Bind_Table extends WPPR_Abstract_Table {
+abstract  class WPPR_Abstract_Bind_Table extends WPPR_Abstract_Table
+{
     protected $first_bind = '';
     protected $second_bind = '';
 
@@ -9,17 +10,25 @@ abstract  class WPPR_Abstract_Bind_Table extends WPPR_Abstract_Table {
     abstract function delete($a, $b);
     abstract function is_exist($a, $b);
 
-    function __construct($table_name, $first_bind, $second_bind) {
+    function __construct($table_name, $first_bind, $second_bind)
+    {
+        $this->first_bind = $first_bind;
+        $this->second_bind = $second_bind;
         parent::__construct($table_name);
-        $this->first_bind =  $first_bind;
-        $this->second_bind =  $second_bind;
+    }
+
+    function get_left_name() {
+        return $this->first_bind;
+    }
+    function get_right_name() {
+        return $this->second_bind;
     }
 
     public function __create_table($first_bind_table, $second_bind_table)
     {
         global $charset_collate;
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
+        
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `{$this->first_bind}` int(11) NOT NULL,
@@ -30,14 +39,15 @@ abstract  class WPPR_Abstract_Bind_Table extends WPPR_Abstract_Table {
 		) $charset_collate;
 
         ALTER TABLE {$this->table_name}
-            ADD CONSTRAINT `{$this->table_name}_{$this->first_bind}` FOREIGN KEY (`{$this->first_bind}`) REFERENCES {$first_bind_table->get_name()} (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-            ADD CONSTRAINT `{$this->table_name}_{$this->second_bind}` FOREIGN KEY (`{$this->second_bind}`) REFERENCES {$second_bind_table->get_name()} (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+            ADD CONSTRAINT `{$this->table_name}_{$this->first_bind}` FOREIGN KEY (`{$this->first_bind}`) REFERENCES {$first_bind_table->get_name()} (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+            ADD CONSTRAINT `{$this->table_name}_{$this->second_bind}` FOREIGN KEY (`{$this->second_bind}`) REFERENCES {$second_bind_table->get_name()} (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
         COMMIT;";
 
         dbDelta($sql);
     }
 
-    protected function __insert($value_a, $value_b) {
+    protected function __insert($value_a, $value_b)
+    {
         global $wpdb;
 
         if ($this->__is_exist($value_a, $value_b)) return false;
@@ -53,7 +63,8 @@ abstract  class WPPR_Abstract_Bind_Table extends WPPR_Abstract_Table {
         return false;
     }
 
-    protected function __delete($value_a, $value_b) {
+    protected function __delete($value_a, $value_b)
+    {
         global $wpdb;
 
         if (!$this->__is_exist($value_a, $value_b)) return false;
