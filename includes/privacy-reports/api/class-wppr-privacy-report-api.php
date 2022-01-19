@@ -3,6 +3,35 @@ include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wpp
 
 class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
 {
+    /**
+     * @var WPPR_Privacy_Report
+     */
+    private $report_db;
+    /**
+     * @var WPPR_Privacy_Permission
+     */
+    private $permission_db;
+    /**
+     * @var WPPR_Privacy_Tracker
+     */
+    private $tracker_db;
+    /**
+     * @var WPPR_Privacy_Report_Permission
+     */
+    private $report_permission_db;
+    /**
+     * @var WPPR_Privacy_Report_Tracker
+     */
+    private $report_tracker_db;
+    /**
+     * @var WPPR_Privacy_Tracker_API
+     */
+    private $tracker_api;
+    /**
+     * @var WPPR_Privacy_Report_Fetch
+     */
+    private $report_fetch_api;
+
     function __construct(
         WPPR_Privacy_Report $report_db,
         WPPR_Privacy_Permission $permission_db,
