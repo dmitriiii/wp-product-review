@@ -103,7 +103,11 @@ abstract class WPPR_Abstract_Privacy_API
         WPPR_Abstract_Bind_Table $bind_table,
         WPPR_Abstract_Data_Table $s_table
     ) {
-        $db_s_data = $s_table->get_all_by_names($s_data);
+        $s_data = [...$s_data];
+        if (isset($s_data[0]) && is_numeric($s_data[0]))
+            $db_s_data = $s_table->get_all_by_ids($s_data);
+        else $db_s_data = $s_table->get_all_by_names($s_data);
+        
         $db_s_data_id = array_map(function ($s_el) {
             return $s_el['id'];
         }, $db_s_data);
