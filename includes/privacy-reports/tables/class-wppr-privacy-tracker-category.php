@@ -56,6 +56,4 @@ class WPPR_Privacy_Tracker_Category extends WPPR_Abstract_Bind_Table
     {
         return $this->__get_all_binds($this->second_bind, $category_id);
     }
-
-    
 }
