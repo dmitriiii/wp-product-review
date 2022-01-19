@@ -15,7 +15,6 @@ class WPPR_PPR_Cron_Manager
     {
         wp_unschedule_hook('wppr_privacy_report_cron');
         wp_unschedule_hook('wppr_privacy_report_job');
-
         wp_unschedule_hook('wppr_privacy_tracker_cron');
     }
 }

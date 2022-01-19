@@ -1,7 +1,7 @@
 <?
-include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-table.php';
+include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-data-table.php';
 
-class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
+class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
 {
     function __construct()
     {
@@ -129,5 +129,15 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Table
         );
 
         return $tracker;
+    }
+
+    public function get_by_name($name)
+    {
+        
+    }
+
+    public function get_all_by_names(array $names)
+    {
+        
     }
 }

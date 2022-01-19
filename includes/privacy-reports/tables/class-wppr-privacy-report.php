@@ -1,20 +1,20 @@
 <?
-include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-table.php';
+include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-data-table.php';
 
-class WPPR_Privacy_Report extends WPPR_Abstract_Table
+class WPPR_Privacy_Report extends WPPR_Abstract_Data_Table
 {
     function __construct()
     {
         parent::__construct('wppr_privacy_report');
     }
 
-    private function get_prepared_report($report)
+    function get_prepared_report($report)
     {
         $prepared_report = array_intersect_key(
             $report,
             array_flip(
                 [
-                    'apk_hash', 'app_name', 'created',
+                    'id', 'apk_hash', 'app_name', 'created',
                     'creator', 'downloads', 'handle',
                     'icon_hash', 'source',
                     'uaid', 'updated', 'version_code', 'version_name'
@@ -22,7 +22,7 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
             )
         );
 
-        $prepared_report['id'] = $report['report'];
+        if (isset($report['report'])) $prepared_report['id'] = $report['report'];
 
         return $prepared_report;
     }
@@ -80,11 +80,10 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
     {
         global $wpdb;
 
-        $exist_report = $this->get_by_id($report['report']);
+        $prepared_report = $this->get_prepared_report($report);
+        $exist_report = $this->get_by_id($prepared_report['id']);
 
         if (!$exist_report) return false;
-
-        $prepared_report = $this->get_prepared_report($report);
 
         if (!$this->is_need_update($prepared_report, $exist_report)) return false;
 
@@ -104,9 +103,8 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
     {
         global $wpdb;
 
-        if ($this->get_by_id($report['report'])) return false;
-
         $prepared_report = $this->get_prepared_report($report);
+        if ($this->get_by_id($prepared_report['id'])) return false;
 
         if ($wpdb->insert(
             $this->table_name,
@@ -131,5 +129,14 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Table
         );
 
         return $report;
+    }
+
+    public function get_by_name($name)
+    {
+        
+    }
+    public function get_all_by_names(array $names)
+    {
+        
     }
 }
