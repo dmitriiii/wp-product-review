@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fired during plugin deactivation
  *
@@ -19,7 +20,8 @@
  * @subpackage WPPR/includes
  * @author     ThemeIsle <friends@themeisle.com>
  */
-class WPPR_Deactivator {
+class WPPR_Deactivator
+{
 
 	/**
 	 * Short Description. (use period)
@@ -28,11 +30,17 @@ class WPPR_Deactivator {
 	 *
 	 * @since    3.0.0
 	 */
-	public static function deactivate() {
+	public static function deactivate()
+	{
+		self::deactivate_extend_review_cron();
+	}
+
+
+	private static function deactivate_extend_review_cron()
+	{
 		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-tpr-manager.php';
 
 		$tpr_cron_manager = new WPPR_TPR_Cron_Manager();
 		$tpr_cron_manager->unschedule();
 	}
-
 }
