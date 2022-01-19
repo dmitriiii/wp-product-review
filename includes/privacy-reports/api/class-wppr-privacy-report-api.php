@@ -66,23 +66,40 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
         }
 
         $this->update_reports($reports);
+
         $this->update_permissions($perms);
+
         $this->bind_permissions($reports);
         $this->unbind_dead_permissions($reports);
+
+        $this->bind_trackers($reports);
+        $this->unbind_dead_trackers($reports);
     }
 
 
-    function update_reports($reports)
+    function update_reports(array $reports)
     {
         $this->update_table($reports, $this->report_db);
     }
 
-    function update_permissions($perms)
+    function update_permissions(array $perms)
     {
         $this->update_light_table($perms, 'name', $this->permission_db);
     }
 
-    function bind_permissions($reports)
+    /**
+     * @param array<int, string|int> $tracker_ids
+     */
+    private function update_trackers(array $tracker_ids)
+    {
+        $all_trackers = array_filter($this->report_fetch_api::get_trackers(), function ($tracker) use ($tracker_ids) {
+            return in_array($tracker['id'], $tracker_ids);
+        });
+
+        $this->tracker_api->update($all_trackers);
+    }
+
+    function bind_permissions(array $reports)
     {
         $this->bulk_update_bind_table(
             $reports,
@@ -93,7 +110,7 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
         );
     }
 
-    function unbind_dead_permissions($reports)
+    function unbind_dead_permissions(array $reports)
     {
         $this->bulk_garbage_bind_table(
             $reports,
@@ -101,6 +118,64 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
             'get_all_report_binds',
             $this->report_permission_db,
             $this->permission_db
+        );
+    }
+
+    function bind_trackers(array $reports)
+    {
+
+        $this->fill_non_exist_trackers($reports);
+
+        foreach ($reports as $report) {
+            $this->bind_report_trackers($report, $report['trackers']);
+        }
+    }
+
+    private function fill_non_exist_trackers(array $reports)
+    {
+        $tracker_ids = array_reduce($reports, function ($carr, $report) {
+            if (!isset($report['trackers'])) return $carr;
+            return array_unique(
+                [...$carr, ...$report['trackers']]
+            );
+        }, []);
+
+        $db_trackers = $this->tracker_db->get_all_by_ids($tracker_ids);
+
+        if (count($tracker_ids) != count($db_trackers)) {
+            $db_tracker_ids = array_map(function ($tracker) {
+                return $tracker['id'];
+            }, $db_trackers);
+
+            $new_trackers = array_filter($tracker_ids, function ($tracker_id) use ($db_tracker_ids) {
+                return !in_array($tracker_id, $db_tracker_ids);
+            });
+
+            $this->update_trackers($new_trackers);
+        }
+    }
+
+    private function bind_report_trackers(array $report, array $tracker_ids)
+    {
+        $exist_binds = $this->report_tracker_db->get_all_report_binds($report['report']);
+        $exist_bind_tracker_ids = array_map(function ($exist_bind) {
+            return $exist_bind['tracker_id'];
+        }, $exist_binds);
+
+        foreach ($tracker_ids as $tracker_id) {
+            if (in_array($tracker_id, $exist_bind_tracker_ids)) continue;
+            $this->report_tracker_db->insert($report['report'], $tracker_id);
+        }
+    }
+
+    function unbind_dead_trackers(array $reports)
+    {
+        $this->bulk_garbage_bind_table(
+            $reports,
+            'trackers',
+            'get_all_report_binds',
+            $this->report_tracker_db,
+            $this->tracker_db
         );
     }
 }
