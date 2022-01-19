@@ -1,7 +1,7 @@
 <?
-include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-table.php';
+include_once WPPR_PATH . '/includes/privacy-reports/abstracts/abstract-class-wppr-data-table.php';
 
-class WPPR_Privacy_Category extends WPPR_Abstract_Table
+class WPPR_Privacy_Category extends WPPR_Abstract_Data_Table
 {
     function __construct()
     {
