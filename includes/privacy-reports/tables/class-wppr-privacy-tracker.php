@@ -116,21 +116,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
         )) return true;
         return false;
     }
-
-    public function get_by_id($tracker_id)
-    {
-        global $wpdb;
-
-        $tracker = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM $this->table_name WHERE id = %d",
-                $tracker_id
-            ), ARRAY_A
-        );
-
-        return $tracker;
-    }
-
+    
     public function get_by_name($name)
     {
         

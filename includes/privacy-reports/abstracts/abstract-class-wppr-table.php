@@ -82,6 +82,28 @@ abstract  class WPPR_Abstract_Table
         return $this->table_name;
     }
 
+    public function get_by_id($id)
+    {
+        global $wpdb;
+
+        $data = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $this->table_name WHERE id = %d",
+                $id
+            ),
+            ARRAY_A
+        );
+
+        return $data;
+    }
+
+    /**
+     * @param int[] $ids
+     */
+    public function get_all_by_ids($ids) {
+        return $this->get_all_by('id', $ids);
+    }
+
     public function get_all()
     {
         global $wpdb;

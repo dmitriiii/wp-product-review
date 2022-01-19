@@ -79,21 +79,6 @@ class WPPR_Privacy_Permission extends WPPR_Abstract_Data_Table
         return false;
     }
 
-    public function get_by_id($id)
-    {
-        global $wpdb;
-
-        $report = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM $this->table_name WHERE id = %d",
-                $id
-            ),
-            ARRAY_A
-        );
-
-        return $report;
-    }
-
     public function get_by_name($name)
     {
         global $wpdb;
