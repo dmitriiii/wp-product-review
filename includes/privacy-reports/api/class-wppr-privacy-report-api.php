@@ -35,15 +35,19 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
     function __construct(
         WPPR_Privacy_Report $report_db,
         WPPR_Privacy_Permission $permission_db,
+        WPPR_Privacy_Tracker $tracker_db,
         WPPR_Privacy_Report_Permission $report_permission_db,
         WPPR_Privacy_Report_Tracker $report_tracker_db,
         WPPR_Privacy_Tracker_API $tracker_api,
+        WPPR_Privacy_Report_Fetch $report_fetch_api,
     ) {
         $this->report_db = $report_db;
         $this->permission_db = $permission_db;
+        $this->tracker_db = $tracker_db;
         $this->report_permission_db = $report_permission_db;
         $this->report_tracker_db = $report_tracker_db;
         $this->tracker_api = $tracker_api;
+        $this->report_fetch_api = $report_fetch_api;
     }
 
     function update($raw_reports = [])
