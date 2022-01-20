@@ -505,18 +505,20 @@ if (!function_exists('wppr_schema_data_types_allowed_brand')) {
 if (!function_exists('wppr_layout_get_privacy_info')) {
 	function wppr_layout_get_privacy_info($review_object)
 	{
+		$report = $review_object->get_privacy_report();
+		if (!get_field('enable_privacy_reports', 'option') || !$report) return;
 		?>
 		<div class="review-wu-privacy-bar">
 			<div class="review-wu-privacy-app">
 				<span class="review-wu-privacy-app__title"><?= __('version', 'wp-product-review') ?>:</span>
-				<a href="#" class="review-wu-privacy-app__version">1.2.7</a>
+				<a href="#" class="review-wu-privacy-app__version"><?= $report['version_name'] ?></a>
 			</div>
 			<div class="review-wu-privacy-trackers">
-				<span class="review-wu-privacy-trackers__count review-wu-privacy-badge review-wu-privacy-badge--success">7</span>
+				<span class="review-wu-privacy-trackers__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_tracker_level($report['tracker_count']) ?>"><?= $report['tracker_count'] ?></span>
 				<a href="javascript:;" class="review-wu-privacy-trackers__more"><?= __('trackers', 'wp-product-review') ?></a>
 			</div>
 			<div class="review-wu-privacy-permissions">
-				<span class="review-wu-privacy-permissions__count review-wu-privacy-badge review-wu-privacy-badge--success">10</span>
+				<span class="review-wu-privacy-permissions__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_permission_level($report['permission_count']) ?>"><?= $report['permission_count'] ?></span>
 				<a href="javascript:;" class="review-wu-privacy-permissions__nore"><?= __('permissions', 'wp-product-review') ?></a>
 			</div>
 		</div>
@@ -553,8 +555,8 @@ add_filter('cron_schedules', 'cron_add_wppr_report_update');
 function cron_add_wppr_report_update($schedules)
 {
 	$schedules['wppr_report_update'] = array(
-		'interval' => 14 * DAY_IN_SECONDS,
-		'display' => __('Once 14 days')
+		'interval' => 20 * DAY_IN_SECONDS,
+		'display' => __('Once 20 days')
 	);
 	return $schedules;
 }
@@ -573,42 +575,3 @@ function cron_add_wppr_tracker_update($schedules)
 
 include_once WPPR_PATH . '/includes/reviews-api/index.php';
 include_once WPPR_PATH . '/includes/cron/index.php';
-
-////
-include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report.php';
-include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-permission.php';
-include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-category.php';
-include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker.php';
-include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-permission.php';
-include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker-category.php';
-
-include_once WPPR_PATH . '/includes/privacy-reports/api/class-wppr-privacy-report-fetch.php';
-
-//$reports = WPPR_Privacy_Report_Fetch::get_reports('fr.meteo');
-//['trackers' => $trackers] = WPPR_Privacy_Report_Fetch::get_trackers();
-
-/*$report_db = new WPPR_Privacy_Report();
-$permission_db = new WPPR_Privacy_Permission();
-$category_db = new WPPR_Privacy_Category();
-$tracker_db = new WPPR_Privacy_Tracker();
-$report_permission_db = new WPPR_Privacy_Report_Permission();
-$report_tracker_db = new WPPR_Privacy_Report_Tracker();
-$tracker_category_db = new WPPR_Privacy_Tracker_Category();
-
-var_dump($category_db->get_all_by_names(['tgy', 'ty', 5]));*/
-
-wppr_tracker_cron();
-
-//var_dump($tracker_category_db->insert(1, 2));
-//var_dump($tracker_category_db->get_all_tracker_binds(1));
-//var_dump($tracker_category_db->delete(1, 2));
-
-//var_dump($report_tracker_db->insert(199294, 1));
-//var_dump($report_tracker_db->get_all_report_binds(199294));
-//var_dump($report_tracker_db->delete(199294, 1));
-
-//var_dump($report_permission_db->insert(199294, 2));
-//var_dump($report_permission_db->get_all_report_binds(199294));
-//var_dump($report_permission_db->delete(199294, 2));
-
-
