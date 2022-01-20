@@ -11,7 +11,7 @@ function wppr_report_cron()
     foreach ($product_post_map as $map) {
         $vpn_id = $map['vpnid'];
         $link_map = get_field('third_party_review_portal_links', $map['pid']);
-        if (!$link_map) return;
+        if (!$link_map) continue;
         if (!count($link_map) || !count(array_filter(array_values($link_map), function ($link) {
             return strpos($link, 'google') != false;
         }))) continue;
