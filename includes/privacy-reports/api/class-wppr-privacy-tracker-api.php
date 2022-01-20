@@ -6,7 +6,7 @@ class WPPR_Privacy_Tracker_API extends WPPR_Abstract_Privacy_API
     function __construct(
         WPPR_Privacy_Tracker $tracker_db,
         WPPR_Privacy_Category $category_db,
-        WPPR_Privacy_Tracker_Category $tracker_category_db,
+        WPPR_Privacy_Tracker_Category $tracker_category_db
     ) {
         $this->tracker_db = $tracker_db;
         $this->category_db = $category_db;
