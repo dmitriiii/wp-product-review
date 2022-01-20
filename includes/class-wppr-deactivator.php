@@ -33,6 +33,7 @@ class WPPR_Deactivator
 	public static function deactivate()
 	{
 		self::deactivate_extend_review_cron();
+		self::deactivate_privacy_product_app_cron();
 	}
 
 
@@ -42,5 +43,13 @@ class WPPR_Deactivator
 
 		$tpr_cron_manager = new WPPR_TPR_Cron_Manager();
 		$tpr_cron_manager->unschedule();
+	}
+
+	private static function deactivate_privacy_product_app_cron()
+	{
+		include_once WPPR_PATH . '/includes/cron/privacy-reports/class-wppr-ppr-manager.php';
+
+		$pp_cron_manager = new WPPR_Product_Privacy_Cron_Manager();
+		$pp_cron_manager->unschedule();
 	}
 }
