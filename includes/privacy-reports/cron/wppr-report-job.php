@@ -1,6 +1,7 @@
 <?
 function wppr_report_cron()
 {
+    if (!get_field('enable_privacy_reports', 'option')) return;
 
     $product_post_map = wppr_get_product_post_map('vpn');
     $count = 0;
@@ -38,14 +39,19 @@ function wppr_report_job($vpn_id)
     })];
 
     $link_map = get_field('third_party_review_portal_links', $product_post_map['pid']);
+
+    if (!$link_map) return;
+
     [$google_link] = [...array_filter(array_values($link_map), function ($link) {
         return strpos($link, 'google') != false;
     })];
+
     if (!$google_link) return;
 
     parse_str(parse_url($google_link, PHP_URL_QUERY), $query_params);
 
     $app_name = isset($query_params['id']) ? $query_params['id'] : '';
+
     if (!$app_name) return;
 
     $reports = $privacy_report_api::get_reports($app_name);
