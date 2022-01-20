@@ -39,7 +39,7 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
         WPPR_Privacy_Report_Permission $report_permission_db,
         WPPR_Privacy_Report_Tracker $report_tracker_db,
         WPPR_Privacy_Tracker_API $tracker_api,
-        WPPR_Privacy_Report_Fetch $report_fetch_api,
+        WPPR_Privacy_Report_Fetch $report_fetch_api
     ) {
         $this->report_db = $report_db;
         $this->permission_db = $permission_db;
@@ -179,8 +179,7 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
         );
     }
 
-    function get_latest_report_by_handle($handle)
-    {
+    function get_latest_report_by_handle($handle) {
         $report = $this->report_db->get_last_version_by_handle($handle);
         if (!$report) return null;
         $tracker_binds = $this->report_tracker_db->get_all_report_binds($report['id']);
