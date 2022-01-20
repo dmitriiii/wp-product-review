@@ -47,8 +47,8 @@ class WPPR_Deactivator
 
 	private static function deactivate_privacy_product_app_cron()
 	{
-		include_once WPPR_PATH . '/includes/cron/privacy-reports/class-wppr-ppr-manager.php';
-
+		include_once WPPR_PATH . '/includes/privacy-reports/cron/class-wppr-ppr-manager.php';
+		
 		$pp_cron_manager = new WPPR_Product_Privacy_Cron_Manager();
 		$pp_cron_manager->unschedule();
 	}

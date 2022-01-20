@@ -57,8 +57,8 @@ class WPPR_Activator
 		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-permission.php';
 		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker-category.php';
 		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-tracker.php';
-		include_once WPPR_PATH . '/includes/cron/privacy-reports/class-wppr-ppr-manager.php';
-		
+		include_once WPPR_PATH . '/includes/privacy-reports/cron/class-wppr-ppr-manager.php';
+
 		new WPPR_Privacy_Report();
 		new WPPR_Privacy_Tracker();
 		new WPPR_Privacy_Category();
