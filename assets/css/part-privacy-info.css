@@ -15,17 +15,22 @@
   border-radius: 10rem;
 }
 
-.review-wu-privacy-badge--success {
+.review-wu-privacy-badge--none {
+  color: #212529;
+  background-color: rgb(204, 204, 204);
+}
+
+.review-wu-privacy-badge--good {
   color: #212529;
   background-color: #bfdb08;
 }
 
-.review-wu-privacy-badge--warning {
+.review-wu-privacy-badge--normal {
   color: #212529;
   background-color: #ffc70f;
 }
 
-.review-wu-privacy-badge--error {
+.review-wu-privacy-badge--bad {
   color: #fff;
   background-color: #e61718;
 }
