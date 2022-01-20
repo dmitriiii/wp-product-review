@@ -1,5 +1,5 @@
 <?
-class WPPR_PPR_Cron_Manager
+class WPPR_Product_Privacy_Cron_Manager
 {
     function schedule()
     {
@@ -8,7 +8,7 @@ class WPPR_PPR_Cron_Manager
         }
 
         if (!wp_next_scheduled('wppr_privacy_tracker_cron')) {
-            wp_schedule_event(time(), 'wppr_tracker_update', 'wppr_privacy_tracker_cron');
+            wp_schedule_event(strtotime('tomorrow midnight'), 'wppr_tracker_update', 'wppr_privacy_tracker_cron');
         }
     }
     function unschedule()

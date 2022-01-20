@@ -67,7 +67,7 @@ class WPPR_Activator
 		new WPPR_Privacy_Report_Permission();
 		new WPPR_Privacy_Report_Tracker();
 
-		$ppr_cron_manager = new WPPR_PPR_Cron_Manager();
+		$ppr_cron_manager = new WPPR_Product_Privacy_Cron_Manager();
 		$ppr_cron_manager->schedule();
 	}
 }
