@@ -58,6 +58,21 @@ abstract  class WPPR_Abstract_Table
         return $wpdb->query($wpdb->prepare($sql, $data));
     }
 
+    /**
+     * @param string|int $value
+     */
+    protected function get_by($field_name, $value)
+    {
+        global $wpdb;
+
+        if (!$value) return [];
+
+        return $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $this->table_name WHERE $field_name = {is_numeric($value) ? '%d' : '%s'}",
+            $value
+        ), ARRAY_A);
+    }
+
     protected function get_all_by($field_name, $values)
     {
         global $wpdb;
