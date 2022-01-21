@@ -169,10 +169,6 @@ class Wppr_Public {
 			wp_enqueue_style( $this->plugin_name . '-fa-compat', WPPR_URL . '/assets/css/fontawesome-compat.css', array(), $this->version );
 		}
 
-		if ('style3' == $review->get_template()) {
-			wp_enqueue_style( $this->plugin_name . '-part-privacy-info', WPPR_URL . '/assets/css/part-privacy-info.css', array(), $this->version );
-		}
-
 		$style = $this->generate_styles();
 
 		$style = apply_filters( 'wppr_global_style', $style );

@@ -86,7 +86,6 @@ $desc =  str_replace(
 							</a>
 						</div>
 					<? } ?>
-					<?php wppr_layout_get_privacy_info($review_object); ?>	
 					<?php wppr_layout_get_options_ratings($review_object, 'dashes'); ?>
 
 				</div><!-- end .review-wu-left -->

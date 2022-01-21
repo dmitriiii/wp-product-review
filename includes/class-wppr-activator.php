@@ -33,41 +33,18 @@ class WPPR_Activator
 	public static function activate()
 	{
 		$actvator = new WPPR_Activator();
-		self::create_extend_review();
-		self::create_privacy_report();
+		$actvator->create_extend_review_db();
 	}
 
-	private static function create_extend_review()
+	private function create_extend_review_db()
 	{
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
 		include_once WPPR_PATH . '/includes/cron/third-party-reviews/class-wppr-tpr-manager.php';
-		
-		new WPPR_Review_Scores();
+
+		$scores_db = new WPPR_Review_Scores();
+		$scores_db->create_table();
 
 		$tpr_cron_manager = new WPPR_TPR_Cron_Manager();
 		$tpr_cron_manager->schedule();
-	}
-
-	private static function create_privacy_report()
-	{
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-permission.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-category.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-permission.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-tracker-category.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-tracker.php';
-		include_once WPPR_PATH . '/includes/privacy-reports/cron/class-wppr-ppr-manager.php';
-
-		new WPPR_Privacy_Report();
-		new WPPR_Privacy_Tracker();
-		new WPPR_Privacy_Category();
-		new WPPR_Privacy_Permission();
-		new WPPR_Privacy_Tracker_Category();
-		new WPPR_Privacy_Report_Permission();
-		new WPPR_Privacy_Report_Tracker();
-
-		$ppr_cron_manager = new WPPR_Product_Privacy_Cron_Manager();
-		$ppr_cron_manager->schedule();
 	}
 }
