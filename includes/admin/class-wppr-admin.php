@@ -1072,6 +1072,246 @@ Substitution variables:
 					'rows' => 3,
 					'new_lines' => 'br',
 				),
+				array(
+					'key' => 'field_61dc9e588b414',
+					'label' => 'Privacy Report',
+					'name' => '',
+					'type' => 'tab',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'placement' => 'top',
+					'endpoint' => 0,
+				),
+				array(
+					'key' => 'field_61e9a22903c58',
+					'label' => 'Enable privacy reports',
+					'name' => 'enable_privacy_reports',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
+				array(
+					'key' => 'field_61dc8c7ad540e',
+					'label' => 'Exodus API Key',
+					'name' => 'exodus_api_key',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_61e99c5320668',
+					'label' => 'Tracker levels',
+					'name' => 'privacy_tracker_levels',
+					'type' => 'group',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '50%',
+						'class' => '',
+						'id' => '',
+					),
+					'layout' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_61e99dfe2066b',
+							'label' => 'Good Level',
+							'name' => 'good_level',
+							'type' => 'group',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'layout' => 'block',
+							'sub_fields' => array(
+								array(
+									'key' => 'field_61e99d0b2066a',
+									'label' => 'Max Quantity',
+									'name' => 'max_quantity',
+									'type' => 'number',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => 0,
+									'placeholder' => '',
+									'prepend' => '',
+									'append' => '',
+									'min' => 0,
+									'max' => '',
+									'step' => 1,
+								),
+							),
+						),
+						array(
+							'key' => 'field_61e99e272066c',
+							'label' => 'Normal level',
+							'name' => 'normal_level',
+							'type' => 'group',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'layout' => 'block',
+							'sub_fields' => array(
+								array(
+									'key' => 'field_61e99e282066e',
+									'label' => 'Max Quantity',
+									'name' => 'max_quantity',
+									'type' => 'number',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => 4,
+									'placeholder' => '',
+									'prepend' => '',
+									'append' => '',
+									'min' => 0,
+									'max' => '',
+									'step' => 1,
+								),
+							),
+						),
+					),
+				),
+				array(
+					'key' => 'field_61e9a44f1037a',
+					'label' => 'Permission levels',
+					'name' => 'privacy_permission_levels',
+					'type' => 'group',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '50%',
+						'class' => '',
+						'id' => '',
+					),
+					'layout' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_61e9a44f1037b',
+							'label' => 'Good Level',
+							'name' => 'good_level',
+							'type' => 'group',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'layout' => 'block',
+							'sub_fields' => array(
+								array(
+									'key' => 'field_61e9a44f1037d',
+									'label' => 'Max Quantity',
+									'name' => 'max_quantity',
+									'type' => 'number',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => 0,
+									'placeholder' => '',
+									'prepend' => '',
+									'append' => '',
+									'min' => 0,
+									'max' => '',
+									'step' => 1,
+								),
+							),
+						),
+						array(
+							'key' => 'field_61e9a44f1037e',
+							'label' => 'Normal level',
+							'name' => 'normal_level',
+							'type' => 'group',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'layout' => 'block',
+							'sub_fields' => array(
+								array(
+									'key' => 'field_61e9a44f10380',
+									'label' => 'Max Quantity',
+									'name' => 'max_quantity',
+									'type' => 'number',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => 4,
+									'placeholder' => '',
+									'prepend' => '',
+									'append' => '',
+									'min' => 0,
+									'max' => '',
+									'step' => 1,
+								),
+							),
+						),
+					),
+				),
 			),
 			'location' => array(
 				array(
@@ -1101,12 +1341,12 @@ function init_wppr_third_party_review_links()
 		$product_post_map = wppr_get_product_post_map('vpn');
 		$portal_list = get_field('third_party_review_portals', 'option');
 		$enable = get_field('enable_third_party_reviews', 'option');
-		[$field_obj] = array_filter(
+		/*[$field_obj] = array_filter(
 			get_field_object('third_party_review_portals', 'option')['sub_fields'],
 			function ($obj) {
 				return $obj['name'] === 'portal_name';
 			}
-		);
+		);*/
 
 
 		if (!$enable || !count($product_post_map)) return;
@@ -1148,27 +1388,27 @@ function init_wppr_third_party_review_links()
 						'id' => '',
 					),
 					'layout' => 'block',
-					'sub_fields' =>
-					array_map(
-						function ($group) use ($field_obj) {
-							return array(
-								'key' => 'field_wppr_portal_' . $group['portal_name'] . '_link',
-								'label' => $group['portal_label'] . ' link',
-								'name' => $group['portal_name'] . '_link',
-								'type' => 'url',
-								'instructions' => '',
-								'required' => 0,
-								'conditional_logic' => 0,
-								'wrapper' => array(
-									'width' => '33.333%',
-									'class' => '',
-									'id' => '',
-								),
-								'placeholder' => '',
-							);
-						},
-						$portal_list
-					)
+					'sub_fields' => $portal_list ?
+						array_map(
+							function ($group) /*use ($field_obj)*/ {
+								return array(
+									'key' => 'field_wppr_portal_' . $group['portal_name'] . '_link',
+									'label' => $group['portal_label'] . ' link',
+									'name' => $group['portal_name'] . '_link',
+									'type' => 'url',
+									'instructions' => '',
+									'required' => 0,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '33.333%',
+										'class' => '',
+										'id' => '',
+									),
+									'placeholder' => '',
+								);
+							},
+							$portal_list
+						) : []
 				),
 			),
 			'location' => array(
@@ -1194,7 +1434,6 @@ function init_wppr_third_party_review_links()
 	};
 }
 add_action('acf/init', 'init_wppr_third_party_review_links');
-
 
 function wppr_allow_only_letters($valid, $value)
 {
