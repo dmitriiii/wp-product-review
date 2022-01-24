@@ -62,4 +62,20 @@ class WPPR_Privacy_Tracker_API extends WPPR_Abstract_Privacy_API
             $this->category_db
         );
     }
+
+    function get_tracker_detail_by_id($tracker_id)
+    {
+        $tracker = $this->tracker_db->get_by_id($tracker_id);
+        $tracker['categories'] = array_map(function ($category) {
+            return $category['name'];
+        }, $this->get_categories_by_tracker_id($tracker_id));
+        return $tracker;
+    }
+
+    function get_categories_by_tracker_id($tracker_id)
+    {
+        return $this->category_db->get_all_by_ids(array_map(function ($bind) {
+            return $bind['category_id'];
+        }, $this->tracker_category_db->get_all_tracker_binds($tracker_id)));
+    }
 }

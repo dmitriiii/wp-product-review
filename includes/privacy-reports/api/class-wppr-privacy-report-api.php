@@ -179,7 +179,8 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
         );
     }
 
-    function get_latest_report_by_handle($handle) {
+    function get_latest_report_by_handle($handle)
+    {
         $report = $this->report_db->get_last_version_by_handle($handle);
         if (!$report) return null;
         $tracker_binds = $this->report_tracker_db->get_all_report_binds($report['id']);
@@ -188,5 +189,45 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
             'tracker_count' => count($tracker_binds),
             'permission_count' => count($permission_binds)
         ]);
+    }
+
+    function get_reports_by_handle($handle)
+    {
+        $reports = $this->report_db->get_all_by_handle($handle);
+        return array_map(function ($report) {
+            $tracker_binds = $this->report_tracker_db->get_all_report_binds($report['id']);
+            $permission_binds = $this->report_permission_db->get_all_report_binds($report['id']);
+            return array_merge($report, [
+                'tracker_count' => count($tracker_binds),
+                'permission_count' => count($permission_binds)
+            ]);
+        }, $reports);
+    }
+
+    function get_report_detail($handle, $version_code)
+    {
+        $report = $this->report_db->get_by_version($handle, $version_code);
+        $report['trackers'] = $this->get_trackers_by_report_id($report['id']);
+        $report['permissions'] = array_map(function ($category) {
+            return $category['name'];
+        }, $this->get_permissions_by_report_id($report['id']));
+
+        return $report;
+    }
+
+    function get_trackers_by_report_id($report_id)
+    {
+        $tracker_binds = $this->report_tracker_db->get_all_report_binds($report_id);
+
+        return array_map(function ($bind) {
+            return $this->tracker_api->get_tracker_detail_by_id($bind['tracker_id']);
+        }, $tracker_binds);
+    }
+
+    function get_permissions_by_report_id($report_id)
+    {
+        return $this->permission_db->get_all_by_ids(array_map(function ($bind) {
+            return $bind['permission_id'];
+        }, $this->report_permission_db->get_all_report_binds($report_id)));
     }
 }

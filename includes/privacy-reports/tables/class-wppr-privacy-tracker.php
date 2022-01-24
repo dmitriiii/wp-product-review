@@ -94,7 +94,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
             ],
             array_map([$this, 'get_format'], array_keys($prepared_tracker))
         )) return true;
-        
+
         return false;
     }
 
@@ -105,7 +105,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
         if ($this->get_by_id($tracker['id'])) return false;
 
         $prepared_tracker = $this->get_prepared_tracker($tracker);
-        
+
         if ($wpdb->insert(
             $this->table_name,
             $prepared_tracker,
@@ -116,14 +116,20 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
         )) return true;
         return false;
     }
-    
+
+    /**
+     * @param (string|int)[] $cats
+     */
+    public function get_all_by_ids($ids)
+    {
+        return $this->get_all_by('id', $ids);
+    }
+
     public function get_by_name($name)
     {
-        
     }
 
     public function get_all_by_names(array $names)
     {
-        
     }
 }

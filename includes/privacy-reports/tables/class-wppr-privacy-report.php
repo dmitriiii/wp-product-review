@@ -121,10 +121,25 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Data_Table
     {
         
     }
-    
+
     public function get_all_by_names(array $names)
     {
         
+    }
+
+    public function get_by_version($handle, $version_code) {
+        global $wpdb;
+
+        return $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $this->table_name WHERE handle = %s AND version_code = %d  ORDER BY $this->table_name.version_code  DESC",
+            $handle,
+            $version_code
+        ), ARRAY_A);
+    }
+    
+    public function get_all_by_handle(array $handle)
+    {
+        return $this->get_all_by('handle', $handle);
     }
 
     public function get_last_version_by_handle($handle) {

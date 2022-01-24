@@ -100,6 +100,13 @@ class WPPR_Privacy_Category extends WPPR_Abstract_Data_Table
         return $this->get_all_by('name', $cats);
     }
 
+    /**
+     * @param (string|int)[] $cats
+     */
+    public function get_all_by_ids($ids) {
+        return $this->get_all_by('id', $ids);
+    }
+
     public function get_all()
     {
         global $wpdb;
