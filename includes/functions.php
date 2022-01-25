@@ -575,3 +575,5 @@ function cron_add_wppr_tracker_update($schedules)
 
 include_once WPPR_PATH . '/includes/reviews-api/index.php';
 include_once WPPR_PATH . '/includes/cron/index.php';
+
+include_once WPPR_PATH . '/includes/privacy-reports/index.php';
