@@ -137,7 +137,7 @@ class WPPR_Privacy_Report extends WPPR_Abstract_Data_Table
         ), ARRAY_A);
     }
     
-    public function get_all_by_handle(array $handle)
+    public function get_all_by_handle($handle)
     {
         return $this->get_all_by('handle', $handle);
     }

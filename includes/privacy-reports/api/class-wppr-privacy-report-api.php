@@ -191,7 +191,7 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
         ]);
     }
 
-    function get_reports_by_handle($handle)
+    function get_reports_by_handle(string $handle)
     {
         $reports = $this->report_db->get_all_by_handle($handle);
         return array_map(function ($report) {

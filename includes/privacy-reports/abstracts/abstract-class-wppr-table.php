@@ -113,9 +113,9 @@ abstract  class WPPR_Abstract_Table
     }
 
     /**
-     * @param int[] $ids
+     * @param (int|string)[] $ids
      */
-    public function get_all_by_ids($ids) {
+    public function get_all_by_ids(array $ids) {
         return $this->get_all_by('id', $ids);
     }
 

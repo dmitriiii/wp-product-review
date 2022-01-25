@@ -118,7 +118,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
     }
 
     /**
-     * @param (string|int)[] $cats
+     * @param (string|int)[] $ids
      */
     public function get_all_by_ids($ids)
     {
