@@ -3,11 +3,9 @@
     document.querySelectorAll(".review-wrap-up").forEach((reviewEl) => {
       initSubsModal(reviewEl);
     });
-    document
-      .querySelectorAll(".review-wu-left-mid")
-      .forEach((reviewEl) => {
-        initReviewModal(reviewEl);
-      });
+    document.querySelectorAll(".review-wu-left-mid").forEach((reviewEl) => {
+      initReviewModal(reviewEl);
+    });
   }
 
   function initSubsModal(reviewEl) {
@@ -25,71 +23,23 @@
   async function openSubModal(e) {
     e.preventDefault();
     const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
-    const modalEl = createWuModal(
+    const openModal = hydratateWuModal(
       document.querySelector(e.target.getAttribute("href")),
-      getSubsHtml(vpnId)
+      async () => getSubsHtml(vpnId)
     );
-    modalEl.style.display = "";
-    document.body.style.overflow = "hidden";
-    setTimeout(() => {
-      modalEl.style.opacity = 1;
-    });
+
+    openModal();
   }
 
   async function openReviewModal(e) {
     e.preventDefault();
     const vpnId = e.target.closest(".wppr-review-container").dataset.vpnId;
-    const modalEl = createWuModal(
+    const openModal = hydratateWuModal(
       document.querySelector(e.currentTarget.getAttribute("href")),
-      getReviewsHtml(vpnId)
+      async () => getReviewsHtml(vpnId)
     );
-    modalEl.style.display = "";
-    document.body.style.overflow = "hidden";
-    setTimeout(() => {
-      modalEl.style.opacity = 1;
-    });
-  }
 
-  function createWuModal(modalEl, asyncContent) {
-    initWuControl(modalEl);
-    fillWuModal(modalEl, asyncContent);
-    return modalEl;
-  }
-
-  function initWuControl(modalEl) {
-    modalEl
-      .querySelector(".wu-modal__close")
-      .addEventListener("click", closeWuModal);
-    modalEl.addEventListener("click", closeWuModal);
-  }
-
-  function closeWuModal(e) {
-    if (
-      !e.target.classList.contains("wu-modal__close") &&
-      !e.target.classList.contains("wu-modal")
-    )
-      return;
-    const modalEl = e.target.closest(".wu-modal");
-
-    modalEl.style.opacity = "";
-    modalEl.addEventListener(
-      "transitionend",
-      () => (
-        (modalEl.style.display = "none"), (document.body.style.overflow = "")
-      ),
-      {
-        once: true,
-      }
-    );
-  }
-
-  async function fillWuModal(modalEl, asyncContent) {
-    const resultsEl = modalEl.querySelector(".wu-modal__results");
-    const innerEl = modalEl.querySelector(".wu-modal__inner");
-    const loadingEl = modalEl.querySelector(".wu-modal__loading");
-    resultsEl.innerHTML = await asyncContent;
-    loadingEl.style.display = "none";
-    innerEl.style.display = "";
+    openModal();
   }
 
   async function getSubsHtml(vpnId) {
@@ -262,7 +212,9 @@
     const rating5 = rating / 20;
 
     return `
-    <a href="${el.url}" class="wu-review-item wu-review-item--starts" target="_blank" rel="nofollow">
+    <a href="${
+      el.url
+    }" class="wu-review-item wu-review-item--starts" target="_blank" rel="nofollow">
                   <div class="wu-review-item__rating">
                     ${getStarRatingHtml(rawRating)}
                   </div>
@@ -315,7 +267,7 @@
         <i class="dashicons dashicons-star-empty wppr-dashicons"></i>
       </div>
     </div>
-    `
+    `;
   }
 
   function getRatingClass(rating) {
