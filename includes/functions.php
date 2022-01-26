@@ -511,15 +511,15 @@ if (!function_exists('wppr_layout_get_privacy_info')) {
 		<div class="review-wu-privacy-bar">
 			<div class="review-wu-privacy-app">
 				<span class="review-wu-privacy-app__title"><?= __('version', 'wp-product-review') ?>:</span>
-				<a href="#" class="review-wu-privacy-app__version"><?= $report['version_name'] ?></a>
+				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-modal-id="review-wu-privacy-reports" data-modal-title="<?= __('Versions', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-app__version"><?= $report['version_name'] ?></a>
 			</div>
 			<div class="review-wu-privacy-trackers">
 				<span class="review-wu-privacy-trackers__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_tracker_level($report['tracker_count']) ?>"><?= $report['tracker_count'] ?></span>
-				<a href="javascript:;" class="review-wu-privacy-trackers__more"><?= __('trackers', 'wp-product-review') ?></a>
+				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-trackers" data-modal-title="<?= __('Trackers', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-trackers__more"><?= __('trackers', 'wp-product-review') ?></a>
 			</div>
 			<div class="review-wu-privacy-permissions">
 				<span class="review-wu-privacy-permissions__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_permission_level($report['permission_count']) ?>"><?= $report['permission_count'] ?></span>
-				<a href="javascript:;" class="review-wu-privacy-permissions__nore"><?= __('permissions', 'wp-product-review') ?></a>
+				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-permissions" data-modal-title="<?= __('Permissions', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-permissions__more"><?= __('permissions', 'wp-product-review') ?></a>
 			</div>
 		</div>
 <?
