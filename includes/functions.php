@@ -515,11 +515,11 @@ if (!function_exists('wppr_layout_get_privacy_info')) {
 			</div>
 			<div class="review-wu-privacy-trackers">
 				<span class="review-wu-privacy-trackers__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_tracker_level($report['tracker_count']) ?>"><?= $report['tracker_count'] ?></span>
-				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-trackers" data-modal-title="<?= __('Trackers', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-trackers__more"><?= __('trackers', 'wp-product-review') ?></a>
+				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-trackers" data-modal-title="<?= __('Privacy Report', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-trackers__more"><?= __('trackers', 'wp-product-review') ?></a>
 			</div>
 			<div class="review-wu-privacy-permissions">
 				<span class="review-wu-privacy-permissions__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_permission_level($report['permission_count']) ?>"><?= $report['permission_count'] ?></span>
-				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-permissions" data-modal-title="<?= __('Permissions', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-permissions__more"><?= __('permissions', 'wp-product-review') ?></a>
+				<a href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-permissions" data-modal-title="<?= __('Privacy Report', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-permissions__more"><?= __('permissions', 'wp-product-review') ?></a>
 			</div>
 		</div>
 <?
@@ -566,6 +566,17 @@ add_filter('cron_schedules', 'cron_add_wppr_tracker_update');
 function cron_add_wppr_tracker_update($schedules)
 {
 	$schedules['wppr_tracker_update'] = array(
+		'interval' => 30 * DAY_IN_SECONDS,
+		'display' => __('Once 30 days')
+	);
+	return $schedules;
+}
+
+add_filter('cron_schedules', 'cron_add_wppr_permission_update');
+
+function cron_add_wppr_permission_update($schedules)
+{
+	$schedules['wppr_permission_update'] = array(
 		'interval' => 30 * DAY_IN_SECONDS,
 		'display' => __('Once 30 days')
 	);
