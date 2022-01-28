@@ -59,15 +59,14 @@ class WPPR_Activator
 		include_once WPPR_PATH . '/includes/privacy-reports/tables/class-wppr-privacy-report-tracker.php';
 		include_once WPPR_PATH . '/includes/privacy-reports/cron/class-wppr-ppr-manager.php';
 
-		new WPPR_Privacy_Report();
-		new WPPR_Privacy_Tracker();
-		new WPPR_Privacy_Category();
-		new WPPR_Privacy_Permission();
-		new WPPR_Privacy_Tracker_Category();
-		new WPPR_Privacy_Report_Permission();
-		new WPPR_Privacy_Report_Tracker();
+		(new WPPR_Privacy_Report())->create_table();
+		(new WPPR_Privacy_Tracker())->create_table();
+		(new WPPR_Privacy_Category())->create_table();
+		(new WPPR_Privacy_Permission())->create_table();
+		(new WPPR_Privacy_Tracker_Category())->create_table();
+		(new WPPR_Privacy_Report_Permission())->create_table();
+		(new WPPR_Privacy_Report_Tracker())->create_table();
 
-		$ppr_cron_manager = new WPPR_Product_Privacy_Cron_Manager();
-		$ppr_cron_manager->schedule();
+		(new WPPR_Product_Privacy_Cron_Manager())->schedule();
 	}
 }
