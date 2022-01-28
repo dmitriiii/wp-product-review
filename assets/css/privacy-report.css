@@ -15,6 +15,12 @@
 /*
 * Widget bar
 */
+.review-wu-privacy-permissions {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+
 .review-wu-privacy-bar {
   border-top: 1px solid #e6e6e6;
   display: flex;
@@ -74,10 +80,10 @@
 }
 
 .privacy-grade-el__count {
-  padding: 0.3em 0.6em 0.4em;
-  line-height: 0.6em;
+  padding: 0.25em 0.6em 0.2em;
+  line-height: 1em;
   border-radius: 10rem;
-  font-weight: bold;
+  font-weight: 700;
   color: var(--privacy-grade-txt-color);
   background-color: var(--privacy-grade-color);
 }
@@ -106,7 +112,9 @@
 .privacy-tracker-el__title {
   font-size: 18px;
   line-height: 1.2em;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 5px;
   text-decoration: none;
 }
 
