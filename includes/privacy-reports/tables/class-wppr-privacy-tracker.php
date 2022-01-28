@@ -54,7 +54,7 @@ class WPPR_Privacy_Tracker extends WPPR_Abstract_Data_Table
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
+        $sql = "CREATE TABLE {$this->table_name} (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
             `code_signature` varchar(512) NOT NULL,
             `creation_date` date NOT NULL,

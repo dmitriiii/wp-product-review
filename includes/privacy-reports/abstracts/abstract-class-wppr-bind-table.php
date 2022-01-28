@@ -17,33 +17,46 @@ abstract  class WPPR_Abstract_Bind_Table extends WPPR_Abstract_Table
         parent::__construct($table_name);
     }
 
-    function get_left_name() {
+    function get_left_name()
+    {
         return $this->first_bind;
     }
-    function get_right_name() {
+    function get_right_name()
+    {
         return $this->second_bind;
     }
 
     public function __create_table($first_bind_table, $second_bind_table)
     {
+        global $wpdb;
+
         global $charset_collate;
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
+
+        $sql = "CREATE TABLE {$this->table_name} (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `{$this->first_bind}` int(11) NOT NULL,
             `{$this->second_bind}` int(11) NOT NULL,
             PRIMARY KEY (`id`),
             KEY `{$this->first_bind}` (`{$this->first_bind}`),
             KEY `{$this->second_bind}` (`{$this->second_bind}`)
-		) $charset_collate;
-
-        ALTER TABLE {$this->table_name}
-            ADD CONSTRAINT `{$this->table_name}_{$this->first_bind}` FOREIGN KEY (`{$this->first_bind}`) REFERENCES {$first_bind_table->get_name()} (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-            ADD CONSTRAINT `{$this->table_name}_{$this->second_bind}` FOREIGN KEY (`{$this->second_bind}`) REFERENCES {$second_bind_table->get_name()} (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-        COMMIT;";
+		) $charset_collate;";
 
         dbDelta($sql);
+
+        if (!$wpdb->query(
+            $wpdb->prepare("SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = %s AND CONSTRAINT_NAME = %s", $this->table_name, "{$this->table_name}_{$this->first_bind}")
+        )) {
+            $wpdb->query("ALTER TABLE {$this->table_name}
+            ADD CONSTRAINT `{$this->table_name}_{$this->first_bind}` FOREIGN KEY (`{$this->first_bind}`) REFERENCES {$first_bind_table->get_name()} (`id`) ON DELETE CASCADE ON UPDATE CASCADE;");
+        }
+
+        if (!$wpdb->query(
+            $wpdb->prepare("SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = %s", "{$this->table_name}_{$this->second_bind}")
+        )) {
+            $wpdb->query("ALTER TABLE {$this->table_name}
+             ADD CONSTRAINT `{$this->table_name}_{$this->second_bind}` FOREIGN KEY (`{$this->second_bind}`) REFERENCES {$second_bind_table->get_name()} (`id`) ON DELETE CASCADE ON UPDATE CASCADE;");
+        }
     }
 
     protected function __insert($value_a, $value_b)
