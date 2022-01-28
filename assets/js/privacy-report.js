@@ -56,31 +56,72 @@
 
   async function getReportDetailModalContent(handle, versionCode) {
     try {
-      const report = await getReportDetail(handle, versionCode);
-      return (
-        generateTrackerList(report.trackers) +
-        generatePermissionList(report.permissions)
-      );
-    } catch (error) {}
+      const [report, grades] = await Promise.all([
+        getReportDetail(handle, versionCode),
+        getGrades(),
+      ]);
+      return getDetailReportModalContent(report, grades);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function getVersionsModalContent(handle) {
     try {
-      const reports = await getReports(handle);
-      const grades = await getGrades();
+      const [reports, grades] = await Promise.all([
+        getReports(handle),
+        getGrades(),
+      ]);
       return generateVersionList(reports, grades);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  function generateTrackerList(trackers) {
-    return `<div class="privacy-tracker-list">
+  function getDetailReportModalContent(report, grades) {
+    return `
+    <div class="privacy-report">
+      <div class="privacy-report__group">
+        <div class="privacy-report__title privacy-grade-el">
+            <span class="privacy-grade-el__count  privacy-grade-el__count--${calcGrade(
+              report.trackers.length,
+              grades
+            )}">${report.trackers.length}</span>
+            <span class="privacy-grade-el__title">${
+              privacy_report_data.trackers
+            }</span>
+        </div>
+        ${generateTrackerList(report.trackers, "privacy-report__list")}
+      </div>
+      <div class="privacy-report__group">
+        <div class="privacy-report__title privacy-grade-el">
+            <span class="privacy-grade-el__count privacy-grade-el__count--${calcGrade(
+              report.permissions.length,
+              grades
+            )}">${report.permissions.length}</span>
+            <span class="privacy-grade-el__title">${
+              privacy_report_data.permissions
+            }</span>
+        </div>
+        ${generatePermissionList(report.permissions, "privacy-report__list")}
+      </div>
+    </div>
+    `;
+  }
+
+  function generateTrackerList(trackers, advClass) {
+    return `<div class="privacy-tracker-list${advClass ? " " + advClass : ""}">
     ${trackers
       .map((tracker) => {
         return `
         <div class="privacy-tracker-el">
-            <div class="privacy-tracker-el__title">
-                ${tracker.name}
-            </div>
+            <a href="javascript:;" class="privacy-tracker-el__title">
+                <span>${tracker.name}</span>
+                <img width="20" height="20" src="${
+                  privacy_report_data.assest_folder
+                }/img/right-arrow-round.svg">
+
+            </a>
             <div class="privacy-tracker-el__footer privacy-category-list">
                 ${tracker.categories
                   .map(
@@ -102,15 +143,31 @@
     `;
   }
 
-  function generatePermissionList(permissions) {
-    return `<div class="privacy-permission-list">
+  function generatePermissionList(permissions, advClass) {
+    return `<div class="privacy-permission-list${
+      advClass ? " " + advClass : ""
+    }">
     ${permissions
       .map((permission) => {
         return `
         <div class="privacy-permission-el">
-            <div class="privacy-permission-el__title">
-                ${permission.split(".").reverse()[0]}
+          <div class="privacy-permission-el__top">
+              ${
+                permission.protection_level.includes("dangerous")
+                  ? `<img class="privacy-permission-el__danger" width="8" src="${privacy_report_data.assest_folder}/img/exclamation-red.svg">`
+                  : ""
+              }
+              <div class="privacy-permission-el__title">
+                  ${permission["name"].split(".").reverse()[0]}
+              </div>
             </div>
+            ${
+              permission.description
+                ? `<div class="privacy-permission-el__desc">
+                    ${permission.description}
+                  </div>`
+                : ""
+            }
         </div>
         `;
       })
@@ -121,7 +178,9 @@
 
   function generateVersionList(reports, grades) {
     return `<div class="privacy-version-list">
-    ${reports
+    ${reports.sort((a, b) => {
+      return b.version_code - a.version_code
+    })
       .map((report) => {
         return `
         <div class="privacy-version-el">
@@ -131,20 +190,28 @@
             <div class="privacy-version-el__version">
                 ${report.version_name} - google
             </div>
-            <div class="privacy-version-el__estimates">
-                <div class="privacy-version-el__grade privacy-version-el__grade--${calcGrade(
-                  report.tracker_count,
-                  grades
-                )}">
-                    <span>${report.tracker_count}</span>
-                    <span>trackers</span>
+            <div class="privacy-grade-list">
+                <div class="privacy-grade-el">
+                    <span class="privacy-grade-el__count privacy-grade-el__count--${calcGrade(
+                      report.tracker_count,
+                      grades
+                    )}">${
+                      report.tracker_count
+                    }</span>
+                    <span class="privacy-grade-el__title">${
+                      privacy_report_data.trackers
+                    }</span>
                 </div>
-                <div class="privacy-version-el__grade privacy-version-el__grade--${calcGrade(
-                  report.permission_count,
-                  grades
-                )}">
-                    <span>${report.permission_count}</span>
-                    <span>permissions</span>
+                <div class="privacy-grade-el">
+                    <span class="privacy-grade-el__count privacy-grade-el__count--${calcGrade(
+                      report.permission_count,
+                      grades
+                    )}">${
+                      report.permission_count
+                    }</span>
+                    <span class="privacy-grade-el__title">${
+                      privacy_report_data.permissions
+                    }</span>
                 </div>
             </div>
         </div>
