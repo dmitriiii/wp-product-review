@@ -1,0 +1,192 @@
+:root {
+  --privacy-grade-color: #cccccc;
+  --privacy-grade-txt-color: #212529;
+
+  --privacy-grade-color-good: #bfdb08;
+  --privacy-grade-txt-color-good: #212529;
+
+  --privacy-grade-color-normal: #ffc70f;
+  --privacy-grade-txt-color-normal: #212529;
+
+  --privacy-grade-color-bad: #e61718;
+  --privacy-grade-txt-color-bad: #fff;
+}
+
+/*
+* Widget bar
+*/
+.review-wu-privacy-bar {
+  border-top: 1px solid #e6e6e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+  padding: 15px;
+  font-size: 14px;
+}
+
+.review-wu-privacy-badge {
+  font-weight: bold;
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  border-radius: 10rem;
+}
+
+.review-wu-privacy-badge--none {
+  color: var(--privacy-grade-txt-color);
+  background-color: var(--privacy-grade-color);
+}
+
+.review-wu-privacy-badge--good {
+  color: var(--privacy-grade-txt-color-good);
+  background-color: var(--privacy-grade-color-good);
+}
+
+.review-wu-privacy-badge--normal {
+  color: var(--privacy-grade-txt-color-normal);
+  background-color: var(--privacy-grade-color-normal);
+}
+
+.review-wu-privacy-badge--bad {
+  color: var(--privacy-grade-txt-color-bad);
+  background-color: var(--privacy-grade-color-bad);
+}
+
+/*
+* Modal Report Style
+*/
+
+.privacy-report__group {
+  margin-bottom: 30px;
+}
+
+.privacy-report__title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.privacy-grade-el {
+  display: flex;
+  align-items: baseline;
+  column-gap: 0.5em;
+  line-height: 0.5em;
+}
+
+.privacy-grade-el__count {
+  padding: 0.3em 0.6em 0.4em;
+  line-height: 0.6em;
+  border-radius: 10rem;
+  font-weight: bold;
+  color: var(--privacy-grade-txt-color);
+  background-color: var(--privacy-grade-color);
+}
+
+.privacy-grade-el__count--good {
+  color: var(--privacy-grade-txt-color-good);
+  background-color: var(--privacy-grade-color-good);
+}
+
+.privacy-grade-el__count--normal {
+  color: var(--privacy-grade-txt-color-normal);
+  background-color: var(--privacy-grade-color-normal);
+}
+
+.privacy-grade-el__count--bad {
+  color: var(--privacy-grade-txt-color-bad);
+  background-color: var(--privacy-grade-color-bad);
+}
+
+.privacy-tracker-el {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.privacy-tracker-el__title {
+  font-size: 18px;
+  line-height: 1.2em;
+  display: inline-block;
+  text-decoration: none;
+}
+
+a.privacy-tracker-el__title span {
+  text-decoration: underline;
+}
+
+.privacy-category-list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 5px;
+  row-gap: 5px;
+}
+
+.privacy-category-badge {
+  font-size: 0.75em;
+  line-height: 1.5em;
+  border: 1px solid #212529;
+  color: #212529;
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  border-radius: 10rem;
+}
+
+.privacy-tracker-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.privacy-permission-el {
+  line-height: 1em;
+}
+
+.privacy-permission-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 18px;
+}
+
+.privacy-permission-el__top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+  column-gap: 5px;
+}
+
+.privacy-permission-el__title {
+  font-size: 18px;
+  line-height: 1.2em;
+}
+
+.privacy-permission-el__desc {
+  font-size: 16px;
+  line-height: 1.2em;
+  font-style: italic;
+}
+
+.privacy-version-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.privacy-version-el__title {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.2em;
+  margin-bottom: 5px;
+}
+
+.privacy-version-el__version {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.2em;
+  margin-bottom: 5px;
+}
+
+.privacy-version-el .privacy-grade-list {
+  display: flex;
+  column-gap: 10px;
+  font-size: 14px;
+}
