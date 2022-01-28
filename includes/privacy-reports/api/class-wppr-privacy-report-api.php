@@ -208,9 +208,7 @@ class WPPR_Privacy_Report_API extends WPPR_Abstract_Privacy_API
     {
         $report = $this->report_db->get_by_version($handle, $version_code);
         $report['trackers'] = $this->get_trackers_by_report_id($report['id']);
-        $report['permissions'] = array_map(function ($category) {
-            return $category['name'];
-        }, $this->get_permissions_by_report_id($report['id']));
+        $report['permissions'] = $this->get_permissions_by_report_id($report['id']);
 
         return $report;
     }

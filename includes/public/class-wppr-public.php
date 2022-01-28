@@ -154,7 +154,17 @@ class Wppr_Public
 
 
 		if ($this->check_privacy_report()) {
+			wp_enqueue_style($this->plugin_name . '-privacy-report-css', WPPR_URL . '/assets/css/privacy-report.css', array(), $this->version);
 			wp_enqueue_script($this->plugin_name . '-privacy-report', WPPR_URL . '/assets/js/privacy-report.js', array(), $this->version, true);
+			wp_localize_script(
+				$this->plugin_name . '-privacy-report',
+				'privacy_report_data',
+				array(
+					'permissions' => __('permissions', 'wp-product-review'),
+					'trackers' => __('trackers', 'wp-product-review'),
+					'assest_folder' => WPPR_URL . "/assets"
+				)
+			);
 		}
 
 		$this->load_template_css($review);
@@ -198,10 +208,6 @@ class Wppr_Public
 		if (defined('WPPR_PRO_VERSION') && version_compare(WPPR_PRO_VERSION, '2.4', '<') && 'style1' !== $review->get_template() && !empty($icon)) {
 			wp_enqueue_style($this->plugin_name . 'fa', WPPR_URL . '/assets/css/font-awesome.min.css', array(), $this->version);
 			wp_enqueue_style($this->plugin_name . '-fa-compat', WPPR_URL . '/assets/css/fontawesome-compat.css', array(), $this->version);
-		}
-
-		if ('style3' == $review->get_template()) {
-			wp_enqueue_style($this->plugin_name . '-part-privacy-info', WPPR_URL . '/assets/css/part-privacy-info.css', array(), $this->version);
 		}
 
 		$style = $this->generate_styles();
