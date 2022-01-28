@@ -15,12 +15,13 @@ function createWuModal(id, title, subtitle, loadingImg, content = "") {
     loadingImg,
     typeof content === "function" ? "" : content
   );
-  const template = document.createElement('template');
+  const template = document.createElement("template");
   template.innerHTML = tpl;
   const modalEl = template.content.querySelector(".wu-modal");
+  modalEl.isCreate = true;
 
   document.body.append(template.content);
-    
+
   return hydratateWuModal(
     modalEl,
     typeof content === "function" ? content : ""
@@ -59,9 +60,11 @@ function closeWuModal(e) {
   modalEl.style.opacity = "";
   modalEl.addEventListener(
     "transitionend",
-    () => (
-      (modalEl.style.display = "none"), (document.body.style.overflow = "")
-    ),
+    () => {
+      modalEl.style.display = "none";
+      document.body.style.overflow = "";
+      if (modalEl.isCreate) modalEl.remove();
+    },
     {
       once: true,
     }
