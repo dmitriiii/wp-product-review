@@ -51,7 +51,7 @@ $desc =  str_replace(
 				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) { ?>style="background-color: <?= $range['color'] ?>" <? } ?>>
 					<div class="cwpr-score-wrapper">
 						<h2 class="cwpr-score-title"><?php echo esc_html($review_object->get_name()); ?></h2>
-						<div class="cwpr-score-value"><?= $score ?><? if ($show_trust_lvl_detail) { ?><sup><a href="#subs-modal">?</a></sup><? } ?></div>
+						<div class="cwpr-score-value"><?= $score ?><? if ($show_trust_lvl_detail) { ?><sup><a href="#subs-modal" rel="nofollow">?</a></sup><? } ?></div>
 					</div>
 					<div class="cwpr-score-level">
 						<?= get_field('trust_level_title', 'option') ?>
@@ -78,7 +78,7 @@ $desc =  str_replace(
 					</div><!-- end .review-wu-left-top -->
 					<? if ($total_votes != -1) { ?>
 						<div class="review-wu-left-mid">
-							<a class="review-wu-reviews-link" href="#reviews-detail">
+							<a class="review-wu-reviews-link" href="#reviews-detail" rel="nofollow">
 								<? wppr_display_rating_stars(null, $review_object, false, true) ?>
 								<span class="review-wu-reviews-count">
 									<?= __('Reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)
