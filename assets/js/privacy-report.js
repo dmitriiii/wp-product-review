@@ -8,9 +8,9 @@
     );
     const versionBtn = barEl.querySelector(".review-wu-privacy-app__version");
 
-    trackerBtn && trackerBtn.addEventListener("click", openReportDetailModal);
+    trackerBtn && trackerBtn.addEventListener("click", openTrackersModal);
     permissionBtn &&
-      permissionBtn.addEventListener("click", openReportDetailModal);
+      permissionBtn.addEventListener("click", openPermissionsModal);
 
     versionBtn && versionBtn.addEventListener("click", openVersionsModal);
   });
@@ -54,6 +54,46 @@
     openModal();
   }
 
+  /**
+   *
+   * @param {Event} e
+   */
+  function openPermissionsModal(e) {
+    e.preventDefault();
+    const { handle, versionCode, modalId, modalTitle, modalLoadingImg } =
+      e.target.dataset;
+
+    const openModal = createWuModal(
+      modalId,
+      modalTitle,
+      "",
+      modalLoadingImg,
+      async () => getPermissionsModalContent(handle, versionCode)
+    );
+
+    openModal();
+  }
+
+  /**
+   *
+   * @param {Event} e
+   */
+  function openTrackersModal(e) {
+    e.preventDefault();
+    const { handle, versionCode, modalId, modalTitle, modalLoadingImg } =
+      e.target.dataset;
+
+    const openModal = createWuModal(
+      modalId,
+      modalTitle,
+      "",
+      modalLoadingImg,
+      async () => getTrackersModalContent(handle, versionCode)
+    );
+
+    openModal();
+  }
+
   async function getReportDetailModalContent(handle, versionCode) {
     try {
       const [report, grades] = await Promise.all([
@@ -73,6 +113,67 @@
         getGrades(),
       ]);
       return generateVersionList(reports, grades);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getPermissionsModalContent(handle, versionCode) {
+    try {
+      const [report, grades] = await Promise.all([
+        getReportDetail(handle, versionCode),
+        getGrades(),
+      ]);
+      return {
+        title: `
+        <div class="privacy-report__title privacy-grade-el" style="margin-bottom: 0">
+          <span class="privacy-grade-el__count privacy-grade-el__count--${calcGrade(
+            report.permissions.length,
+            grades
+          )}">${report.permissions.length}</span>
+          <span class="privacy-grade-el__title">${
+            privacy_report_data.permissions
+          }</span>
+        </div>`,
+        inner: `
+        <div class="privacy-report">
+          <div class="privacy-report__group">
+            ${generatePermissionList(
+              report.permissions,
+              "privacy-report__list"
+            )}
+          </div>
+        </div>`,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getTrackersModalContent(handle, versionCode) {
+    try {
+      const [report, grades] = await Promise.all([
+        getReportDetail(handle, versionCode),
+        getGrades(),
+      ]);
+      return {
+        title: `
+        <div class="privacy-report__title privacy-grade-el" style="margin-bottom: 0">
+          <span class="privacy-grade-el__count  privacy-grade-el__count--${calcGrade(
+            report.trackers.length,
+            grades
+          )}">${report.trackers.length}</span>
+          <span class="privacy-grade-el__title">${
+            privacy_report_data.trackers
+          }</span>
+        </div>`,
+        inner: `
+        <div class="privacy-report">
+          <div class="privacy-report__group">
+            
+            ${generateTrackerList(report.trackers, "privacy-report__list")}
+          </div>
+        </div>`};
     } catch (error) {
       console.error(error);
     }
@@ -178,9 +279,10 @@
 
   function generateVersionList(reports, grades) {
     return `<div class="privacy-version-list">
-    ${reports.sort((a, b) => {
-      return b.version_code - a.version_code
-    })
+    ${reports
+      .sort((a, b) => {
+        return b.version_code - a.version_code;
+      })
       .map((report) => {
         return `
         <div class="privacy-version-el">
@@ -195,9 +297,7 @@
                     <span class="privacy-grade-el__count privacy-grade-el__count--${calcGrade(
                       report.tracker_count,
                       grades
-                    )}">${
-                      report.tracker_count
-                    }</span>
+                    )}">${report.tracker_count}</span>
                     <span class="privacy-grade-el__title">${
                       privacy_report_data.trackers
                     }</span>
@@ -206,9 +306,7 @@
                     <span class="privacy-grade-el__count privacy-grade-el__count--${calcGrade(
                       report.permission_count,
                       grades
-                    )}">${
-                      report.permission_count
-                    }</span>
+                    )}">${report.permission_count}</span>
                     <span class="privacy-grade-el__title">${
                       privacy_report_data.permissions
                     }</span>

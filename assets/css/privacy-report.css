@@ -158,7 +158,7 @@ a.privacy-tracker-el__title span {
 
 .privacy-permission-el__top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 2px;
   column-gap: 5px;
 }
@@ -198,4 +198,13 @@ a.privacy-tracker-el__title span {
   display: flex;
   column-gap: 10px;
   font-size: 14px;
+}
+
+.wu-modal__title .privacy-report__title {
+  margin-bottom: 0;
+  margin-left: -35px;
+}
+
+.wu-modal__title .privacy-grade-el__title {
+  text-transform: capitalize;
 }
