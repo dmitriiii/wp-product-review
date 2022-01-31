@@ -234,13 +234,13 @@ msgid "Reviews"
 msgstr "Recenzie"
 
 #: includes/functions.php:21
-msgid "version"
+msgid "Version"
 msgstr "verzia"
 
 #: includes/functions.php:21
-msgid "trackers"
+msgid "Trackers"
 msgstr ""
 
 #: includes/functions.php:21
-msgid "permissions"
-msgstr "oprávnenia"
+msgid "Permissions"
+msgstr "Oprávnenia"

@@ -232,13 +232,13 @@ msgid "Reviews"
 msgstr ""
 
 #: includes/functions.php:21
-msgid "version"
+msgid "Version"
 msgstr ""
 
 #: includes/functions.php:21
-msgid "trackers"
+msgid "Trackers"
 msgstr ""
 
 #: includes/functions.php:21
-msgid "permissions"
+msgid "Permissions"
 msgstr ""

@@ -546,13 +546,13 @@ msgid "Reviews"
 msgstr "Bewertungen"
 
 #: includes/functions.php:21
-msgid "version"
-msgstr "version"
+msgid "Version"
+msgstr "Version"
 
 #: includes/functions.php:21
-msgid "trackers"
-msgstr "tracker"
+msgid "Trackers"
+msgstr "Tracker"
 
 #: includes/functions.php:21
-msgid "permissions"
-msgstr "berechtigungen"
+msgid "Permissions"
+msgstr "Berechtigungen"
