@@ -73,9 +73,15 @@ function closeWuModal(e) {
 
 async function fillWuModal(modalEl, asyncContent) {
   const resultsEl = modalEl.querySelector(".wu-modal__results");
+  const titleEl = modalEl.querySelector(".wu-modal__title");
   const innerEl = modalEl.querySelector(".wu-modal__inner");
   const loadingEl = modalEl.querySelector(".wu-modal__loading");
-  resultsEl.innerHTML = await asyncContent();
+  const content = await asyncContent();
+  if (typeof content === "string") resultsEl.innerHTML = content;
+  else {
+    if (content.title) titleEl.innerHTML = content.title
+    if (content.inner) resultsEl.innerHTML = content.inner;
+  }
   loadingEl.style.display = "none";
   innerEl.style.display = "";
 }
