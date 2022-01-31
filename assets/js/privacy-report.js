@@ -173,7 +173,8 @@
             
             ${generateTrackerList(report.trackers, "privacy-report__list")}
           </div>
-        </div>`};
+        </div>`,
+      };
     } catch (error) {
       console.error(error);
     }
@@ -216,7 +217,9 @@
       .map((tracker) => {
         return `
         <div class="privacy-tracker-el">
-            <a href="javascript:;" class="privacy-tracker-el__title">
+            <a href="${
+              tracker.website
+            }" class="privacy-tracker-el__title" rel="nofollow" target="_blank">
                 <span>${tracker.name}</span>
                 <img width="20" height="20" src="${
                   privacy_report_data.assest_folder
@@ -322,33 +325,43 @@
 
   async function getReports(handle) {
     try {
+      if (getReports.history.has(handle)) return getReports.history.get(handle);
       const res = await fetch(`${URL_BASE}/reports/${handle}`);
       const rawData = await res.json();
       if (res.status != 200) throw new Error(rawData.message);
+      getReports.history.set(handle, rawData.data);
       return rawData.data;
     } catch (error) {
       console.error(error);
     }
   }
+  getReports.history = new Map();
 
   async function getReportDetail(handle, versionCode) {
     try {
+      if (getReportDetail.history.has(handle + versionCode))
+        return getReportDetail.history.get(handle + versionCode);
       const res = await fetch(
         `${URL_BASE}/report/?handle=${handle}&version_code=${versionCode}`
       );
       const rawData = await res.json();
       if (res.status != 200) throw new Error(rawData.message);
+      getReportDetail.history.set(handle + versionCode, rawData.data);
       return rawData.data;
     } catch (error) {
       console.error(error);
     }
   }
+  getReportDetail.history = new Map();
 
   async function getGrades() {
     try {
+      if (getGrades.grades) return getGrades.grades;
+
       const res = await fetch(`${URL_BASE}/grade`);
       const rawData = await res.json();
       if (res.status != 200) throw new Error(rawData.message);
+      getGrades.grades = rawData.data;
       return rawData.data;
     } catch (error) {
       console.error(error);
