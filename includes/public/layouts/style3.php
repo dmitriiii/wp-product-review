@@ -12,7 +12,6 @@
  */
 
 //$review_object->enable_third_party();
-
 $price_raw = $review_object->get_price_raw();
 $pros = $review_object->get_pros();
 $cons = $review_object->get_cons();
@@ -33,13 +32,16 @@ $range = !empty($range) ? array_shift($prep_range) : (!empty($ranges) ? $ranges[
 ]);
 
 $total_votes = $review_object->get_third_party_votes();
-$desc =  str_replace(
-	'%vpn',
-	$review_object->get_name(),
+$desc =  apply_filters(
+	'prepare_description',
 	get_field('third_party_review_short_desc', $review_object->get_ID()) ?
 		get_field('third_party_review_short_desc', $review_object->get_ID()) : (get_field('third_party_review_default_short_desc', 'option') ?
 			get_field('third_party_review_default_short_desc', 'option') :
-			'')
+			''),
+	[
+		'vpn' => esc_html($review_object->get_name()),
+		'detail' => "<a href=\"#subs-modal-{$review_object->get_ID()}\" rel=\"nofollow\">$1</a>"
+	]
 );
 
 
@@ -51,7 +53,7 @@ $desc =  str_replace(
 				<div class="cwpr-score-col cwpr-score-container" <? if ($range['color']) { ?>style="background-color: <?= $range['color'] ?>" <? } ?>>
 					<div class="cwpr-score-wrapper">
 						<h2 class="cwpr-score-title"><?php echo esc_html($review_object->get_name()); ?></h2>
-						<div class="cwpr-score-value"><?= $score ?><? if ($show_trust_lvl_detail) { ?><sup><a href="#subs-modal" rel="nofollow">?</a></sup><? } ?></div>
+						<div class="cwpr-score-value"><?= $score ?><? if ($show_trust_lvl_detail) { ?><sup><a href="#subs-modal-<?= $review_object->get_ID() ?>" rel="nofollow">?</a></sup><? } ?></div>
 					</div>
 					<div class="cwpr-score-level">
 						<?= get_field('trust_level_title', 'option') ?>
@@ -62,7 +64,10 @@ $desc =  str_replace(
 				<? if ($range['range_description']) { ?>
 					<div class="cwpr-score-col">
 						<div class="cwpr-score-review">
-							<?= str_replace("%vpn", esc_html($review_object->get_name()), $range['range_description']) ?>
+							<?= apply_filters('prepare_description', $range['range_description'], [
+								'vpn' => esc_html($review_object->get_name()),
+								'detail' => "<a href=\"#subs-modal-{$review_object->get_ID()}\" rel=\"nofollow\">$1</a>"
+							]) ?>
 						</div>
 					</div>
 				<? } ?>
@@ -100,7 +105,16 @@ $desc =  str_replace(
 			<div class="cwp-footer">
 				<div class="cwpr-footer-col cwpr-price-container">
 					<? if (get_field('trust_level_text_before_price', 'option')) { ?>
-						<div class="cwpr-price-desc"><?= str_replace("%vpn", esc_html($review_object->get_name()), get_field('trust_level_text_before_price', 'option')) ?></div>
+						<div class="cwpr-price-desc">
+							<?= apply_filters(
+								'prepare_description',
+								get_field('trust_level_text_before_price', 'option'),
+								[
+									'vpn' => esc_html($review_object->get_name()),
+									'detail' => "<a href=\"#subs-modal-{$review_object->get_ID()}\" rel=\"nofollow\">$1</a>"
+								]
+							)
+							?></div>
 					<? } ?>
 					<span class="cwp-item-price cwp-item">
 						<?php echo esc_html(empty($price_raw) ? '' : $price_raw); ?>
@@ -112,7 +126,17 @@ $desc =  str_replace(
 					</span>
 				</div>
 				<div class="cwpr-footer-col">
-					<div class="cwp-affilate-btn-title"><?= str_replace("%vpn", esc_html($review_object->get_name()), get_field('trust_level_text_before_link', 'option')) ?></div>
+					<div class="cwp-affilate-btn-title">
+						<?= apply_filters(
+							'prepare_description',
+							get_field('trust_level_text_before_link', 'option'),
+							[
+								'vpn' => esc_html($review_object->get_name()),
+								'detail' => "<a href=\"#subs-modal-{$review_object->get_ID()}\" rel=\"nofollow\">$1</a>"
+							]
+						)
+						?>
+					</div>
 					<?php wppr_layout_get_affiliate_buttons($review_object); ?>
 				</div>
 			</div>
@@ -140,7 +164,7 @@ $desc =  str_replace(
 		</div>
 	<? } ?>
 	<? if ($show_trust_lvl_detail) { ?>
-		<div id="subs-modal" class="wu-modal" style="display: none">
+		<div id="subs-modal-<?= $review_object->get_ID() ?>" class="wu-modal" style="display: none">
 			<div class="wu-modal__loading">
 				<img alt="loading..." src="<?php echo WPPR_URL; ?>/assets/img/loading.svg">
 			</div>

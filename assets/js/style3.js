@@ -11,7 +11,12 @@
   function initSubsModal(reviewEl) {
     const link = reviewEl.querySelector(".cwpr-score-value a");
     if (!link) return;
-    link.addEventListener("click", openSubModal);
+    const allLink = document.querySelectorAll(
+      `[href="${link.getAttribute("href")}"]`
+    );
+    allLink.forEach((link) => {
+      link.addEventListener("click", openSubModal);
+    });
   }
 
   function initReviewModal(reviewEl) {

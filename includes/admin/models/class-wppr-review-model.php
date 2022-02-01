@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Model responsible for the reviews in WPPR.
  *
@@ -10,7 +11,7 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -19,7 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 3.0
  */
-class WPPR_Review_Model extends WPPR_Model_Abstract {
+class WPPR_Review_Model extends WPPR_Model_Abstract
+{
 
 	/**
 	 * The review ID.
@@ -183,21 +185,23 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @param mixed $review_id The review id.
 	 */
-	public function __construct( $review_id = false ) {
+	public function __construct($review_id = false)
+	{
 		parent::__construct();
 
-		if ( $review_id === false ) {
-			$this->logger->error( 'No review id provided.' );
+		if ($review_id === false) {
+			$this->logger->error('No review id provided.');
 
 			return false;
 		}
-		if ( $this->check_post( $review_id ) ) {
+		if ($this->check_post($review_id)) {
 			$this->ID = $review_id;
-			$this->logger->notice( 'Checking review status for ID: ' . $review_id );
+			$this->logger->notice('Checking review status for ID: ' . $review_id);
 			$this->setup_status();
-			if ( $this->is_active() ) {
-				$this->logger->notice( 'Setting up review for ID: ' . $review_id );
+			if ($this->is_active()) {
+				$this->logger->notice('Setting up review for ID: ' . $review_id);
 				$this->setup_cpt();
+				$this->setup_desc_preparation();
 				$this->setup_price();
 				$this->setup_name();
 				$this->setup_template();
@@ -209,7 +213,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				$this->count_rating();
 				$this->count_third_party_rating();
 				$this->setup_review_schema();
-				if ( ! is_admin() ) {
+				if (!is_admin()) {
 					$this->alter_options();
 				}
 
@@ -217,12 +221,12 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 
 				return true;
 			} else {
-				$this->logger->warning( 'Review is not active for this ID: ' . $review_id );
+				$this->logger->warning('Review is not active for this ID: ' . $review_id);
 
 				return false;
 			}
 		} else {
-			$this->logger->error( 'No post id found to attach this review.' );
+			$this->logger->error('No post id found to attach this review.');
 		}
 
 		return false;
@@ -231,17 +235,37 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	/**
 	 * Setup hooks if this review is a CPT.
 	 */
-	private function setup_cpt() {
-		if ( 'wppr_review' === get_post_type( $this->ID ) ) {
-			add_filter( 'wppr_name', array( $this, 'get_name_for_cpt' ), 10, 2 );
+	private function setup_cpt()
+	{
+		if ('wppr_review' === get_post_type($this->ID)) {
+			add_filter('wppr_name', array($this, 'get_name_for_cpt'), 10, 2);
 		}
+	}
+
+	/**
+	 * 
+	 */
+	function setup_desc_preparation()
+	{
+		add_filter('prepare_description', array($this, 'prepare_description'), 10, 2);
+	}
+
+	function prepare_description($content, $data)
+	{
+		if (!$content) return '';
+		if (isset($data['vpn']))
+			$content = str_replace("%vpn", $data['vpn'], $content);
+		if (isset($data['detail']))
+			$content = preg_replace('/%detail%(.+)%detail%/U', $data['detail'], $content);
+		return $content;
 	}
 
 	/**
 	 * If this is a CPT, use the post title as the product name.
 	 */
-	public function get_name_for_cpt( $name, $id ) {
-		return get_the_title( $id );
+	public function get_name_for_cpt($name, $id)
+	{
+		return get_the_title($id);
 	}
 
 	/**
@@ -254,8 +278,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	private function check_post( $review_id ) {
-		return is_string( get_post_type( $review_id ) );
+	private function check_post($review_id)
+	{
+		return is_string(get_post_type($review_id));
 	}
 
 	/**
@@ -264,9 +289,10 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_status() {
-		$status = get_post_meta( $this->ID, 'cwp_meta_box_check', true );
-		if ( $status === 'Yes' ) {
+	private function setup_status()
+	{
+		$status = get_post_meta($this->ID, 'cwp_meta_box_check', true);
+		if ($status === 'Yes') {
 			$this->is_active = true;
 		} else {
 			$this->is_active = false;
@@ -280,8 +306,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return bool
 	 */
-	public function is_active() {
-		return apply_filters( 'wppr_is_review_active', $this->is_active, $this->ID, $this );
+	public function is_active()
+	{
+		return apply_filters('wppr_is_review_active', $this->is_active, $this->ID, $this);
 	}
 
 	/**
@@ -290,11 +317,12 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_price() {
-		$price           = get_post_meta( $this->ID, 'cwp_rev_price', true );
+	private function setup_price()
+	{
+		$price           = get_post_meta($this->ID, 'cwp_rev_price', true);
 		$this->price_raw = $price;
-		$currency        = $this->format_currency( $price );
-		$price           = $this->format_price( $price );
+		$currency        = $this->format_currency($price);
+		$price           = $this->format_price($price);
 		$this->price     = $price;
 		$this->currency  = $currency;
 	}
@@ -309,8 +337,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return string
 	 */
-	private function format_currency( $string ) {
-		$currency = preg_replace( '/[0-9.,]/', '', $string );
+	private function format_currency($string)
+	{
+		$currency = preg_replace('/[0-9.,]/', '', $string);
 
 		return $currency;
 	}
@@ -325,10 +354,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return string
 	 */
-	private function format_price( $string ) {
-		$price = preg_replace( '/[^0-9.,]/', '', $string );
+	private function format_price($string)
+	{
+		$price = preg_replace('/[^0-9.,]/', '', $string);
 
-		return floatval( $price );
+		return floatval($price);
 	}
 
 	/**
@@ -337,8 +367,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_name() {
-		$name       = get_post_meta( $this->ID, 'cwp_rev_product_name', true );
+	private function setup_name()
+	{
+		$name       = get_post_meta($this->ID, 'cwp_rev_product_name', true);
 		$this->name = $name;
 	}
 
@@ -347,9 +378,10 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @access  private
 	 */
-	private function setup_template() {
-		$template = get_post_meta( $this->ID, '_wppr_review_template', true );
-		if ( empty( $template ) ) {
+	private function setup_template()
+	{
+		$template = get_post_meta($this->ID, '_wppr_review_template', true);
+		if (empty($template)) {
 			$template = 'default';
 		}
 		$this->template = $template;
@@ -361,9 +393,10 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_click() {
-		$click = get_post_meta( $this->ID, 'cwp_image_link', true );
-		if ( $click === 'image' || $click === 'link' ) {
+	private function setup_click()
+	{
+		$click = get_post_meta($this->ID, 'cwp_image_link', true);
+		if ($click === 'image' || $click === 'link') {
 			$this->click = $click;
 		}
 	}
@@ -374,10 +407,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_image() {
-		$image = get_post_meta( $this->ID, 'cwp_rev_product_image', true );
-		if ( empty( $image ) ) {
-			$image = wp_get_attachment_url( get_post_thumbnail_id( $this->ID ) );
+	private function setup_image()
+	{
+		$image = get_post_meta($this->ID, 'cwp_rev_product_image', true);
+		if (empty($image)) {
+			$image = wp_get_attachment_url(get_post_thumbnail_id($this->ID));
 		}
 		$this->image = $image;
 	}
@@ -388,15 +422,16 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_links() {
-		$link_text                 = get_post_meta( $this->ID, 'cwp_product_affiliate_text', true );
-		$link_url                  = get_post_meta( $this->ID, 'cwp_product_affiliate_link', true );
-		$this->links[ $link_text ] = $link_url;
-		$link_text                 = get_post_meta( $this->ID, 'cwp_product_affiliate_text2', true );
-		$link_url                  = get_post_meta( $this->ID, 'cwp_product_affiliate_link2', true );
-		$this->links[ $link_text ] = $link_url;
-		$new_links                 = get_post_meta( $this->ID, 'wppr_links', true );
-		if ( ! empty( $new_links ) ) {
+	private function setup_links()
+	{
+		$link_text                 = get_post_meta($this->ID, 'cwp_product_affiliate_text', true);
+		$link_url                  = get_post_meta($this->ID, 'cwp_product_affiliate_link', true);
+		$this->links[$link_text] = $link_url;
+		$link_text                 = get_post_meta($this->ID, 'cwp_product_affiliate_text2', true);
+		$link_url                  = get_post_meta($this->ID, 'cwp_product_affiliate_link2', true);
+		$this->links[$link_text] = $link_url;
+		$new_links                 = get_post_meta($this->ID, 'wppr_links', true);
+		if (!empty($new_links)) {
 			$this->links = $new_links;
 		}
 	}
@@ -407,33 +442,33 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_pros_cons() {
-		$options_nr = $this->wppr_get_option( 'cwppos_option_nr' );
+	private function setup_pros_cons()
+	{
+		$options_nr = $this->wppr_get_option('cwppos_option_nr');
 		$pros       = array();
 		$cons       = array();
-		for ( $i = 1; $i <= $options_nr; $i ++ ) {
-			$tmp_pro = get_post_meta( $this->ID, 'cwp_option_' . $i . '_pro', true );
-			$tmp_con = get_post_meta( $this->ID, 'cwp_option_' . $i . '_cons', true );
-			if ( ! empty( $tmp_pro ) ) {
+		for ($i = 1; $i <= $options_nr; $i++) {
+			$tmp_pro = get_post_meta($this->ID, 'cwp_option_' . $i . '_pro', true);
+			$tmp_con = get_post_meta($this->ID, 'cwp_option_' . $i . '_cons', true);
+			if (!empty($tmp_pro)) {
 				$pros[] = $tmp_pro;
 			}
-			if ( ! empty( $tmp_con ) ) {
+			if (!empty($tmp_con)) {
 				$cons[] = $tmp_con;
 			}
 		}
 		// New pros meta.
-		$new_pros = get_post_meta( $this->ID, 'wppr_pros', true );
-		if ( ! empty( $new_pros ) ) {
+		$new_pros = get_post_meta($this->ID, 'wppr_pros', true);
+		if (!empty($new_pros)) {
 			$pros = $new_pros;
 		}
-		$this->pros = array_filter( $pros );
+		$this->pros = array_filter($pros);
 		// New cons meta.
-		$new_cons = get_post_meta( $this->ID, 'wppr_cons', true );
-		if ( ! empty( $new_cons ) ) {
+		$new_cons = get_post_meta($this->ID, 'wppr_cons', true);
+		if (!empty($new_cons)) {
 			$cons = $new_cons;
 		}
-		$this->cons = array_filter( $cons );
-
+		$this->cons = array_filter($cons);
 	}
 
 	/**
@@ -442,21 +477,22 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  private
 	 */
-	private function setup_options() {
+	private function setup_options()
+	{
 		$options    = array();
-		$options_nr = $this->wppr_get_option( 'cwppos_option_nr' );
-		for ( $i = 1; $i <= $options_nr; $i ++ ) {
-			$tmp_name = get_post_meta( $this->ID, 'option_' . $i . '_content', true );
-			if ( $tmp_name !== '' ) {
-				$tmp_score     = get_post_meta( $this->ID, 'option_' . $i . '_grade', true );
-				$options[ $i ] = array(
+		$options_nr = $this->wppr_get_option('cwppos_option_nr');
+		for ($i = 1; $i <= $options_nr; $i++) {
+			$tmp_name = get_post_meta($this->ID, 'option_' . $i . '_content', true);
+			if ($tmp_name !== '') {
+				$tmp_score     = get_post_meta($this->ID, 'option_' . $i . '_grade', true);
+				$options[$i] = array(
 					'name'  => $tmp_name,
 					'value' => $tmp_score,
 				);
 			}
 		}
-		$new_options = get_post_meta( $this->ID, 'wppr_options', true );
-		if ( ! empty( $new_options ) ) {
+		$new_options = get_post_meta($this->ID, 'wppr_options', true);
+		if (!empty($new_options)) {
 			$options = $new_options;
 		}
 		$this->options = $options;
@@ -468,23 +504,25 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  public
 	 */
-	public function count_rating() {
-		$values      = wp_list_pluck( $this->options, 'value' );
-		$this->score = ( count( $this->options ) > 0 ) ? floatval( array_sum( $values ) / count( $this->options ) ) : 0;
+	public function count_rating()
+	{
+		$values      = wp_list_pluck($this->options, 'value');
+		$this->score = (count($this->options) > 0) ? floatval(array_sum($values) / count($this->options)) : 0;
 
-		update_post_meta( $this->ID, 'wppr_rating', number_format( $this->score, 2 ) );
+		update_post_meta($this->ID, 'wppr_rating', number_format($this->score, 2));
 	}
 
 	/**
 	 * Calculate the average rating on third-party services
 	 */
-	public function count_third_party_rating() {
+	public function count_third_party_rating()
+	{
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
 		$scores_db = new WPPR_Review_Scores();
 		$pid = get_field('k8_acf_vpnid', $this->ID);
 		if ($pid) $this->third_party_score = $scores_db->get_avg_rating($pid);
 
-		update_post_meta( $this->ID, 'wppr_third_party_rating', number_format( $this->third_party_score, 2 ) );
+		update_post_meta($this->ID, 'wppr_third_party_rating', number_format($this->third_party_score, 2));
 	}
 
 	/**
@@ -534,36 +572,37 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @access  private
 	 */
-	private function alter_options() {
-		$comment_influence = intval( $this->wppr_get_option( 'cwppos_infl_userreview' ) );
+	private function alter_options()
+	{
+		$comment_influence = intval($this->wppr_get_option('cwppos_infl_userreview'));
 
-		if ( 0 === $comment_influence ) {
+		if (0 === $comment_influence) {
 			return;
 		}
 
 		$comments = $this->get_comments_options();
-		if ( ! $comments ) {
+		if (!$comments) {
 			return;
 		}
 
 		$combined = array();
-		foreach ( $comments as $comment ) {
-			$array = wp_list_pluck( $comment['options'], 'value', 'name' );
-			foreach ( $array as $k => $v ) {
-				if ( ! isset( $combined[ $k ] ) ) {
-					$combined[ $k ] = floatval( $v );
+		foreach ($comments as $comment) {
+			$array = wp_list_pluck($comment['options'], 'value', 'name');
+			foreach ($array as $k => $v) {
+				if (!isset($combined[$k])) {
+					$combined[$k] = floatval($v);
 				} else {
-					$combined[ $k ] += floatval( $v );
+					$combined[$k] += floatval($v);
 				}
 			}
 		}
 		$new_options = array();
-		foreach ( $this->options as $index => $option ) {
+		foreach ($this->options as $index => $option) {
 			$k             = $option['name'];
 			$rating        = $option['value'];
-			$v             = floatval( $combined [ $k ] ) / count( $comments );
-			$weighted      = $v * 10 * ( $comment_influence / 100 ) + floatval( $rating ) * ( ( 100 - $comment_influence ) / 100 );
-			$new_options[ $index ] = array(
+			$v             = floatval($combined[$k]) / count($comments);
+			$weighted      = $v * 10 * ($comment_influence / 100) + floatval($rating) * ((100 - $comment_influence) / 100);
+			$new_options[$index] = array(
 				'name'  => $k,
 				'value' => $weighted,
 			);
@@ -577,9 +616,10 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return array|int The list of comments..
 	 */
-	public function get_comments_options() {
-		if ( $this->ID === 0 ) {
-			$this->logger->error( 'Can not get comments rating, id is not set' );
+	public function get_comments_options()
+	{
+		if ($this->ID === 0) {
+			$this->logger->error('Can not get comments rating, id is not set');
 
 			return array();
 		}
@@ -592,15 +632,15 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 			)
 		);
 		$valid          = array();
-		foreach ( $comments as $comment ) {
-			$options = $this->get_comment_options( $comment );
-			if ( ! empty( $options ) ) {
-				$valid[ $comment ] = array(
+		foreach ($comments as $comment) {
+			$options = $this->get_comment_options($comment);
+			if (!empty($options)) {
+				$valid[$comment] = array(
 					'options' => $options,
-					'date'    => get_comment_date( '', $comment ),
-					'author'  => get_comment_author( $comment ),
-					'title'   => wp_strip_all_tags( get_comment_excerpt( $comment ) ),
-					'content' => get_comment_text( $comment ),
+					'date'    => get_comment_date('', $comment),
+					'author'  => get_comment_author($comment),
+					'title'   => wp_strip_all_tags(get_comment_excerpt($comment)),
+					'content' => get_comment_text($comment),
 				);
 			}
 		}
@@ -618,24 +658,25 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return array
 	 */
-	public function get_comment_options( $comment_id ) {
+	public function get_comment_options($comment_id)
+	{
 		$options = array();
-		if ( $this->wppr_get_option( 'cwppos_show_userreview' ) === 'yes' ) {
-			$options_names   = wp_list_pluck( $this->options, 'name' );
+		if ($this->wppr_get_option('cwppos_show_userreview') === 'yes') {
+			$options_names   = wp_list_pluck($this->options, 'name');
 			$comment_options = array();
 			$valid_comment   = false;
-			foreach ( $options_names as $k => $name ) {
-				$value = get_comment_meta( $comment_id, 'meta_option_' . $k, true );
+			foreach ($options_names as $k => $name) {
+				$value = get_comment_meta($comment_id, 'meta_option_' . $k, true);
 
 				$comment_options[] = array(
 					'name'  => $name,
-					'value' => number_format( (float) $value, 2 ),
+					'value' => number_format((float) $value, 2),
 				);
-				if ( is_numeric( $value ) ) {
+				if (is_numeric($value)) {
 					$valid_comment = true;
 				}
 			}
-			if ( ! $valid_comment ) {
+			if (!$valid_comment) {
 				return array();
 			}
 
@@ -643,7 +684,6 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 		}
 
 		return $options;
-
 	}
 
 	/**
@@ -651,15 +691,16 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @access  private
 	 */
-	private function backward_compatibility() {
-		$comment_influence = intval( $this->wppr_get_option( 'cwppos_infl_userreview' ) );
+	private function backward_compatibility()
+	{
+		$comment_influence = intval($this->wppr_get_option('cwppos_infl_userreview'));
 
-		if ( 0 === $comment_influence ) {
+		if (0 === $comment_influence) {
 			return;
 		}
-		$comment_ratings = get_post_meta( $this->ID, 'wppr_comment_rating', true );
-		if ( empty( $comment_ratings ) ) {
-			update_post_meta( $this->ID, 'wppr_comment_rating', $this->get_comments_rating() );
+		$comment_ratings = get_post_meta($this->ID, 'wppr_comment_rating', true);
+		if (empty($comment_ratings)) {
+			update_post_meta($this->ID, 'wppr_comment_rating', $this->get_comments_rating());
 		}
 	}
 
@@ -670,23 +711,23 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return float|int
 	 */
-	public function get_comments_rating() {
+	public function get_comments_rating()
+	{
 		$comments = $this->get_comments_options();
-		if ( $comments ) {
+		if ($comments) {
 			$options = array();
-			foreach ( $comments as $comment ) {
-				$options = array_merge( $options, $comment['options'] );
+			foreach ($comments as $comment) {
+				$options = array_merge($options, $comment['options']);
 			}
 
-			if ( count( $options ) !== 0 ) {
-				return ( array_sum( wp_list_pluck( $options, 'value' ) ) / count( $options ) );
+			if (count($options) !== 0) {
+				return (array_sum(wp_list_pluck($options, 'value')) / count($options));
 			} else {
 				return 0;
 			}
 		} else {
 			return 0;
 		}
-
 	}
 
 	/**
@@ -694,14 +735,15 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @access public
 	 */
-	public function update_comments_rating() {
-		$comment_influence = intval( $this->wppr_get_option( 'cwppos_infl_userreview' ) );
+	public function update_comments_rating()
+	{
+		$comment_influence = intval($this->wppr_get_option('cwppos_infl_userreview'));
 
-		if ( 0 === $comment_influence ) {
+		if (0 === $comment_influence) {
 			return;
 		}
 
-		update_post_meta( $this->get_ID(), 'wppr_comment_rating', $this->get_comments_rating() );
+		update_post_meta($this->get_ID(), 'wppr_comment_rating', $this->get_comments_rating());
 	}
 
 	/**
@@ -711,7 +753,8 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return int
 	 */
-	public function get_ID() {
+	public function get_ID()
+	{
 		return $this->ID;
 	}
 
@@ -721,16 +764,17 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  public
 	 */
-	public function deactivate() {
-		if ( $this->is_active === false ) {
-			$this->logger->warning( 'Review is already inactive for ID: ' . $this->ID );
+	public function deactivate()
+	{
+		if ($this->is_active === false) {
+			$this->logger->warning('Review is already inactive for ID: ' . $this->ID);
 		}
 
-		$this->is_active = apply_filters( 'wppr_review_change_status', false, $this->ID, $this );
+		$this->is_active = apply_filters('wppr_review_change_status', false, $this->ID, $this);
 
-		do_action( 'wppr_review_deactivate', $this->ID, $this );
+		do_action('wppr_review_deactivate', $this->ID, $this);
 
-		return update_post_meta( $this->ID, 'cwp_meta_box_check', 'No' );
+		return update_post_meta($this->ID, 'cwp_meta_box_check', 'No');
 	}
 
 	/**
@@ -739,15 +783,16 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @since   3.0.0
 	 * @access  public
 	 */
-	public function activate() {
-		if ( $this->is_active === true ) {
-			$this->logger->warning( 'Review is already active for ID: ' . $this->ID );
+	public function activate()
+	{
+		if ($this->is_active === true) {
+			$this->logger->warning('Review is already active for ID: ' . $this->ID);
 		}
 
-		$this->is_active = apply_filters( 'wppr_review_change_status', true, $this->ID, $this );
-		do_action( 'wppr_review_activate', $this->ID, $this );
+		$this->is_active = apply_filters('wppr_review_change_status', true, $this->ID, $this);
+		do_action('wppr_review_activate', $this->ID, $this);
 
-		return update_post_meta( $this->ID, 'cwp_meta_box_check', 'Yes' );
+		return update_post_meta($this->ID, 'cwp_meta_box_check', 'Yes');
 	}
 
 	/**
@@ -757,7 +802,8 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return array
 	 */
-	public function get_review_data() {
+	public function get_review_data()
+	{
 		$data = array(
 			'id'             => $this->get_ID(),
 			'name'           => $this->get_name(),
@@ -788,8 +834,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_name() {
-		return apply_filters( 'wppr_name', $this->name, $this->ID, $this );
+	public function get_name()
+	{
+		return apply_filters('wppr_name', $this->name, $this->ID, $this);
 	}
 
 	/**
@@ -799,8 +846,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return bool
 	 */
-	public function hide_name() {
-		return apply_filters( 'wppr_hide_product_name', $this->name, $this->ID, $this );
+	public function hide_name()
+	{
+		return apply_filters('wppr_hide_product_name', $this->name, $this->ID, $this);
 	}
 	/**
 	 * Return the review template.
@@ -808,8 +856,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_template() {
-		return apply_filters( 'wppr_template', $this->template, $this->ID, $this );
+	public function get_template()
+	{
+		return apply_filters('wppr_template', $this->template, $this->ID, $this);
 	}
 
 	/**
@@ -822,12 +871,13 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_name( $name ) {
-		$name = apply_filters( 'wppr_name_format', $name, $this->ID, $this );
-		if ( $name !== $this->name ) {
+	public function set_name($name)
+	{
+		$name = apply_filters('wppr_name_format', $name, $this->ID, $this);
+		if ($name !== $this->name) {
 			$this->name = $name;
 
-			return update_post_meta( $this->ID, 'cwp_rev_product_name', $name );
+			return update_post_meta($this->ID, 'cwp_rev_product_name', $name);
 		}
 
 		return false;
@@ -842,11 +892,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_template( $template ) {
+	public function set_template($template)
+	{
 		$this->template = $template;
 
-		return update_post_meta( $this->ID, '_wppr_review_template', $template );
-
+		return update_post_meta($this->ID, '_wppr_review_template', $template);
 	}
 
 	/**
@@ -856,8 +906,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_price() {
-		return apply_filters( 'wppr_price', $this->price, $this->ID, $this );
+	public function get_price()
+	{
+		return apply_filters('wppr_price', $this->price, $this->ID, $this);
 	}
 
 	/**
@@ -870,18 +921,19 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_price( $price ) {
-		$price = apply_filters( 'wppr_price_raw', $price, $this->ID, $this );
-		if ( $price !== $this->price_raw ) {
+	public function set_price($price)
+	{
+		$price = apply_filters('wppr_price_raw', $price, $this->ID, $this);
+		if ($price !== $this->price_raw) {
 			$this->price_raw = $price;
 
-			$update = update_post_meta( $this->ID, 'cwp_rev_price', $price );
+			$update = update_post_meta($this->ID, 'cwp_rev_price', $price);
 
 			$this->setup_price();
 
 			return $update;
 		} else {
-			$this->logger->warning( 'Review: ' . $this->ID . ' price is the same.' );
+			$this->logger->warning('Review: ' . $this->ID . ' price is the same.');
 		}
 
 		return false;
@@ -894,8 +946,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_price_raw() {
-		return apply_filters( 'wppr_price_raw', $this->price_raw, $this->ID, $this );
+	public function get_price_raw()
+	{
+		return apply_filters('wppr_price_raw', $this->price_raw, $this->ID, $this);
 	}
 
 	/**
@@ -905,8 +958,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_currency() {
-		return apply_filters( 'wppr_currency_code', apply_filters( 'wppr_currency', empty( $this->currency ) ? '$' : $this->currency, $this->ID, $this ) );
+	public function get_currency()
+	{
+		return apply_filters('wppr_currency_code', apply_filters('wppr_currency', empty($this->currency) ? '$' : $this->currency, $this->ID, $this));
 	}
 
 	/**
@@ -916,8 +970,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_click() {
-		return apply_filters( 'wppr_click', $this->click, $this->ID, $this );
+	public function get_click()
+	{
+		return apply_filters('wppr_click', $this->click, $this->ID, $this);
 	}
 
 	/**
@@ -930,17 +985,18 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_click( $click ) {
-		if ( $click === 'image' || $click === 'link' ) {
-			if ( $this->click !== $click ) {
+	public function set_click($click)
+	{
+		if ($click === 'image' || $click === 'link') {
+			if ($this->click !== $click) {
 				$this->click = $click;
 
-				return update_post_meta( $this->ID, 'cwp_image_link', $this->click );
+				return update_post_meta($this->ID, 'cwp_image_link', $this->click);
 			} else {
-				$this->logger->warning( 'Value for click already set in ID: ' . $this->ID );
+				$this->logger->warning('Value for click already set in ID: ' . $this->ID);
 			}
 		} else {
-			$this->logger->warning( 'Wrong value for click on ID : ' . $this->ID );
+			$this->logger->warning('Wrong value for click on ID : ' . $this->ID);
 		}
 
 		return false;
@@ -953,8 +1009,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return array
 	 */
-	public function get_image() {
-		return apply_filters( 'wppr_images', $this->image, $this->ID, $this );
+	public function get_image()
+	{
+		return apply_filters('wppr_images', $this->image, $this->ID, $this);
 	}
 
 	/**
@@ -967,14 +1024,15 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_image( $image ) {
-		$image = apply_filters( 'wppr_image_format', $image, $this->ID, $this );
-		if ( $image !== $this->image ) {
+	public function set_image($image)
+	{
+		$image = apply_filters('wppr_image_format', $image, $this->ID, $this);
+		if ($image !== $this->image) {
 			$this->image = $image;
 
-			return update_post_meta( $this->ID, 'cwp_rev_product_image', $image );
+			return update_post_meta($this->ID, 'cwp_rev_product_image', $image);
 		} else {
-			$this->logger->warning( 'Image already used for ID: ' . $this->ID );
+			$this->logger->warning('Image already used for ID: ' . $this->ID);
 		}
 
 		return false;
@@ -987,10 +1045,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return int
 	 */
-	public function get_image_id() {
+	public function get_image_id()
+	{
 		global $wpdb;
-		$attachment  = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $this->image ) );
-		$image_id    = isset( $attachment[0] ) ? $attachment[0] : '';
+		$attachment  = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid=%s", $this->image));
+		$image_id    = isset($attachment[0]) ? $attachment[0] : '';
 		return $image_id;
 	}
 
@@ -1001,21 +1060,22 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_small_thumbnail() {
+	public function get_small_thumbnail()
+	{
 		// filter for image size;
-		$size        = apply_filters( 'wppr_review_image_size', 'thumbnail', $this->ID, $this );
+		$size        = apply_filters('wppr_review_image_size', 'thumbnail', $this->ID, $this);
 		$image_thumb = '';
 		$image_id = $this->get_image_id();
-		if ( ! empty( $image_id ) ) {
-			$image_thumb = wp_get_attachment_image_src( $image_id, $size );
-			if ( $size !== 'thumbnail' ) {
-				if ( $image_thumb[0] === $this->image ) {
-					$image_thumb = wp_get_attachment_image_src( $image_id, 'thumbnail' );
+		if (!empty($image_id)) {
+			$image_thumb = wp_get_attachment_image_src($image_id, $size);
+			if ($size !== 'thumbnail') {
+				if ($image_thumb[0] === $this->image) {
+					$image_thumb = wp_get_attachment_image_src($image_id, 'thumbnail');
 				}
 			}
 		}
 
-		return apply_filters( 'wppr_thumb', isset( $image_thumb[0] ) ? $image_thumb[0] : $this->image, $this->ID, $this );
+		return apply_filters('wppr_thumb', isset($image_thumb[0]) ? $image_thumb[0] : $this->image, $this->ID, $this);
 	}
 
 	/**
@@ -1025,13 +1085,14 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return string
 	 */
-	public function get_image_alt() {
+	public function get_image_alt()
+	{
 		$image_id = $this->get_image_id();
-		if ( empty( $image_id ) ) {
+		if (empty($image_id)) {
 			return $this->get_name();
 		}
-		$alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
-		if ( empty( $alt ) ) {
+		$alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+		if (empty($alt)) {
 			return $this->get_name();
 		}
 		return $alt;
@@ -1044,7 +1105,8 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return float
 	 */
-	public function get_rating($third_party = false) {
+	public function get_rating($third_party = false)
+	{
 		$local_rating = $this->get_local_rating();
 		$third_party_rating = $this->get_third_party_rating();
 		if ($third_party) return $third_party_rating;
@@ -1058,33 +1120,36 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return float
 	 */
-	public function get_local_rating() {
-		$comment_influence = intval( $this->wppr_get_option( 'cwppos_infl_userreview' ) );
+	public function get_local_rating()
+	{
+		$comment_influence = intval($this->wppr_get_option('cwppos_infl_userreview'));
 
 		$rating = $this->score;
-		if ( $comment_influence > 0 ) {
+		if ($comment_influence > 0) {
 			$comments_rating = $this->get_comments_rating();
-			if ( $comments_rating > 0 ) {
-				$rating = $comments_rating * 10 * ( $comment_influence / 100 ) + $rating * ( ( 100 - $comment_influence ) / 100 );
+			if ($comments_rating > 0) {
+				$rating = $comments_rating * 10 * ($comment_influence / 100) + $rating * ((100 - $comment_influence) / 100);
 			}
 		}
 
-		do_action( 'themeisle_log_event', WPPR_SLUG, sprintf( 'rating %d becomes %d with user influence of %d', $this->score, $rating, $comment_influence ), 'debug', __FILE__, __LINE__ );
+		do_action('themeisle_log_event', WPPR_SLUG, sprintf('rating %d becomes %d with user influence of %d', $this->score, $rating, $comment_influence), 'debug', __FILE__, __LINE__);
 
-		return apply_filters( 'wppr_rating', $rating, $this->ID, $this );
+		return apply_filters('wppr_rating', $rating, $this->ID, $this);
 	}
 
 	/**
 	 * Get the average rating on third-party services
 	 */
-	public function get_third_party_rating() {
+	public function get_third_party_rating()
+	{
 		return $this->third_party_score;
 	}
 
 	/**
 	 * Get calculate the total reviews count on third-party services
 	 */
-	public function get_third_party_votes() {
+	public function get_third_party_votes()
+	{
 		include_once WPPR_PATH . '/includes/class-wppr-review-score.php';
 		$scores_db = new WPPR_Review_Scores();
 		$pid = get_field('k8_acf_vpnid', $this->ID);
@@ -1102,8 +1167,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return array
 	 */
-	public function get_pros() {
-		return apply_filters( 'wppr_pros', $this->pros, $this->ID, $this );
+	public function get_pros()
+	{
+		return apply_filters('wppr_pros', $this->pros, $this->ID, $this);
 	}
 
 	/**
@@ -1116,20 +1182,21 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_pros( $pros ) {
-		$pros = apply_filters( 'wppr_pros_format', $pros, $this->ID, $this );
-		if ( is_array( $pros ) ) {
+	public function set_pros($pros)
+	{
+		$pros = apply_filters('wppr_pros_format', $pros, $this->ID, $this);
+		if (is_array($pros)) {
 			// We update the whole array.
 			$this->pros = $pros;
-			$this->logger->notice( 'Update pros array for ID . ' . $this->ID );
+			$this->logger->notice('Update pros array for ID . ' . $this->ID);
 
-			return update_post_meta( $this->ID, 'wppr_pros', $this->pros );
+			return update_post_meta($this->ID, 'wppr_pros', $this->pros);
 		} else {
 			// We add the text to the old array.
 			$this->pros[] = $pros;
-			$this->logger->notice( 'Adding pros option for ID . ' . $this->ID );
+			$this->logger->notice('Adding pros option for ID . ' . $this->ID);
 
-			return update_post_meta( $this->ID, 'wppr_pros', $this->pros );
+			return update_post_meta($this->ID, 'wppr_pros', $this->pros);
 		}
 	}
 
@@ -1140,8 +1207,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return array
 	 */
-	public function get_cons() {
-		return apply_filters( 'wppr_cons', $this->cons, $this->ID, $this );
+	public function get_cons()
+	{
+		return apply_filters('wppr_cons', $this->cons, $this->ID, $this);
 	}
 
 	/**
@@ -1154,22 +1222,22 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_cons( $cons ) {
-		$cons = apply_filters( 'wppr_cons_format', $cons, $this->ID, $this );
-		if ( is_array( $cons ) ) {
+	public function set_cons($cons)
+	{
+		$cons = apply_filters('wppr_cons_format', $cons, $this->ID, $this);
+		if (is_array($cons)) {
 			// We update the whole array.
 			$this->cons = $cons;
-			$this->logger->notice( 'Update cons array for ID . ' . $this->ID );
+			$this->logger->notice('Update cons array for ID . ' . $this->ID);
 
-			return update_post_meta( $this->ID, 'wppr_cons', $this->cons );
+			return update_post_meta($this->ID, 'wppr_cons', $this->cons);
 		} else {
 			// We add the text to the old array.
 			$this->pros[] = $cons;
-			$this->logger->notice( 'Adding cons option for ID . ' . $this->ID );
+			$this->logger->notice('Adding cons option for ID . ' . $this->ID);
 
-			return update_post_meta( $this->ID, 'wppr_cons', $this->cons );
+			return update_post_meta($this->ID, 'wppr_cons', $this->cons);
 		}
-
 	}
 
 	/**
@@ -1179,8 +1247,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return array
 	 */
-	public function get_options() {
-		return apply_filters( 'wppr_options', $this->options, $this->ID, $this );
+	public function get_options()
+	{
+		return apply_filters('wppr_options', $this->options, $this->ID, $this);
 	}
 
 	/**
@@ -1210,10 +1279,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_options( $options ) {
-		if ( is_array( $options ) ) {
-			$options = apply_filters( 'wppr_options_format', $options, $this->ID, $this );
-			if ( isset( $options['name'] ) ) {
+	public function set_options($options)
+	{
+		if (is_array($options)) {
+			$options = apply_filters('wppr_options_format', $options, $this->ID, $this);
+			if (isset($options['name'])) {
 				/**
 				 * Add options if the param is
 				 * array(
@@ -1225,7 +1295,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				$this->count_rating();
 				$this->count_third_party_rating();
 
-				return update_post_meta( $this->ID, 'wppr_options', $this->options );
+				return update_post_meta($this->ID, 'wppr_options', $this->options);
 			} else {
 				/**
 				 * Update the all list of options.
@@ -1234,11 +1304,10 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				$this->count_rating();
 				$this->count_third_party_rating();
 
-				return update_post_meta( $this->ID, 'wppr_options', $this->options );
-
+				return update_post_meta($this->ID, 'wppr_options', $this->options);
 			}
 		} else {
-			$this->logger->error( 'Invalid value for options in review: ' . $this->ID );
+			$this->logger->error('Invalid value for options in review: ' . $this->ID);
 		}
 
 		return false;
@@ -1251,9 +1320,9 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 * @access  public
 	 * @return array
 	 */
-	public function get_links() {
-		return apply_filters( 'wppr_links', $this->links, $this->ID );
-
+	public function get_links()
+	{
+		return apply_filters('wppr_links', $this->links, $this->ID);
 	}
 
 	/**
@@ -1266,14 +1335,15 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool Either was saved or not.
 	 */
-	public function set_links( $links ) {
-		$links = apply_filters( 'wppr_links_format', $links, $this->ID, $this );
-		if ( is_array( $links ) ) {
+	public function set_links($links)
+	{
+		$links = apply_filters('wppr_links_format', $links, $this->ID, $this);
+		if (is_array($links)) {
 			$this->links = $links;
 
-			return update_post_meta( $this->ID, 'wppr_links', $links );
+			return update_post_meta($this->ID, 'wppr_links', $links);
 		} else {
-			$this->logger->error( 'Review: ' . $this->ID . ' Invalid array for links, it should be url=>text' );
+			$this->logger->error('Review: ' . $this->ID . ' Invalid array for links, it should be url=>text');
 		}
 
 		return false;
@@ -1284,18 +1354,19 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return array The JSON-LD array.
 	 */
-	public function get_json_ld() {
+	public function get_json_ld()
+	{
 		$k8id = $this->ID;
-		$k8meta = get_post_meta( $k8id );
-		$k8links = unserialize( $k8meta['wppr_links'][0] );
-		if( is_array( $k8links ) && count( $k8links ) > 0 ) :
+		$k8meta = get_post_meta($k8id);
+		$k8links = unserialize($k8meta['wppr_links'][0]);
+		if (is_array($k8links) && count($k8links) > 0) :
 			foreach ($k8links as $key => $value) {
 				$k8brand = $key;
 				$k8url = $value;
 			}
-		else:
+		else :
 			$k8brand = 'VPN';
-			$k8url = get_permalink( $k8id );
+			$k8url = get_permalink($k8id);
 		endif;
 		$ld           = array(
 			'@context'    => 'http://schema.org/',
@@ -1313,7 +1384,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 
 		$ld['offers'] = array(
 			'@type'         => 'Offer',
-			'price'         => number_format( $this->get_price(), 2, '.', '' ),
+			'price'         => number_format($this->get_price(), 2, '.', ''),
 			'priceCurrency' => $this->get_currency(),
 			'seller'        => array(
 				'@type' => 'Person',
@@ -1330,7 +1401,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				'@type'       => 'Rating',
 				'bestRating'  => '10',
 				'worstRating' => '0',
-				'ratingValue' => number_format( ( $this->get_rating() / 10 ), 2 ),
+				'ratingValue' => number_format(($this->get_rating() / 10), 2),
 			),
 			'name'          => $this->get_name(),
 			'reviewBody'    => $this->get_content(),
@@ -1338,13 +1409,13 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 				'@type' => 'Person',
 				'name'  => $this->get_author(),
 			),
-			'datePublished' => get_the_time( 'Y-m-d', $this->get_ID() ),
+			'datePublished' => get_the_time('Y-m-d', $this->get_ID()),
 			// 'datePublished' => '11.09.2011',
 		);
 
-		if ( $this->wppr_get_option( 'cwppos_show_userreview' ) !== 'yes' ) {
+		if ($this->wppr_get_option('cwppos_show_userreview') !== 'yes') {
 			$ld['review'] = $review_default;
-			return $this->populate_json_for_schema( $ld );
+			return $this->populate_json_for_schema($ld);
 		}
 
 		$ld['review'][] = $review_default;
@@ -1352,7 +1423,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 		$comments = $this->get_comments_options();
 
 		$mnames = [
-			'Januar'=>'January',
+			'Januar' => 'January',
 			'Februar' => 'February',
 			'März' => 'March',
 			'April' => 'April',
@@ -1365,23 +1436,23 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 			'November' => 'November',
 			'Dezember' => 'December'
 		];
-		foreach ( $comments as $comment ) {
+		foreach ($comments as $comment) {
 
 			// write_log($comment['date']);
 
 			$m5_reppl = preg_replace('/[.,]/', '', $comment['date']);
 			foreach ($mnames as $k => $v) {
 				if (strpos($m5_reppl, $k) !== false) {
-					$m5_reppl =	str_replace( $k,$v,$m5_reppl );
+					$m5_reppl =	str_replace($k, $v, $m5_reppl);
 					break;
 				}
 			}
 			// write_log( $m5_reppl );
 
 			// $m5_date = strtotime( $m5_reppl );
-			
+
 			// write_log( $m5_date );
-			
+
 			// $m5_date = date('Y-m-d', $m5_date);
 
 			// write_log( $m5_date );
@@ -1392,7 +1463,7 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 					'@type'       => 'Rating',
 					'bestRating'  => '10',
 					'worstRating' => '0',
-					'ratingValue' => number_format( ( $this->rating_by_options( $comment['options'] ) ), 2 ),
+					'ratingValue' => number_format(($this->rating_by_options($comment['options'])), 2),
 				),
 				'name'          => $comment['title'],
 				'reviewBody'    => $comment['content'],
@@ -1409,11 +1480,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 			'@type'       => 'AggregateRating',
 			'bestRating'  => '10',
 			'worstRating' => '0',
-			'ratingValue' => number_format( ( $this->get_rating() / 10 ), 2 ),
-			'reviewCount' => count( $ld['review'] ),
+			'ratingValue' => number_format(($this->get_rating() / 10), 2),
+			'reviewCount' => count($ld['review']),
 		);
 
-		return $this->populate_json_for_schema( $ld );
+		return $this->populate_json_for_schema($ld);
 	}
 
 	/**
@@ -1421,16 +1492,17 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return string The excerpt of description.
 	 */
-	public function get_excerpt() {
-		if ( ! $this->is_active() ) {
+	public function get_excerpt()
+	{
+		if (!$this->is_active()) {
 			return '';
 		}
 		$content = $this->get_content();
-		$content = strip_shortcodes( $content );
+		$content = strip_shortcodes($content);
 
-		$excerpt_length = apply_filters( 'wppr_excerpt_length', 55 );
+		$excerpt_length = apply_filters('wppr_excerpt_length', 55);
 
-		return wp_trim_words( $content, $excerpt_length, '...' );
+		return wp_trim_words($content, $excerpt_length, '...');
 	}
 
 	/**
@@ -1438,31 +1510,33 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return string The review post content.
 	 */
-	public function get_content() {
-		if ( ! $this->is_active() ) {
+	public function get_content()
+	{
+		if (!$this->is_active()) {
 			return '';
 		}
-		$content = get_post_field( 'post_content', $this->get_ID() );
-		if ( empty( $content ) ) {
+		$content = get_post_field('post_content', $this->get_ID());
+		if (empty($content)) {
 			return '';
 		}
 
-		$content = wp_strip_all_tags( strip_shortcodes( $content ) );
+		$content = wp_strip_all_tags(strip_shortcodes($content));
 
-		return apply_filters( 'wppr_content', $content, $this->ID, $this );
+		return apply_filters('wppr_content', $content, $this->ID, $this);
 	}
 
 	/**
 	 * Get the review author.
 	 */
-	public function get_author() {
-		if ( ! $this->is_active() ) {
+	public function get_author()
+	{
+		if (!$this->is_active()) {
 			return '';
 		}
 
-		$author_id = get_post_field( 'post_author', $this->get_ID() );
+		$author_id = get_post_field('post_author', $this->get_ID());
 
-		return get_the_author_meta( 'display_name', $author_id );
+		return get_the_author_meta('display_name', $author_id);
 	}
 
 	/**
@@ -1472,13 +1546,13 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return float|int The rating by options pairs.
 	 */
-	public function rating_by_options( $options ) {
-		if ( empty( $options ) ) {
+	public function rating_by_options($options)
+	{
+		if (empty($options)) {
 			return 0;
 		}
 
-		return ( array_sum( wp_list_pluck( $options, 'value' ) ) / count( $options ) );
-
+		return (array_sum(wp_list_pluck($options, 'value')) / count($options));
 	}
 
 	/**
@@ -1486,13 +1560,14 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return string CSS class for the rating.
 	 */
-	public function get_rating_class( $value = - 1 ) {
-		$element = ( $value < 0 ) ? $this->get_rating() : $value;
-		if ( $element >= 75 ) {
+	public function get_rating_class($value = -1)
+	{
+		$element = ($value < 0) ? $this->get_rating() : $value;
+		if ($element >= 75) {
 			return 'wppr-very-good';
-		} elseif ( $element < 75 && $element >= 50 ) {
+		} elseif ($element < 75 && $element >= 50) {
 			return 'wppr-good';
-		} elseif ( $element < 50 && $element >= 25 ) {
+		} elseif ($element < 50 && $element >= 25) {
 			return 'wppr-not-bad';
 		} else {
 			return 'wppr-weak';
@@ -1504,10 +1579,11 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @access  private
 	 */
-	private function setup_review_schema() {
-		$name       = get_post_meta( $this->ID, 'wppr_review_type', true );
+	private function setup_review_schema()
+	{
+		$name       = get_post_meta($this->ID, 'wppr_review_type', true);
 		$this->type = $name;
-		$fields       = get_post_meta( $this->ID, 'wppr_review_custom_fields', true );
+		$fields       = get_post_meta($this->ID, 'wppr_review_custom_fields', true);
 		$this->custom_fields = $fields;
 	}
 
@@ -1520,19 +1596,20 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_type( $type ) {
+	public function set_type($type)
+	{
 		$this->type = $type;
 
-		return update_post_meta( $this->ID, 'wppr_review_type', $type );
-
+		return update_post_meta($this->ID, 'wppr_review_type', $type);
 	}
 
 	/**
 	 * Get the review schema type.
 	 */
-	public function get_type() {
+	public function get_type()
+	{
 		// to support reviews created by an old version that are then displayed by the new version.
-		return empty( $this->type ) ? 'Product' : $this->type;
+		return empty($this->type) ? 'Product' : $this->type;
 	}
 
 	/**
@@ -1544,27 +1621,29 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	 *
 	 * @return bool
 	 */
-	public function set_custom_fields( $fields ) {
+	public function set_custom_fields($fields)
+	{
 		$this->custom_fields = $fields;
 
-		return update_post_meta( $this->ID, 'wppr_review_custom_fields', $fields );
-
+		return update_post_meta($this->ID, 'wppr_review_custom_fields', $fields);
 	}
 
 	/**
 	 * Get the review type custom fields.
 	 */
-	public function get_custom_fields() {
+	public function get_custom_fields()
+	{
 		return $this->custom_fields;
 	}
 
 	/**
 	 * Get a particular custom field value to display in the template.
 	 */
-	public function get_custom_field( $key ) {
+	public function get_custom_field($key)
+	{
 		$fields = $this->custom_fields;
-		if ( $fields && isset( $fields[ $key ] ) ) {
-			return $fields[ $key ];
+		if ($fields && isset($fields[$key])) {
+			return $fields[$key];
 		}
 		return '';
 	}
@@ -1572,17 +1651,17 @@ class WPPR_Review_Model extends WPPR_Model_Abstract {
 	/**
 	 * Populate the JSON LD schema for the schema type.
 	 */
-	private function populate_json_for_schema( $ld ) {
+	private function populate_json_for_schema($ld)
+	{
 		$fields = $this->get_custom_fields();
-		if ( $fields ) {
-			foreach ( $fields as $key => $value ) {
+		if ($fields) {
+			foreach ($fields as $key => $value) {
 				// we do not want to overwrite anything that is already set and we don't want to set empty values.
-				if ( ! isset( $ld[ $key ] ) && ! empty( $value ) ) {
-					$ld[ $key ] = $value;
+				if (!isset($ld[$key]) && !empty($value)) {
+					$ld[$key] = $value;
 				}
 			}
 		}
-		return apply_filters( 'wppr_schema', $ld, $this );
+		return apply_filters('wppr_schema', $ld, $this);
 	}
-
 }
