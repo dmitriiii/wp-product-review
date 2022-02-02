@@ -160,8 +160,8 @@ class Wppr_Public
 				$this->plugin_name . '-privacy-report',
 				'privacy_report_data',
 				array(
-					'permissions' => __('permissions', 'wp-product-review'),
-					'trackers' => __('trackers', 'wp-product-review'),
+					'permissions' => __('Permissions', 'wp-product-review'),
+					'trackers' => __('Trackers', 'wp-product-review'),
 					'assest_folder' => WPPR_URL . "/assets"
 				)
 			);
