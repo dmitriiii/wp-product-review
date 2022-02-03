@@ -326,7 +326,11 @@
   async function getReports(handle) {
     try {
       if (getReports.history.has(handle)) return getReports.history.get(handle);
-      const res = await fetch(`${URL_BASE}/reports/${handle}`);
+      const res = await fetch(`${URL_BASE}/reports/${handle}`, {
+        headers: {
+          "X-WP-Nonce": privacy_report_data.nonce,
+        },
+      });
       const rawData = await res.json();
       if (res.status != 200) throw new Error(rawData.message);
       getReports.history.set(handle, rawData.data);
@@ -342,7 +346,12 @@
       if (getReportDetail.history.has(handle + versionCode))
         return getReportDetail.history.get(handle + versionCode);
       const res = await fetch(
-        `${URL_BASE}/report/?handle=${handle}&version_code=${versionCode}`
+        `${URL_BASE}/report/?handle=${handle}&version_code=${versionCode}`,
+        {
+          headers: {
+            "X-WP-Nonce": privacy_report_data.nonce,
+          },
+        }
       );
       const rawData = await res.json();
       if (res.status != 200) throw new Error(rawData.message);
@@ -358,7 +367,11 @@
     try {
       if (getGrades.grades) return getGrades.grades;
 
-      const res = await fetch(`${URL_BASE}/grade`);
+      const res = await fetch(`${URL_BASE}/grade`, {
+        headers: {
+          "X-WP-Nonce": privacy_report_data.nonce,
+        },
+      });
       const rawData = await res.json();
       if (res.status != 200) throw new Error(rawData.message);
       getGrades.grades = rawData.data;
