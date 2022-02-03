@@ -844,7 +844,9 @@ function add_acf_option_page()
 							'label' => 'Range Description',
 							'name' => 'range_description',
 							'type' => 'textarea',
-							'instructions' => '%vpn - use this to dynamically substitute vpn titles into text',
+							'instructions' => '%vpn - use this to dynamically substitute vpn titles into text.<br>
+											   %detail% - use this to substitute the link to open the trust level details popup. Wrap some text in %detail% tags.<br>
+											   Usage example: %detail%Trust-Level%detail%',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -884,7 +886,9 @@ function add_acf_option_page()
 					'label' => 'Text Before Price',
 					'name' => 'trust_level_text_before_price',
 					'type' => 'textarea',
-					'instructions' => '%vpn - use this to dynamically substitute vpn titles into text',
+					'instructions' => '%vpn - use this to dynamically substitute vpn titles into text.<br>
+									   %detail% - use this to substitute the link to open the trust level details popup. Wrap some text in %detail% tags.<br>
+									   Usage example: %detail%Trust-Level%detail%',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
