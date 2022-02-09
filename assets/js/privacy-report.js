@@ -21,13 +21,13 @@
    */
   function openReportDetailModal(e) {
     e.preventDefault();
-    const { handle, versionCode, modalId, modalTitle, modalLoadingImg } =
+    const { handle, versionCode, modalId, modalTitle, modalSubtitle, modalLoadingImg } =
       e.target.dataset;
 
-    const openModal = createWuModal(
+    const { openModal } = createWuModal(
       modalId,
       modalTitle,
-      "",
+      modalSubtitle,
       modalLoadingImg,
       async () => getReportDetailModalContent(handle, versionCode)
     );
@@ -43,7 +43,7 @@
     e.preventDefault();
     const { handle, modalId, modalTitle, modalLoadingImg } = e.target.dataset;
 
-    const openModal = createWuModal(
+    const { modalEl, openModal, closeModal } = createWuModal(
       modalId,
       modalTitle,
       "",
@@ -52,6 +52,14 @@
     );
 
     openModal();
+
+    modalEl.addEventListener("click", async (e) => {
+      if (!e.target.classList.contains("privacy-version-el__title")) return;
+      await closeModal(modalEl);
+      e.target.dataset.modalLoadingImg = modalLoadingImg;
+      openReportDetailModal(e);
+      e;
+    });
   }
 
   /**
@@ -63,7 +71,7 @@
     const { handle, versionCode, modalId, modalTitle, modalLoadingImg } =
       e.target.dataset;
 
-    const openModal = createWuModal(
+    const { openModal } = createWuModal(
       modalId,
       modalTitle,
       "",
@@ -83,7 +91,7 @@
     const { handle, versionCode, modalId, modalTitle, modalLoadingImg } =
       e.target.dataset;
 
-    const openModal = createWuModal(
+    const { openModal } = createWuModal(
       modalId,
       modalTitle,
       "",
@@ -289,9 +297,16 @@
       .map((report) => {
         return `
         <div class="privacy-version-el">
-            <div class="privacy-version-el__title">
+            <a href="javascript:;" class="privacy-version-el__title" 
+              data-handle="${report.handle}" 
+              data-version-code="${report.version_code}" 
+              data-modal-id="${report.handle + "-" + report.version_code}" 
+              data-handle="${report.handle}" 
+              data-modal-title="${privacy_report_data.version}" 
+              data-modal-subtitle="${report.version_name}"
+            rel="nofollow">
                 ${report.app_name}
-            </div>
+            </a>
             <div class="privacy-version-el__version">
                 ${report.version_name} - google
             </div>

@@ -22,10 +22,14 @@ function createWuModal(id, title, subtitle, loadingImg, content = "") {
 
   document.body.append(template.content);
 
-  return hydratateWuModal(
+  return {
     modalEl,
-    typeof content === "function" ? content : ""
-  );
+    openModal: hydratateWuModal(
+      modalEl,
+      typeof content === "function" ? content : ""
+    ),
+    closeModal: () => closeWuModal(modalEl),
+  };
 }
 
 function openWuModal(modalEl) {
@@ -45,30 +49,37 @@ function hydratateWuModal(modalEl, asyncContent = null) {
 function initWuControl(modalEl) {
   modalEl
     .querySelector(".wu-modal__close")
-    .addEventListener("click", closeWuModal);
-  modalEl.addEventListener("click", closeWuModal);
+    .addEventListener("click", onCloseWuModal);
+  modalEl.addEventListener("click", onCloseWuModal);
 }
 
-function closeWuModal(e) {
+async function closeWuModal(modalEl) {
+  modalEl.style.opacity = "";
+  return new Promise((res) => {
+    modalEl.addEventListener(
+      "transitionend",
+      () => {
+        modalEl.style.display = "none";
+        document.body.style.overflow = "";
+        if (modalEl.isCreate) modalEl.remove();
+        res();
+      },
+      {
+        once: true,
+      }
+    );
+  });
+}
+
+function onCloseWuModal(e) {
   if (
     !e.target.classList.contains("wu-modal__close") &&
     !e.target.classList.contains("wu-modal")
   )
     return;
   const modalEl = e.target.closest(".wu-modal");
-
-  modalEl.style.opacity = "";
-  modalEl.addEventListener(
-    "transitionend",
-    () => {
-      modalEl.style.display = "none";
-      document.body.style.overflow = "";
-      if (modalEl.isCreate) modalEl.remove();
-    },
-    {
-      once: true,
-    }
-  );
+  if (!modalEl) return;
+  closeWuModal(modalEl);
 }
 
 async function fillWuModal(modalEl, asyncContent) {
@@ -79,7 +90,7 @@ async function fillWuModal(modalEl, asyncContent) {
   const content = await asyncContent();
   if (typeof content === "string") resultsEl.innerHTML = content;
   else {
-    if (content.title) titleEl.innerHTML = content.title
+    if (content.title) titleEl.innerHTML = content.title;
     if (content.inner) resultsEl.innerHTML = content.inner;
   }
   loadingEl.style.display = "none";

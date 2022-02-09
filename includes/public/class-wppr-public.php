@@ -163,6 +163,7 @@ class Wppr_Public
 					'nonce' => wp_create_nonce( 'wp_rest' ),
 					'permissions' => __('Permissions', 'wp-product-review'),
 					'trackers' => __('Trackers', 'wp-product-review'),
+					'version' => __('Version', 'wp-product-review'),
 					'assest_folder' => WPPR_URL . "/assets"
 				)
 			);
