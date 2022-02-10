@@ -19,12 +19,18 @@
    *
    * @param {Event} e
    */
-  function openReportDetailModal(e) {
+  function openReportDetailModal(e, parentE) {
     e.preventDefault();
-    const { handle, versionCode, modalId, modalTitle, modalSubtitle, modalLoadingImg } =
-      e.target.dataset;
+    const {
+      handle,
+      versionCode,
+      modalId,
+      modalTitle,
+      modalSubtitle,
+      modalLoadingImg,
+    } = e.target.dataset;
 
-    const { openModal } = createWuModal(
+    const { openModal, modalEl } = createWuModal(
       modalId,
       modalTitle,
       modalSubtitle,
@@ -33,6 +39,8 @@
     );
 
     openModal();
+    if (parentE)
+      modalEl.addEventListener("modalclosed", () => openVersionsModal(parentE));
   }
 
   /**
@@ -53,12 +61,12 @@
 
     openModal();
 
+    let parentE = e;
     modalEl.addEventListener("click", async (e) => {
       if (!e.target.classList.contains("privacy-version-el__title")) return;
       await closeModal(modalEl);
       e.target.dataset.modalLoadingImg = modalLoadingImg;
-      openReportDetailModal(e);
-      e;
+      openReportDetailModal(e, parentE);
     });
   }
 

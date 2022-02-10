@@ -38,6 +38,9 @@ function openWuModal(modalEl) {
   setTimeout(() => {
     modalEl.style.opacity = 1;
   });
+  return new Promise((res) => {
+    modalEl.addEventListener("transitionend", res);
+  });
 }
 
 function hydratateWuModal(modalEl, asyncContent = null) {
@@ -49,18 +52,24 @@ function hydratateWuModal(modalEl, asyncContent = null) {
 function initWuControl(modalEl) {
   modalEl
     .querySelector(".wu-modal__close")
-    .addEventListener("click", onCloseWuModal);
-  modalEl.addEventListener("click", onCloseWuModal);
+    .addEventListener("click", onCloseWuModal, {
+      once: true,
+    });
+  modalEl.addEventListener("click", onCloseWuModal, {
+    once: true,
+  });
 }
 
 async function closeWuModal(modalEl) {
   modalEl.style.opacity = "";
+  modalEl.dispatchEvent(new Event("modalclose"));
   return new Promise((res) => {
     modalEl.addEventListener(
       "transitionend",
       () => {
         modalEl.style.display = "none";
         document.body.style.overflow = "";
+        modalEl.dispatchEvent(new Event("modalclosed"));
         if (modalEl.isCreate) modalEl.remove();
         res();
       },
@@ -72,6 +81,7 @@ async function closeWuModal(modalEl) {
 }
 
 function onCloseWuModal(e) {
+  e.stopPropagation()
   if (
     !e.target.classList.contains("wu-modal__close") &&
     !e.target.classList.contains("wu-modal")
