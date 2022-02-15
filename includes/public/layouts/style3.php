@@ -83,7 +83,7 @@ $desc =  apply_filters(
 					</div><!-- end .review-wu-left-top -->
 					<? if ($total_votes != -1) { ?>
 						<div class="review-wu-left-mid">
-							<a class="review-wu-reviews-link" href="#reviews-detail">
+							<a class="review-wu-reviews-link" href="#reviews-detail" rel="nofollow">
 								<? wppr_display_rating_stars(null, $review_object, false, true) ?>
 								<span class="review-wu-reviews-count">
 									<?= __('Reviews', 'wp-product-review') ?> (<?= number_format($total_votes) ?>)
@@ -91,6 +91,7 @@ $desc =  apply_filters(
 							</a>
 						</div>
 					<? } ?>
+					<?php wppr_layout_get_privacy_info($review_object); ?>	
 					<?php wppr_layout_get_options_ratings($review_object, 'dashes'); ?>
 
 				</div><!-- end .review-wu-left -->

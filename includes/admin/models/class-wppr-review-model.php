@@ -526,6 +526,48 @@ class WPPR_Review_Model extends WPPR_Model_Abstract
 	}
 
 	/**
+	 * Get privacy reports
+	 */
+	public function get_privacy_report() {
+		include_once WPPR_PATH . '/includes/privacy-reports/api/class-wppr-privacy-api-factory.php';
+		
+		$link_map = get_field('third_party_review_portal_links', $this->ID);
+
+		if (!$link_map) return null;
+
+		[$google_link] = [...array_filter(array_values($link_map), function ($link) {
+			return strpos($link, 'google') != false;
+		})];
+		if (!$google_link) return null;
+	
+		parse_str(parse_url($google_link, PHP_URL_QUERY), $query_params);
+	
+		$app_name_id = isset($query_params['id']) ? $query_params['id'] : '';
+		if (!$app_name_id) return null;
+
+		$report_api = WPPR_Privacy_API_Factory::get_report_api();
+
+		return $report_api->get_latest_report_by_handle($app_name_id);
+
+	}
+
+	public function get_privacy_tracker_level($tracker_count) {
+		$lvl_map = get_field('privacy_tracker_levels', 'option');
+		if (!$lvl_map) return 'none';
+		if ($tracker_count <= $lvl_map['good_level']['max_quantity']) return 'good';
+		elseif ($tracker_count <= $lvl_map['normal_level']['max_quantity']) return 'normal';
+		else return 'bad';
+	}
+
+	public function get_privacy_permission_level($tracker_count) {
+		$lvl_map = get_field('privacy_permission_levels', 'option');
+		if (!$lvl_map) return 'none';
+		if ($tracker_count <= $lvl_map['good_level']['max_quantity']) return 'good';
+		elseif ($tracker_count <= $lvl_map['normal_level']['max_quantity']) return 'normal';
+		else return 'bad';
+	}
+
+	/**
 	 * Alter options based on user influence.
 	 *
 	 * @access  private

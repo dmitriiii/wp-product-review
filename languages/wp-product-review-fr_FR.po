@@ -2,14 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wp Product Review\n"
 "POT-Creation-Date: 2014-07-28 20:58+0100\n"
-"PO-Revision-Date: 2021-12-01 20:50+0300\n"
+"PO-Revision-Date: 2022-02-02 19:12+0300\n"
 "Last-Translator: Jacques Soulé <jsoule2010@gmail.com>\n"
 "Language-Team: ThemeIsle <friends@themeisle.com>\n"
-"Language: en\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -229,4 +230,16 @@ msgstr "Contre"
 
 #: includes/functions.php:21
 msgid "Reviews"
-msgstr ""
+msgstr "Avis"
+
+#: includes/functions.php:21
+msgid "Version"
+msgstr "Version"
+
+#: includes/functions.php:21
+msgid "Trackers"
+msgstr "Trackers"
+
+#: includes/functions.php:21
+msgid "Permissions"
+msgstr "Permissions"

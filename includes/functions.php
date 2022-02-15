@@ -182,6 +182,7 @@ if (!function_exists('wppr_default_get_rating')) {
 						2
 					);
 				}
+
 		?>
 				<div class="<?php echo $div_class1; ?>">
 					<div class="review-wu-grade-content <?php echo $div_class2; ?>">
@@ -452,7 +453,7 @@ if (!function_exists('wppr_layout_get_affiliate_buttons')) {
 					<span><?php echo esc_html($title); ?></span>
 				</a>
 			</div><!-- end .affiliate-button -->
-<?php
+		<?php
 		}
 	}
 }
@@ -501,6 +502,30 @@ if (!function_exists('wppr_schema_data_types_allowed_brand')) {
 	}
 }
 
+if (!function_exists('wppr_layout_get_privacy_info')) {
+	function wppr_layout_get_privacy_info($review_object)
+	{
+		$report = $review_object->get_privacy_report();
+		if (!get_field('enable_privacy_reports', 'option') || !$report) return;
+		?>
+		<div class="review-wu-privacy-bar">
+			<div class="review-wu-privacy-app">
+				<span class="review-wu-privacy-app__title"><?= __('Version', 'wp-product-review') ?>:</span>
+				<a rel="nofollow" href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-modal-id="review-wu-privacy-reports" data-modal-title="<?= __('Versions', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-app__version"><?= $report['version_name'] ?></a>
+			</div>
+			<div class="review-wu-privacy-trackers">
+				<span class="review-wu-privacy-trackers__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_tracker_level($report['tracker_count']) ?>"><?= $report['tracker_count'] ?></span>
+				<a rel="nofollow" href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-trackers" data-modal-title="<?= __('Trackers', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-trackers__more"><?= __('Trackers', 'wp-product-review') ?></a>
+			</div>
+			<div class="review-wu-privacy-permissions">
+				<span class="review-wu-privacy-permissions__count review-wu-privacy-badge review-wu-privacy-badge--<?= $review_object->get_privacy_permission_level($report['permission_count']) ?>"><?= $report['permission_count'] ?></span>
+				<a rel="nofollow" href="javascript:;" data-handle="<?= esc_attr($report['handle']) ?>" data-version-code="<?= esc_attr($report['version_code']) ?>" data-modal-id="review-wu-privacy-permissions" data-modal-title="<?= __('Permissions', 'wp-product-review') ?>" data-modal-loading-img="<?php echo WPPR_URL; ?>/assets/img/loading.svg" class="review-wu-privacy-permissions__more"><?= __('Permissions', 'wp-product-review') ?></a>
+			</div>
+		</div>
+<?
+	}
+}
+
 function wppr_get_product_post_map($type = 'vpn')
 {
 	if ($type === 'vpn') return json_decode(file_get_contents(K8_PATH_LOC . '/' . 'vpnidPid.json'), true);
@@ -514,15 +539,52 @@ if (!function_exists('init_jotform_api')) {
 	include_once WPPR_PATH . '/includes/jotform/jotform-api.php';
 }
 
-add_filter( 'cron_schedules', 'cron_add_wppr_tpr_update' );
+add_filter('cron_schedules', 'cron_add_wppr_tpr_update');
 
-function cron_add_wppr_tpr_update( $schedules ) {
+function cron_add_wppr_tpr_update($schedules)
+{
 	$schedules['wppr_tpr_update'] = array(
 		'interval' => 20 * DAY_IN_SECONDS,
-		'display' => __( 'Once 20 days' )
+		'display' => __('Once 20 days')
 	);
 	return $schedules;
 }
 
+add_filter('cron_schedules', 'cron_add_wppr_report_update');
+
+function cron_add_wppr_report_update($schedules)
+{
+	$schedules['wppr_report_update'] = array(
+		'interval' => 20 * DAY_IN_SECONDS,
+		'display' => __('Once 20 days')
+	);
+	return $schedules;
+}
+
+add_filter('cron_schedules', 'cron_add_wppr_tracker_update');
+
+function cron_add_wppr_tracker_update($schedules)
+{
+	$schedules['wppr_tracker_update'] = array(
+		'interval' => 30 * DAY_IN_SECONDS,
+		'display' => __('Once 30 days')
+	);
+	return $schedules;
+}
+
+add_filter('cron_schedules', 'cron_add_wppr_permission_update');
+
+function cron_add_wppr_permission_update($schedules)
+{
+	$schedules['wppr_permission_update'] = array(
+		'interval' => 30 * DAY_IN_SECONDS,
+		'display' => __('Once 30 days')
+	);
+	return $schedules;
+}
+
+
 include_once WPPR_PATH . '/includes/reviews-api/index.php';
 include_once WPPR_PATH . '/includes/cron/index.php';
+
+include_once WPPR_PATH . '/includes/privacy-reports/index.php';
