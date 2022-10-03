@@ -960,7 +960,8 @@ class WPPR_Review_Model extends WPPR_Model_Abstract
 	 */
 	public function get_currency()
 	{
-		return apply_filters('wppr_currency_code', apply_filters('wppr_currency', empty($this->currency) ? '$' : $this->currency, $this->ID, $this));
+		$cur_fall = get_field('k8_acf_vpndet_curr', $this->ID);
+		return apply_filters('wppr_currency_code', apply_filters('wppr_currency', empty($this->currency) ? ($cur_fall && isset($cur_fall['label']) ? $cur_fall['label'] : 'USD') : $this->currency, $this->ID, $this));
 	}
 
 	/**
